@@ -2,11 +2,13 @@
 
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=1]
 
-
 [node name="grid" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 width_in_blocks = null
 height_in_blocks = null
+x_start_position = null
+y_start_position = null
+offset = null
 
 
