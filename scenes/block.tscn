@@ -2,12 +2,14 @@
 
 [ext_resource path="res://scripts/Block.gd" type="Script" id=1]
 
-
 [node name="block" type="Node2D"]
 
 script = ExtResource( 1 )
 block_color = 7
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
+
+scale = Vector2( 0.25, 0.25 )
+_sections_unfolded = [ "Transform" ]
 
 
