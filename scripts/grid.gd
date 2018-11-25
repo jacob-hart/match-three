@@ -1,5 +1,4 @@
 extends Node2D
-
 export (int) var width_in_blocks
 export (int) var height_in_blocks
 
@@ -8,6 +7,7 @@ export (int) var x_start_position
 export (int) var y_start_position 
 export (int) var offset
 
+# All blocks that can possibly fill the grid
 var potential_blocks = [
 	preload("res://scenes/block_magenta.tscn"),
 	preload("res://scenes/block_red.tscn"),
@@ -18,7 +18,13 @@ var potential_blocks = [
 	preload("res://scenes/block_violet.tscn"),
 ]
 
+# The blocks currently in the grid, a 2D array filled at runtime
 var blocks = []
+
+# Locations for on-screen touches/mouse clicks
+var touch_begin = Vector2(0, 0)
+var touch_end = Vector2(0, 0)
+var is_controlling_block = false
 
 func _ready():
 	blocks = make_2D_array()
@@ -61,12 +67,47 @@ func match_at(row, column, block_color):
 	return false
 
 
-func grid_to_pixel(column, row):
+func grid_to_pixel(row, column):
 	var new_x = x_start_position + offset * column
 	var new_y = y_start_position + offset * row
-	return Vector2(new_x, new_y)
+	return Vector2(abs(new_x), abs(new_y))
 
-# func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+func pixel_to_grid(x, y):
+	var row = round((y - y_start_position) / offset)
+	var column = round((x - x_start_position) / offset)
+	return Vector2(abs(row), abs(column))
+	
+func is_in_grid(row, column):
+	return (column >= 0 && column < height_in_blocks && row >= 0 && row < width_in_blocks)
+
+func get_user_touch_input():
+	if Input.is_action_just_pressed("ui_touch"):
+		touch_begin = get_global_mouse_position()
+		var grid_position = pixel_to_grid(touch_begin.x, touch_begin.y)
+		if is_in_grid(grid_position.x, grid_position.y):
+			is_controlling_block = true
+
+	if Input.is_action_just_released("ui_touch"):
+		touch_end = get_global_mouse_position()
+		var grid_position = pixel_to_grid(touch_end.x, touch_end.y)
+		if is_in_grid(grid_position.x, grid_position.y) && is_controlling_block:
+			swap_blocks(pixel_to_grid(touch_begin.x, touch_begin.y), grid_position)
+			is_controlling_block = false
+	pass
+
+func swap_blocks(first_block_grid, second_block_grid):
+	if first_block_grid.distance_to(second_block_grid) <= 1:
+		var first_block = blocks[first_block_grid.x][first_block_grid.y]
+		var second_block = blocks[second_block_grid.x][second_block_grid.y]
+		var temp = first_block.position
+		first_block.position = second_block.position
+		second_block.position = temp
+		blocks[first_block_grid.x][first_block_grid.y] = second_block
+		blocks[second_block_grid.x][second_block_grid.y] = first_block
+		first_block.position = grid_to_pixel(second_block_grid.x, second_block_grid.y)
+		second_block.position = grid_to_pixel(first_block_grid.x, first_block_grid.y)
+	pass
+
+func _process(delta):
+	get_user_touch_input()
+	pass
