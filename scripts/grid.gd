@@ -1,4 +1,5 @@
 extends Node2D
+
 export (int) var width_in_blocks
 export (int) var height_in_blocks
 
@@ -29,13 +30,12 @@ var is_controlling_block = false
 func _ready():
 	blocks = make_2D_array()
 	populate_grid()
-	pass
 
 func make_2D_array():
 	var array = []
-	for i in width_in_blocks:
+	for i in height_in_blocks:
 		array.append([])
-		for j in height_in_blocks:
+		for j in width_in_blocks:
 			array[i].append(null)
 	return array
 
@@ -53,7 +53,7 @@ func populate_grid():
 			add_child(new_block)
 			new_block.position = grid_to_pixel(i, j)
 			blocks[i][j] = new_block
-	pass
+	
 
 func match_at(row, column, block_color):
 	if row >= 2:
@@ -66,7 +66,6 @@ func match_at(row, column, block_color):
 				return true
 	return false
 
-
 func grid_to_pixel(row, column):
 	var new_x = x_start_position + offset * column
 	var new_y = y_start_position + offset * row
@@ -78,7 +77,7 @@ func pixel_to_grid(x, y):
 	return Vector2(abs(row), abs(column))
 	
 func is_in_grid(row, column):
-	return (column >= 0 && column < height_in_blocks && row >= 0 && row < width_in_blocks)
+	return (column >= 0 && column < width_in_blocks && row >= 0 && row < height_in_blocks)
 
 func get_user_touch_input():
 	if Input.is_action_just_pressed("ui_touch"):
@@ -93,8 +92,7 @@ func get_user_touch_input():
 		if is_in_grid(grid_position.x, grid_position.y) && is_controlling_block:
 			swap_blocks(pixel_to_grid(touch_begin.x, touch_begin.y), grid_position)
 			is_controlling_block = false
-	pass
-
+	
 func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_to(second_block_grid) <= 1:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
@@ -106,8 +104,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 		blocks[second_block_grid.x][second_block_grid.y] = first_block
 		first_block.position = grid_to_pixel(second_block_grid.x, second_block_grid.y)
 		second_block.position = grid_to_pixel(first_block_grid.x, first_block_grid.y)
-	pass
-
+	
 func _process(delta):
 	get_user_touch_input()
-	pass
+	
