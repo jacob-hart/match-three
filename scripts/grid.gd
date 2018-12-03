@@ -97,13 +97,12 @@ func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_to(second_block_grid) <= 1:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
-		var temp = first_block.position
-		first_block.position = second_block.position
-		second_block.position = temp
+
 		blocks[first_block_grid.x][first_block_grid.y] = second_block
 		blocks[second_block_grid.x][second_block_grid.y] = first_block
-		first_block.position = grid_to_pixel(second_block_grid.x, second_block_grid.y)
-		second_block.position = grid_to_pixel(first_block_grid.x, first_block_grid.y)
+
+		first_block.move(grid_to_pixel(second_block_grid.x, second_block_grid.y))
+		second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 	
 func _process(delta):
 	get_user_touch_input()

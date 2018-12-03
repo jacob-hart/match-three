@@ -3,13 +3,13 @@ extends Node2D
 enum BlockColor {MAGENTA, RED, ORANGE, YELLOW, GREEN, BLUE, VIOLET, COLORLESS}
 
 export (BlockColor) var block_color
+export (float) var tween_speed
+
+var move_tween
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
+	move_tween = get_node("move_tween")
 
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+func move(position_to_move_to):
+	move_tween.interpolate_property(self, "position", position, position_to_move_to, tween_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	move_tween.start()
