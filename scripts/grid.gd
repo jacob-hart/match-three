@@ -54,15 +54,14 @@ func populate_grid():
 			new_block.position = grid_to_pixel(i, j)
 			blocks[i][j] = new_block
 	
-
 func match_at(row, column, block_color):
 	if row >= 2:
-		if blocks[row - 1][column] != null && blocks[row - 2][column] != null: # Make sure that the color comparisons will be valid
-			if blocks[row - 1][column].block_color == block_color && blocks[row - 2][column].block_color == block_color: # Determine if a color match exists # TODO: make it so colorless matches with anything
+		if blocks[row - 1][column] != null && blocks[row - 2][column] != null: 
+			if blocks[row - 1][column].block_color == block_color && blocks[row - 2][column].block_color == block_color: # TODO: make it so colorless matches with anything
 				return true
 	if column >= 2:
-		if blocks[row][column - 1] != null && blocks[row][column - 2] != null: # Make sure that the color comparisons will be valid
-			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color: # Determine if a color match exists # TODO: make it so colorless matches with anything
+		if blocks[row][column - 1] != null && blocks[row][column - 2] != null: 
+			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color: # TODO: make it so colorless matches with anything
 				return true
 	return false
 
@@ -103,7 +102,29 @@ func swap_blocks(first_block_grid, second_block_grid):
 
 		first_block.move(grid_to_pixel(second_block_grid.x, second_block_grid.y))
 		second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
-	
+		find_matches()
+
+func find_matches(): # TODO: simplify this using the match_at function
+	for i in blocks.size():
+		for j in blocks[i].size():
+				var color_to_check = blocks[i][j].block_color
+				if i > 0 && i < blocks.size() - 1:
+					if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
+						blocks[i - 1][j].is_matched = true
+						blocks[i - 1][j].change_opacity()
+						blocks[i][j].is_matched = true
+						blocks[i][j].change_opacity()
+						blocks[i + 1][j].is_matched = true
+						blocks[i + 1][j].change_opacity()
+				if j > 0 && j < blocks[i].size() - 1:
+					if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
+						blocks[i][j - 1].is_matched = true
+						blocks[i][j - 1].change_opacity()
+						blocks[i][j].is_matched = true
+						blocks[i][j].change_opacity()
+						blocks[i][j + 1].is_matched = true
+						blocks[i][j + 1].change_opacity()
+
 func _process(delta):
 	get_user_touch_input()
 	
