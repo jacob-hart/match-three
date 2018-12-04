@@ -12,4 +12,13 @@ x_start_position = 64
 y_start_position = 100
 offset = 72
 
+[node name="destroy_timer" type="Timer" parent="grid" index="0"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = false
+
+[connection signal="timeout" from="grid/destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
+
 

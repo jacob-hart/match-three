@@ -75,22 +75,21 @@ func pixel_to_grid(x, y):
 	var column = round((x - x_start_position) / offset)
 	return Vector2(abs(row), abs(column))
 	
-func is_in_grid(row, column):
-	return (column >= 0 && column < width_in_blocks && row >= 0 && row < height_in_blocks)
+func is_in_grid(grid_coordinate):
+	return (grid_coordinate.x >= 0 && grid_coordinate.x < height_in_blocks && grid_coordinate.y >= 0 && grid_coordinate.y < width_in_blocks)
 
 func get_user_touch_input():
 	if Input.is_action_just_pressed("ui_touch"):
-		touch_begin = get_global_mouse_position()
-		var grid_position = pixel_to_grid(touch_begin.x, touch_begin.y)
-		if is_in_grid(grid_position.x, grid_position.y):
+		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
+			touch_begin = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 			is_controlling_block = true
 
 	if Input.is_action_just_released("ui_touch"):
-		touch_end = get_global_mouse_position()
-		var grid_position = pixel_to_grid(touch_end.x, touch_end.y)
-		if is_in_grid(grid_position.x, grid_position.y) && is_controlling_block:
-			swap_blocks(pixel_to_grid(touch_begin.x, touch_begin.y), grid_position)
+		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
+			touch_end = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+			swap_blocks(touch_begin, touch_end)
 			is_controlling_block = false
+
 	
 func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_to(second_block_grid) <= 1:
@@ -124,7 +123,16 @@ func find_matches(): # TODO: simplify this using the match_at function
 						blocks[i][j].change_opacity()
 						blocks[i][j + 1].is_matched = true
 						blocks[i][j + 1].change_opacity()
+	get_node("destroy_timer").start()
+
+func destroy_matched():
+	for i in blocks.size():
+		for j in blocks[i].size():
+			if blocks[i][j].is_matched:
+				blocks[i][j].queue_free()
+
+func _on_destroy_timer_timeout():
+	destroy_matched()
 
 func _process(delta):
 	get_user_touch_input()
-	
