@@ -113,21 +113,21 @@ func find_matches(): # TODO: simplify this using the match_at function
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
 							blocks[i - 1][j].is_matched = true
-							#blocks[i - 1][j].change_opacity()
+							blocks[i - 1][j].change_opacity()
 							blocks[i][j].is_matched = true
-							#blocks[i][j].change_opacity()
+							blocks[i][j].change_opacity()
 							blocks[i + 1][j].is_matched = true
-							#blocks[i + 1][j].change_opacity()
+							blocks[i + 1][j].change_opacity()
 				if j > 0 && j < blocks[i].size() - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
 							blocks[i][j - 1].is_matched = true
-							#blocks[i][j - 1].change_opacity()
+							blocks[i][j - 1].change_opacity()
 							blocks[i][j].is_matched = true
-							#blocks[i][j].change_opacity()
+							blocks[i][j].change_opacity()
 							blocks[i][j + 1].is_matched = true
-							#blocks[i][j + 1].change_opacity()
-	get_node("destroy_timer").start() # TODO: make the destroy timer a child node of blocks to allow for asynchronous destruction
+							blocks[i][j + 1].change_opacity()
+	get_node("destroy_timer").start() 
 
 func destroy_matched():
 	for i in blocks.size():
@@ -136,9 +136,25 @@ func destroy_matched():
 				if blocks[i][j].is_matched:
 					blocks[i][j].queue_free()
 					blocks[i][j] = null
+	get_node("collapse_timer").start()
 
 func _on_destroy_timer_timeout():
-	destroy_matched()
+	destroy_matched() 
+
+func collapse_null():
+	for i in blocks.size():
+		for j in blocks[i].size():
+			if blocks[i][j] == null:
+				for k in range(i + 1, blocks.size()): # FIXME: this currently collapses based on the tutorial method of indexing (row 0 is the bottommost), change it to use normal indexing (row 0 is the topmost)
+					if blocks[k][j] != null:
+						blocks[k][j].move(grid_to_pixel(i, j))
+						blocks[i][j] = blocks[k][j]
+						blocks[k][j] = null
+						break
+
+func _on_collapse_timer_timeout():
+	collapse_null()
+	find_matches()
 
 func _process(delta):
 	get_user_touch_input()

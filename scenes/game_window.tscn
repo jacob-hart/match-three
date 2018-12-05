@@ -19,6 +19,15 @@ wait_time = 0.5
 one_shot = true
 autostart = false
 
+[node name="collapse_timer" type="Timer" parent="grid" index="1"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = false
+
 [connection signal="timeout" from="grid/destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
+
+[connection signal="timeout" from="grid/collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 
 
