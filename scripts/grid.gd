@@ -95,41 +95,47 @@ func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_to(second_block_grid) <= 1:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
+		if first_block != null && second_block != null:
+			blocks[first_block_grid.x][first_block_grid.y] = second_block
+			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
-		blocks[first_block_grid.x][first_block_grid.y] = second_block
-		blocks[second_block_grid.x][second_block_grid.y] = first_block
-
-		first_block.move(grid_to_pixel(second_block_grid.x, second_block_grid.y))
-		second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
-		find_matches()
+			first_block.z_index = 1 # The user is likely more focused on the movement of the first block than the second block, so render the first block above the second
+			first_block.move(grid_to_pixel(second_block_grid.x, second_block_grid.y))
+			second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
+			find_matches()
 
 func find_matches(): # TODO: simplify this using the match_at function
 	for i in blocks.size():
 		for j in blocks[i].size():
+			if blocks[i][j] != null:
 				var color_to_check = blocks[i][j].block_color
 				if i > 0 && i < blocks.size() - 1:
-					if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
-						blocks[i - 1][j].is_matched = true
-						blocks[i - 1][j].change_opacity()
-						blocks[i][j].is_matched = true
-						blocks[i][j].change_opacity()
-						blocks[i + 1][j].is_matched = true
-						blocks[i + 1][j].change_opacity()
+					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
+						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
+							blocks[i - 1][j].is_matched = true
+							#blocks[i - 1][j].change_opacity()
+							blocks[i][j].is_matched = true
+							#blocks[i][j].change_opacity()
+							blocks[i + 1][j].is_matched = true
+							#blocks[i + 1][j].change_opacity()
 				if j > 0 && j < blocks[i].size() - 1:
-					if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
-						blocks[i][j - 1].is_matched = true
-						blocks[i][j - 1].change_opacity()
-						blocks[i][j].is_matched = true
-						blocks[i][j].change_opacity()
-						blocks[i][j + 1].is_matched = true
-						blocks[i][j + 1].change_opacity()
-	get_node("destroy_timer").start()
+					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
+						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
+							blocks[i][j - 1].is_matched = true
+							#blocks[i][j - 1].change_opacity()
+							blocks[i][j].is_matched = true
+							#blocks[i][j].change_opacity()
+							blocks[i][j + 1].is_matched = true
+							#blocks[i][j + 1].change_opacity()
+	get_node("destroy_timer").start() # TODO: make the destroy timer a child node of blocks to allow for asynchronous destruction
 
 func destroy_matched():
 	for i in blocks.size():
 		for j in blocks[i].size():
-			if blocks[i][j].is_matched:
-				blocks[i][j].queue_free()
+			if blocks[i][j] != null:
+				if blocks[i][j].is_matched:
+					blocks[i][j].queue_free()
+					blocks[i][j] = null
 
 func _on_destroy_timer_timeout():
 	destroy_matched()
