@@ -31,6 +31,7 @@ func _ready():
 	blocks = make_2D_array()
 	populate_grid()
 
+# Creates and returns a 2-dimensional array the old-fashioned way
 func make_2D_array():
 	var array = []
 	for i in height_in_blocks:
@@ -39,6 +40,7 @@ func make_2D_array():
 			array[i].append(null)
 	return array
 
+# Fills the grid with blocks from potential_blocks
 func populate_grid():
 	randomize()
 	for i in blocks.size():
@@ -54,6 +56,7 @@ func populate_grid():
 			new_block.position = grid_to_pixel(i, j)
 			blocks[i][j] = new_block
 	
+# Determines if there is a match of block_color at row, column in the grid
 func match_at(row, column, block_color):
 	if row >= 2:
 		if blocks[row - 1][column] != null && blocks[row - 2][column] != null: 
@@ -65,19 +68,23 @@ func match_at(row, column, block_color):
 				return true
 	return false
 
+# Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
 	var new_x = x_start_position + offset * column
 	var new_y = y_start_position + offset * row
 	return Vector2(abs(new_x), abs(new_y))
 
+# Converts a screen pixel coordinate to a grid coordinate
 func pixel_to_grid(x, y):
 	var row = round((y - y_start_position) / offset)
 	var column = round((x - x_start_position) / offset)
 	return Vector2(abs(row), abs(column))
 	
+# Checks if a grid coordinate is in the grid and usable
 func is_in_grid(grid_coordinate):
 	return (grid_coordinate.x >= 0 && grid_coordinate.x < height_in_blocks && grid_coordinate.y >= 0 && grid_coordinate.y < width_in_blocks)
 
+# Gets click/touch locations used for block movement
 func get_user_touch_input():
 	if Input.is_action_just_pressed("ui_touch"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
@@ -90,7 +97,7 @@ func get_user_touch_input():
 			swap_blocks(touch_begin, touch_end)
 			is_controlling_block = false
 
-	
+# Swaps on-screen positions and grid positions of two blocks as long as they are adjacent
 func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_to(second_block_grid) <= 1:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
@@ -104,6 +111,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 			second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 			find_matches()
 
+# Determines if there are any matches in the entire grid, and then removes any found
 func find_matches(): # TODO: simplify this using the match_at function
 	for i in blocks.size():
 		for j in blocks[i].size():
@@ -129,6 +137,7 @@ func find_matches(): # TODO: simplify this using the match_at function
 							blocks[i][j + 1].change_opacity()
 	get_node("destroy_timer").start() 
 
+# Destroys all blocks where is_matched is true
 func destroy_matched():
 	for i in blocks.size():
 		for j in blocks[i].size():
@@ -141,20 +150,21 @@ func destroy_matched():
 func _on_destroy_timer_timeout():
 	destroy_matched() 
 
+# Collapses grid columns, moving any null spaces to the top of the column
 func collapse_null():
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] == null:
-				for k in range(i + 1, blocks.size()): # FIXME: this currently collapses based on the tutorial method of indexing (row 0 is the bottommost), change it to use normal indexing (row 0 is the topmost)
-					if blocks[k][j] != null:
+				for k in range(i + 1, blocks.size()):
+					if blocks[k][j] != null: 
 						blocks[k][j].move(grid_to_pixel(i, j))
 						blocks[i][j] = blocks[k][j]
-						blocks[k][j] = null
+						blocks[k][j] = null 
 						break
 
 func _on_collapse_timer_timeout():
 	collapse_null()
-	find_matches()
+	find_matches() # Collapsing may have formed new matches, so check again to see if any new matches were formed
 
 func _process(delta):
 	get_user_touch_input()
