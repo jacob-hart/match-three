@@ -1,5 +1,9 @@
 extends Node2D
 
+# Grid state machine variables
+enum {STATE_WAITING, STATE_READY_TO_MOVE}
+var grid_state
+
 export (int) var width_in_blocks
 export (int) var height_in_blocks
 
@@ -7,6 +11,7 @@ export (int) var height_in_blocks
 export (int) var x_start_position
 export (int) var y_start_position 
 export (int) var offset
+export (int) var new_block_start_offset
 
 # All blocks that can possibly fill the grid
 var potential_blocks = [
@@ -22,12 +27,15 @@ var potential_blocks = [
 # The blocks currently in the grid, a 2D array filled at runtime
 var blocks = []
 
+# TODO: create object pool for blocks and then make it so each destruction and addition uses the pool
+
 # Locations for on-screen touches/mouse clicks
 var touch_begin = Vector2(0, 0)
 var touch_end = Vector2(0, 0)
 var is_controlling_block = false
 
 func _ready():
+	grid_state = STATE_READY_TO_MOVE
 	blocks = make_2D_array()
 	populate_grid()
 
@@ -103,6 +111,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
 		if first_block != null && second_block != null:
+			grid_state = STATE_WAITING
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
@@ -113,6 +122,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 
 # Determines if there are any matches in the entire grid, and then removes any found
 func find_matches(): # TODO: simplify this using the match_at function
+	var any_matches_found = false
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
@@ -120,6 +130,7 @@ func find_matches(): # TODO: simplify this using the match_at function
 				if i > 0 && i < blocks.size() - 1:
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
+							any_matches_found = true
 							blocks[i - 1][j].is_matched = true
 							blocks[i - 1][j].change_opacity()
 							blocks[i][j].is_matched = true
@@ -129,13 +140,17 @@ func find_matches(): # TODO: simplify this using the match_at function
 				if j > 0 && j < blocks[i].size() - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
+							any_matches_found = true
 							blocks[i][j - 1].is_matched = true
 							blocks[i][j - 1].change_opacity()
 							blocks[i][j].is_matched = true
 							blocks[i][j].change_opacity()
 							blocks[i][j + 1].is_matched = true
 							blocks[i][j + 1].change_opacity()
-	get_node("destroy_timer").start() 
+	if any_matches_found:
+		get_node("destroy_timer").start()
+	else:
+		grid_state = STATE_READY_TO_MOVE 
 
 # Destroys all blocks where is_matched is true
 func destroy_matched():
@@ -155,16 +170,43 @@ func collapse_null():
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] == null:
-				for k in range(i + 1, blocks.size()):
+				for k in range(i + 1, blocks.size()): # TODO: fix this so that the blocks collapse down not up
 					if blocks[k][j] != null: 
 						blocks[k][j].move(grid_to_pixel(i, j))
 						blocks[i][j] = blocks[k][j]
 						blocks[k][j] = null 
 						break
+	get_node("repopulate_timer").start()
 
 func _on_collapse_timer_timeout():
 	collapse_null()
-	find_matches() # Collapsing may have formed new matches, so check again to see if any new matches were formed
+
+# Adds new blocks to empty spaces after matches were destroyed
+func repopulate_grid():
+	for i in blocks.size():
+		for j in blocks[i].size():
+			if blocks[i][j] == null:
+				var random_block_index = floor(rand_range(0, potential_blocks.size()))
+				var new_block = potential_blocks[random_block_index].instance()
+
+				while match_at(i, j, new_block.block_color): # Make sure that index will not form a match
+					random_block_index = floor(rand_range(0, potential_blocks.size())) # Generate a new index to use
+					new_block = potential_blocks[random_block_index].instance() # Form a new block with that index
+
+				add_child(new_block)
+				new_block.position = grid_to_pixel(i + new_block_start_offset, j) # TODO: once collapsing is fixed, change this to subtract offset
+				new_block.move(grid_to_pixel(i, j))
+				blocks[i][j] = new_block
+	find_matches()
+
+# TODO: remove the timer aspect of this if no waiting is desired
+func _on_repopulate_timer_timeout():
+	repopulate_grid()
 
 func _process(delta):
-	get_user_touch_input()
+	if grid_state == STATE_READY_TO_MOVE:
+		get_user_touch_input()
+
+
+
+	

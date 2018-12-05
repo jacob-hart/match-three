@@ -11,6 +11,7 @@ height_in_blocks = 10
 x_start_position = 64
 y_start_position = 100
 offset = 72
+new_block_start_offset = 2
 
 [node name="destroy_timer" type="Timer" parent="grid" index="0"]
 
@@ -26,8 +27,17 @@ wait_time = 0.5
 one_shot = true
 autostart = false
 
+[node name="repopulate_timer" type="Timer" parent="grid" index="2"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = false
+
 [connection signal="timeout" from="grid/destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 
 [connection signal="timeout" from="grid/collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
+
+[connection signal="timeout" from="grid/repopulate_timer" to="grid" method="_on_repopulate_timer_timeout"]
 
 
