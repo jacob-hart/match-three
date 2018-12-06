@@ -15,7 +15,7 @@ export (int) var new_block_start_offset
 
 # All blocks that can possibly fill the grid
 var potential_blocks = [
-	preload("res://scenes/block_magenta.tscn"),
+	#preload("res://scenes/block_magenta.tscn"),
 	preload("res://scenes/block_red.tscn"),
 	preload("res://scenes/block_orange.tscn"),
 	preload("res://scenes/block_yellow.tscn"),
@@ -120,6 +120,8 @@ func swap_blocks(first_block_grid, second_block_grid):
 			second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 			find_matches()
 
+# TODO: add unswap behavior
+
 # Determines if there are any matches in the entire grid, and then removes any found
 func find_matches(): # TODO: simplify this using the match_at function
 	var any_matches_found = false
@@ -131,26 +133,20 @@ func find_matches(): # TODO: simplify this using the match_at function
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
 							any_matches_found = true
-							blocks[i - 1][j].is_matched = true
-							blocks[i - 1][j].change_opacity()
-							blocks[i][j].is_matched = true
-							blocks[i][j].change_opacity()
-							blocks[i + 1][j].is_matched = true
-							blocks[i + 1][j].change_opacity()
+							blocks[i - 1][j].set_matched()
+							blocks[i][j].set_matched()
+							blocks[i + 1][j].set_matched()
 				if j > 0 && j < blocks[i].size() - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
 							any_matches_found = true
-							blocks[i][j - 1].is_matched = true
-							blocks[i][j - 1].change_opacity()
-							blocks[i][j].is_matched = true
-							blocks[i][j].change_opacity()
-							blocks[i][j + 1].is_matched = true
-							blocks[i][j + 1].change_opacity()
+							blocks[i][j - 1].set_matched()
+							blocks[i][j].set_matched()
+							blocks[i][j + 1].set_matched()
 	if any_matches_found:
 		get_node("destroy_timer").start()
 	else:
-		grid_state = STATE_READY_TO_MOVE 
+		grid_state = STATE_READY_TO_MOVE
 
 # Destroys all blocks where is_matched is true
 func destroy_matched():
@@ -199,7 +195,7 @@ func repopulate_grid():
 				blocks[i][j] = new_block
 	find_matches()
 
-# TODO: remove the timer aspect of this if no waiting is desired
+# TODO: if no waiting is desired, remove the timer aspect of this 
 func _on_repopulate_timer_timeout():
 	repopulate_grid()
 
