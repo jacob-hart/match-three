@@ -1,7 +1,7 @@
 extends Node2D
 
 # Grid state machine variables
-enum {STATE_WAITING, STATE_READY_TO_MOVE}
+enum {STATE_WAITING_ON_ANIMATION, STATE_WAITING_FOR_FIRST_SELECTION, STATE_WAITING_FOR_SECOND_SELECTION}
 var grid_state
 
 export (int) var width_in_blocks
@@ -29,13 +29,8 @@ var blocks = []
 
 # TODO: create object pool for blocks and then make it so each destruction and addition uses the pool
 
-# Locations for on-screen touches/mouse clicks
-var touch_begin = Vector2(0, 0)
-var touch_end = Vector2(0, 0)
-var is_controlling_block = false
-
 func _ready():
-	grid_state = STATE_READY_TO_MOVE
+	grid_state = STATE_WAITING_FOR_FIRST_SELECTION
 	blocks = make_2D_array()
 	populate_grid()
 
@@ -92,26 +87,30 @@ func pixel_to_grid(x, y):
 func is_in_grid(grid_coordinate):
 	return (grid_coordinate.x >= 0 && grid_coordinate.x < height_in_blocks && grid_coordinate.y >= 0 && grid_coordinate.y < width_in_blocks)
 
-# Gets click/touch locations used for block movement
-func get_user_touch_input():
-	if Input.is_action_just_pressed("ui_touch"):
-		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
-			touch_begin = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			is_controlling_block = true
-
+var first_click = Vector2(0, 0)
+var second_click = Vector2(0, 0)
+# Gets click locations and selects blocks based on that input
+func get_user_mouse_input():
 	if Input.is_action_just_released("ui_touch"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
-			touch_end = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			swap_blocks(touch_begin, touch_end)
-			is_controlling_block = false
+			if grid_state == STATE_WAITING_FOR_FIRST_SELECTION:
+				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+				blocks[first_click.x][first_click.y].set_selected()
+				grid_state = STATE_WAITING_FOR_SECOND_SELECTION
+			elif grid_state == STATE_WAITING_FOR_SECOND_SELECTION:
+				second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+				blocks[first_click.x][first_click.y].set_unselected()
+				swap_blocks(first_click, second_click)
 
+const DISTANCE_SQUARED_ADJACENT = 1
+const DISTANCE_SQUARED_DIAGONAL = 2
 # Swaps on-screen positions and grid positions of two blocks as long as they are adjacent
 func swap_blocks(first_block_grid, second_block_grid):
-	if first_block_grid.distance_to(second_block_grid) <= 1:
+	if first_block_grid.distance_squared_to(second_block_grid) <= DISTANCE_SQUARED_DIAGONAL:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
 		if first_block != null && second_block != null:
-			grid_state = STATE_WAITING
+			grid_state = STATE_WAITING_ON_ANIMATION
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
@@ -119,8 +118,9 @@ func swap_blocks(first_block_grid, second_block_grid):
 			first_block.move(grid_to_pixel(second_block_grid.x, second_block_grid.y))
 			second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 			find_matches()
-
-# TODO: add unswap behavior
+	else:
+		# The swap must not have been possible, so let the user select again
+		grid_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Determines if there are any matches in the entire grid, and then removes any found
 func find_matches(): # TODO: simplify this using the match_at function
@@ -146,7 +146,7 @@ func find_matches(): # TODO: simplify this using the match_at function
 	if any_matches_found:
 		get_node("destroy_timer").start()
 	else:
-		grid_state = STATE_READY_TO_MOVE
+		grid_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Destroys all blocks where is_matched is true
 func destroy_matched():
@@ -200,9 +200,5 @@ func _on_repopulate_timer_timeout():
 	repopulate_grid()
 
 func _process(delta):
-	if grid_state == STATE_READY_TO_MOVE:
-		get_user_touch_input()
-
-
-
-	
+	get_user_mouse_input()
+	#print("Grid state currently is: ", grid_state)
