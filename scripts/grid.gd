@@ -4,7 +4,7 @@ extends Node2D
 enum {STATE_WAITING_ON_ANIMATION, STATE_WAITING_FOR_FIRST_SELECTION, STATE_WAITING_FOR_SECOND_SELECTION}
 var interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
-enum MovementDirections {ADJACENT_ONLY = 1, ADJACENT_AND_DIAGONAL = 2}
+enum MovementDirections {ADJACENT_ONLY = 1, DIAGONAL_AND_ADJACENT = 2}
 
 export (int) var width_in_blocks
 export (int) var height_in_blocks
@@ -128,8 +128,8 @@ func swap_blocks(first_block_grid, second_block_grid):
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
 			first_block.z_index = 1 # The user is likely more focused on the movement of the first block than the second block, so render the first block above the second
-			first_block.move(grid_to_pixel(second_block_grid.x, second_block_grid.y))
-			second_block.move(grid_to_pixel(first_block_grid.x, first_block_grid.y))
+			first_block.move_smooth(grid_to_pixel(second_block_grid.x, second_block_grid.y))
+			second_block.move_smooth(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 			find_matches()
 	else:
 		# The swap must not have been possible, so let the user select again
@@ -195,7 +195,7 @@ func collapse_null():
 			if blocks[i][j] == null:
 				for k in range(i, 0 - 1, -1): # Iterates from the bottom of the column up
 					if blocks[k][j] != null: 
-						blocks[k][j].move(grid_to_pixel(i, j))
+						blocks[k][j].move_smooth(grid_to_pixel(i, j))
 						blocks[i][j] = blocks[k][j]
 						blocks[k][j] = null 
 						break
@@ -218,7 +218,7 @@ func repopulate_grid():
 
 				add_child(new_block)
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
-				new_block.move(grid_to_pixel(i, j))
+				new_block.move_smooth(grid_to_pixel(i, j))
 				blocks[i][j] = new_block
 	find_matches()
 
