@@ -31,8 +31,6 @@ var potential_blocks = [
 # The blocks currently in the grid, a 2D array filled at runtime
 var blocks = []
 
-# TODO: create object pool for blocks and then make it so each destruction and addition uses the pool
-
 func _ready():
 	blocks = make_2D_array()
 	populate_grid()
@@ -66,11 +64,11 @@ func populate_grid():
 func match_at(row, column, block_color):
 	if row >= 2:
 		if blocks[row - 1][column] != null && blocks[row - 2][column] != null: 
-			if blocks[row - 1][column].block_color == block_color && blocks[row - 2][column].block_color == block_color: # TODO: make it so colorless matches with anything
+			if blocks[row - 1][column].block_color == block_color && blocks[row - 2][column].block_color == block_color:
 				return true
 	if column >= 2:
 		if blocks[row][column - 1] != null && blocks[row][column - 2] != null: 
-			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color: # TODO: make it so colorless matches with anything
+			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color:
 				return true
 	return false
 
@@ -192,10 +190,10 @@ func _on_destroy_timer_timeout():
 # Collapses grid columns, moving any null spaces to the top of the column
 func collapse_null():
 	first_time_finding = false
-	for i in blocks.size():
+	for i in range(blocks.size() - 1, 0 - 1, -1): # Iterates from the bottom of the grid up
 		for j in blocks[i].size():
 			if blocks[i][j] == null:
-				for k in range(i + 1, blocks.size()): # TODO: fix this so that the blocks collapse down not up
+				for k in range(i, 0 - 1, -1): # Iterates from the bottom of the column up
 					if blocks[k][j] != null: 
 						blocks[k][j].move(grid_to_pixel(i, j))
 						blocks[i][j] = blocks[k][j]
@@ -219,7 +217,7 @@ func repopulate_grid():
 					new_block = potential_blocks[random_block_index].instance() # Form a new block with that index
 
 				add_child(new_block)
-				new_block.position = grid_to_pixel(i + new_block_start_offset, j) # TODO: once collapsing is fixed, change this to subtract offset
+				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
 				new_block.move(grid_to_pixel(i, j))
 				blocks[i][j] = new_block
 	find_matches()
