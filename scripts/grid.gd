@@ -104,12 +104,26 @@ func get_user_mouse_input():
 
 const DISTANCE_SQUARED_ADJACENT = 1
 const DISTANCE_SQUARED_DIAGONAL = 2
+### TODO: replace this block with a struct of some sort
+var last_first_block = null
+var last_second_block = null
+var last_first_block_grid = Vector2(0, 0)
+var last_second_block_grid = Vector2(0, 0)
+###
+var first_time_finding = true
+
 # Swaps on-screen positions and grid positions of two blocks as long as they are adjacent
 func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_squared_to(second_block_grid) <= DISTANCE_SQUARED_DIAGONAL:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
 		if first_block != null && second_block != null:
+			### TODO: replace this block with a method perhaps or something more robust
+			last_first_block = first_block
+			last_second_block = second_block
+			last_first_block_grid = first_block_grid
+			last_second_block_grid = second_block_grid
+			###
 			grid_state = STATE_WAITING_ON_ANIMATION
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
@@ -122,9 +136,15 @@ func swap_blocks(first_block_grid, second_block_grid):
 		# The swap must not have been possible, so let the user select again
 		grid_state = STATE_WAITING_FOR_FIRST_SELECTION
 
-# Determines if there are any matches in the entire grid, and then removes any found
+func unswap_blocks():
+	if last_first_block != null && last_second_block != null:
+		swap_blocks(last_second_block_grid, last_first_block_grid)
+	first_time_finding = false
+	grid_state = STATE_WAITING_FOR_FIRST_SELECTION
+	pass
+
+# Marks every match found for later removal
 func find_matches(): # TODO: simplify this using the match_at function
-	var any_matches_found = false
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
@@ -132,37 +152,43 @@ func find_matches(): # TODO: simplify this using the match_at function
 				if i > 0 && i < blocks.size() - 1:
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
-							any_matches_found = true
 							blocks[i - 1][j].set_matched()
 							blocks[i][j].set_matched()
 							blocks[i + 1][j].set_matched()
 				if j > 0 && j < blocks[i].size() - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
-							any_matches_found = true
 							blocks[i][j - 1].set_matched()
 							blocks[i][j].set_matched()
 							blocks[i][j + 1].set_matched()
-	if any_matches_found:
-		get_node("destroy_timer").start()
-	else:
-		grid_state = STATE_WAITING_FOR_FIRST_SELECTION
+	get_node("destroy_timer").start()
 
 # Destroys all blocks where is_matched is true
 func destroy_matched():
+	var any_matches_found = false
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
 				if blocks[i][j].is_matched:
+					any_matches_found = true
 					blocks[i][j].queue_free()
 					blocks[i][j] = null
-	get_node("collapse_timer").start()
+	if any_matches_found:
+		get_node("collapse_timer").start()
+	else: 
+		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
+		if first_time_finding:
+			unswap_blocks()
+		else:
+			first_time_finding = true
+			grid_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 func _on_destroy_timer_timeout():
 	destroy_matched() 
 
 # Collapses grid columns, moving any null spaces to the top of the column
 func collapse_null():
+	first_time_finding = false
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] == null:
@@ -201,4 +227,3 @@ func _on_repopulate_timer_timeout():
 
 func _process(delta):
 	get_user_mouse_input()
-	#print("Grid state currently is: ", grid_state)
