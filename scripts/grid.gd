@@ -2,7 +2,9 @@ extends Node2D
 
 # Grid state machine variables
 enum {STATE_WAITING_ON_ANIMATION, STATE_WAITING_FOR_FIRST_SELECTION, STATE_WAITING_FOR_SECOND_SELECTION}
-var grid_state
+var interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
+
+enum MovementDirections {ADJACENT_ONLY = 1, ADJACENT_AND_DIAGONAL = 2}
 
 export (int) var width_in_blocks
 export (int) var height_in_blocks
@@ -12,6 +14,8 @@ export (int) var x_start_position
 export (int) var y_start_position 
 export (int) var offset
 export (int) var new_block_start_offset
+
+export (MovementDirections) var allowed_movement_directions
 
 # All blocks that can possibly fill the grid
 var potential_blocks = [
@@ -30,7 +34,6 @@ var blocks = []
 # TODO: create object pool for blocks and then make it so each destruction and addition uses the pool
 
 func _ready():
-	grid_state = STATE_WAITING_FOR_FIRST_SELECTION
 	blocks = make_2D_array()
 	populate_grid()
 
@@ -93,17 +96,15 @@ var second_click = Vector2(0, 0)
 func get_user_mouse_input():
 	if Input.is_action_just_released("ui_touch"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
-			if grid_state == STATE_WAITING_FOR_FIRST_SELECTION:
+			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
 				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 				blocks[first_click.x][first_click.y].set_selected()
-				grid_state = STATE_WAITING_FOR_SECOND_SELECTION
-			elif grid_state == STATE_WAITING_FOR_SECOND_SELECTION:
+				interaction_state = STATE_WAITING_FOR_SECOND_SELECTION
+			elif interaction_state == STATE_WAITING_FOR_SECOND_SELECTION:
 				second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 				blocks[first_click.x][first_click.y].set_unselected()
 				swap_blocks(first_click, second_click)
 
-const DISTANCE_SQUARED_ADJACENT = 1
-const DISTANCE_SQUARED_DIAGONAL = 2
 ### TODO: replace this block with a struct of some sort
 var last_first_block = null
 var last_second_block = null
@@ -114,7 +115,7 @@ var first_time_finding = true
 
 # Swaps on-screen positions and grid positions of two blocks as long as they are adjacent
 func swap_blocks(first_block_grid, second_block_grid):
-	if first_block_grid.distance_squared_to(second_block_grid) <= DISTANCE_SQUARED_DIAGONAL:
+	if first_block_grid.distance_squared_to(second_block_grid) <= allowed_movement_directions:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
 		if first_block != null && second_block != null:
@@ -124,7 +125,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 			last_first_block_grid = first_block_grid
 			last_second_block_grid = second_block_grid
 			###
-			grid_state = STATE_WAITING_ON_ANIMATION
+			interaction_state = STATE_WAITING_ON_ANIMATION
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
@@ -134,14 +135,16 @@ func swap_blocks(first_block_grid, second_block_grid):
 			find_matches()
 	else:
 		# The swap must not have been possible, so let the user select again
-		grid_state = STATE_WAITING_FOR_FIRST_SELECTION
+		interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 func unswap_blocks():
 	if last_first_block != null && last_second_block != null:
 		swap_blocks(last_second_block_grid, last_first_block_grid)
 	first_time_finding = false
-	grid_state = STATE_WAITING_FOR_FIRST_SELECTION
-	pass
+	get_node("unswap_timer").start()
+
+func _on_unswap_timer_timeout():
+	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Marks every match found for later removal
 func find_matches(): # TODO: simplify this using the match_at function
@@ -181,7 +184,7 @@ func destroy_matched():
 			unswap_blocks()
 		else:
 			first_time_finding = true
-			grid_state = STATE_WAITING_FOR_FIRST_SELECTION
+			interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 func _on_destroy_timer_timeout():
 	destroy_matched() 
