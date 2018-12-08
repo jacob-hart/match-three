@@ -8,6 +8,9 @@ script = ExtResource( 1 )
 _sections_unfolded = [ "Z Index" ]
 block_color = 7
 move_speed = 0.3
+select_tween_speed = 0.1
+pressed_scale = Vector2( 0.95, 0.95 )
+selected_scale = Vector2( 1.1, 1.1 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
@@ -15,6 +18,15 @@ scale = Vector2( 0.25, 0.25 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="move_tween" type="Tween" parent="." index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="select_tween" type="Tween" parent="." index="2"]
 
 repeat = false
 playback_process_mode = 1

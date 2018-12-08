@@ -92,11 +92,17 @@ var first_click = Vector2(0, 0)
 var second_click = Vector2(0, 0)
 # Gets click locations and selects blocks based on that input
 func get_user_mouse_input():
+	if Input.is_action_just_pressed("ui_touch"):
+		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
+			var click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
+				blocks[click.x][click.y].set_selected_pressed()
+
 	if Input.is_action_just_released("ui_touch"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
 			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
 				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-				blocks[first_click.x][first_click.y].set_selected()
+				blocks[first_click.x][first_click.y].set_selected_released()
 				interaction_state = STATE_WAITING_FOR_SECOND_SELECTION
 			elif interaction_state == STATE_WAITING_FOR_SECOND_SELECTION:
 				second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
