@@ -8,7 +8,7 @@ script = ExtResource( 1 )
 _sections_unfolded = [ "Z Index" ]
 block_color = 7
 move_speed = 0.3
-select_tween_speed = 0.1
+select_tween_speed = 0.15
 pressed_scale = Vector2( 0.95, 0.95 )
 selected_scale = Vector2( 1.1, 1.1 )
 
