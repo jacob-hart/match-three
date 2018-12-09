@@ -1,9 +1,11 @@
 extends Node2D
 
+export (int) var initial_score
+
 var _score
 
-func _init(initial_score):
-	_score = initial_score
+func _ready():
+	_score =  initial_score
 
 func get_score():
 	return _score
@@ -22,3 +24,6 @@ func save_score_to_disk(path):
 
 func load_score_from_disk(path):
 	pass
+
+func print_score():
+	print("Current score: ", _score)

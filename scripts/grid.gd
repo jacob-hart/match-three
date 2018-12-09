@@ -31,6 +31,8 @@ var potential_blocks = [
 # The blocks currently in the grid, a 2D array filled at runtime
 var blocks = []
 
+onready var score_tracker = get_parent().get_node("score_tracker")
+
 func _ready():
 	blocks = make_2D_array()
 	populate_grid()
@@ -178,8 +180,10 @@ func destroy_matched():
 			if blocks[i][j] != null:
 				if blocks[i][j].is_matched:
 					any_matches_found = true
+					#score_tracker.add_score(1)
 					blocks[i][j].queue_free()
 					blocks[i][j] = null
+
 	if any_matches_found:
 		get_node("collapse_timer").start()
 	else: 
