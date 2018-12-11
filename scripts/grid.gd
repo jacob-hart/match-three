@@ -29,13 +29,18 @@ var potential_blocks = [
 ]
 
 # The blocks currently in the grid, a 2D array filled at runtime
-var blocks = []
+var blocks
+
+# Locations currently marked for destruction because they are matched
+var matched_locations
 
 onready var score_tracker = get_parent().get_node("score_tracker")
 
 func _ready():
 	blocks = make_2D_array()
 	populate_grid()
+	matched_locations = make_2D_array()
+	reset_matched_locations()
 
 # Creates and returns a 2-dimensional array the old-fashioned way
 func make_2D_array():
@@ -45,6 +50,11 @@ func make_2D_array():
 		for j in width_in_blocks:
 			array[i].append(null)
 	return array
+
+func reset_matched_locations():
+	for i in matched_locations.size():
+		for j in matched_locations[i].size():
+			matched_locations[i][j] = false
 
 # Fills the grid with blocks from potential_blocks
 func populate_grid():
@@ -98,17 +108,17 @@ func get_user_mouse_input():
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
 			var click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
-				blocks[click.x][click.y].set_selected_pressed()
+				blocks[click.x][click.y].on_selected_pressed()
 
 	if Input.is_action_just_released("ui_touch"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
 			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
 				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-				blocks[first_click.x][first_click.y].set_selected_released()
+				blocks[first_click.x][first_click.y].on_selected_released()
 				interaction_state = STATE_WAITING_FOR_SECOND_SELECTION
 			elif interaction_state == STATE_WAITING_FOR_SECOND_SELECTION:
 				second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-				blocks[first_click.x][first_click.y].set_unselected()
+				blocks[first_click.x][first_click.y].on_unselected()
 				swap_blocks(first_click, second_click)
 
 ### TODO: replace this block with a struct of some sort
@@ -153,7 +163,7 @@ func _on_unswap_timer_timeout():
 	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Marks every match found for later removal
-func find_matches(): # TODO: simplify this using the match_at function
+func find_matches():
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
@@ -161,16 +171,21 @@ func find_matches(): # TODO: simplify this using the match_at function
 				if i > 0 && i < blocks.size() - 1:
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
-							blocks[i - 1][j].set_matched()
-							blocks[i][j].set_matched()
-							blocks[i + 1][j].set_matched()
+							set_matched(i - 1, j)
+							set_matched(i, j)
+							set_matched(i + 1, j)
 				if j > 0 && j < blocks[i].size() - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
-							blocks[i][j - 1].set_matched()
-							blocks[i][j].set_matched()
-							blocks[i][j + 1].set_matched()
+							set_matched(i, j - 1)
+							set_matched(i, j)
+							set_matched(i, j + 1)
 	get_node("destroy_timer").start()
+
+# Called whenever a location becomes part of a match
+func set_matched(i, j):
+	blocks[i][j].on_matched()
+	matched_locations[i][j] = true
 
 # Destroys all blocks where is_matched is true
 func destroy_matched():
@@ -178,13 +193,13 @@ func destroy_matched():
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
-				if blocks[i][j].is_matched:
+				if matched_locations[i][j]:
 					any_matches_found = true
-					#score_tracker.add_score(1)
 					blocks[i][j].queue_free()
 					blocks[i][j] = null
 
 	if any_matches_found:
+		reset_matched_locations()
 		get_node("collapse_timer").start()
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)

@@ -12,6 +12,7 @@ func get_score():
 
 func add_score(value_to_add):
 	_score += value_to_add
+	print_score()
 
 func subtract_score(value_to_subtract):
 	if (_score - value_to_subtract >= 0):

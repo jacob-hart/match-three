@@ -2,13 +2,15 @@
 
 [ext_resource path="res://scripts/Block.gd" type="Script" id=1]
 
-[node name="block" type="Node2D"]
+[node name="block" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
-_sections_unfolded = [ "Z Index" ]
+_sections_unfolded = [ "Visibility" ]
 block_color = 7
 move_speed = 0.3
-select_tween_speed = 0.15
+select_speed = 0.1
+destroy_speed = 0.15
+destroy_delay = 0.2
 pressed_scale = Vector2( 0.95, 0.95 )
 selected_scale = Vector2( 1.1, 1.1 )
 
@@ -27,6 +29,15 @@ playback/repeat = false
 playback/speed = 1.0
 
 [node name="select_tween" type="Tween" parent="." index="2"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="destroy_tween" type="Tween" parent="." index="3"]
 
 repeat = false
 playback_process_mode = 1
