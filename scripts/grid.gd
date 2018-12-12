@@ -34,8 +34,6 @@ var blocks
 # Locations currently marked for destruction because they are matched
 var matched_locations
 
-onready var score_tracker = get_parent().get_node("score_tracker")
-
 func _ready():
 	blocks = make_2D_array()
 	populate_grid()
@@ -187,7 +185,7 @@ func set_matched(i, j):
 	blocks[i][j].on_matched()
 	matched_locations[i][j] = true
 
-# Destroys all blocks where is_matched is true
+# Destroys all blocks that are matched
 func destroy_matched():
 	var any_matches_found = false
 	for i in blocks.size():
