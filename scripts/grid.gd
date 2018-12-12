@@ -143,6 +143,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
+			# TODO: if both blocks in a pair of blocks are swapped but fail to make a match, the z_index increase will not work and the lastly swapped block will always have priority over the other
 			first_block.z_index = 1 # The user is likely more focused on the movement of the first block than the second block, so render the first block above the second
 			first_block.move_smooth(grid_to_pixel(second_block_grid.x, second_block_grid.y))
 			second_block.move_smooth(grid_to_pixel(first_block_grid.x, first_block_grid.y))
