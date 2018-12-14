@@ -17,6 +17,8 @@ onready var select_tween = get_node("select_tween")
 
 onready var destroy_tween = get_node("destroy_tween")
 
+onready var destroy_particles = get_node("destroy_particles")
+
 # Tweens the block to the target pixel position
 func move_smooth(position_to_move_to):
 	move_tween.interpolate_property(self, "position", self.position, position_to_move_to, move_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
@@ -31,6 +33,7 @@ func on_matched():
 	destroy_tween.interpolate_property(self, "modulate", self.modulate, Color(1.0, 1.0, 1.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_delay)
 	destroy_tween.interpolate_property(self, "scale", self.scale, destroy_scale, destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_delay)
 	destroy_tween.start()
+	destroy_particles.emitting = true
 
 # This is called when the block is selected but the user has not released the mouse button on it yet
 func on_selected_pressed():
