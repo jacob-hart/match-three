@@ -62,16 +62,16 @@ func populate_grid():
 			var random_block_index = floor(rand_range(0, potential_blocks.size()))
 			var new_block = potential_blocks[random_block_index].instance()
 
-			while match_at(i, j, new_block.block_color): # Make sure that index will not form a match
+			while would_match_be_formed_at(i, j, new_block.block_color): # Make sure that index will not form a match
 				random_block_index = floor(rand_range(0, potential_blocks.size())) # Generate a new index to use
 				new_block = potential_blocks[random_block_index].instance() # Form a new block with that index
 
 			add_child(new_block)
 			new_block.position = grid_to_pixel(i, j)
 			blocks[i][j] = new_block
-	
-# Determines if there is a match of block_color at row, column in the grid
-func match_at(row, column, block_color):
+
+# Determines if a match of block_color would be formed by placing a block_color block at row, column
+func would_match_be_formed_at(row, column, block_color):
 	if row >= 2:
 		if blocks[row - 1][column] != null && blocks[row - 2][column] != null: 
 			if blocks[row - 1][column].block_color == block_color && blocks[row - 2][column].block_color == block_color:
@@ -242,7 +242,7 @@ func repopulate_grid():
 				var random_block_index = floor(rand_range(0, potential_blocks.size()))
 				var new_block = potential_blocks[random_block_index].instance()
 
-				while match_at(i, j, new_block.block_color): # Make sure that index will not form a match
+				while would_match_be_formed_at(i, j, new_block.block_color): # Make sure that index will not form a match
 					random_block_index = floor(rand_range(0, potential_blocks.size())) # Generate a new index to use
 					new_block = potential_blocks[random_block_index].instance() # Form a new block with that index
 
