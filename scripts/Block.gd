@@ -7,7 +7,7 @@ export (float) var move_speed
 export (float) var select_speed
 export (float) var destroy_speed
 export (float) var destroy_delay
-export (Vector2) var destroy_scale
+export (float) var destroy_fade_delay
 export (Texture) var destroy_particles_texture
 export (Vector2) var pressed_scale
 export (Vector2) var selected_scale 
@@ -32,19 +32,17 @@ func move_bounce(position_to_move_to):
 	
 # All changes to the block that happen when it is in the destruction process go here
 func on_matched():
-	#destroy_tween.interpolate_property(self, "modulate", self.modulate, Color(1.0, 1.0, 1.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_delay) # Fade out
-	destroy_tween.interpolate_property(self, "scale", self.scale, destroy_scale, destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_delay)
+	destroy_tween.interpolate_property(self, "scale", self.scale, Vector2(0.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_delay)
+	destroy_tween.interpolate_property(self, "modulate", self.modulate, Color(1.0, 1.0, 1.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
 	destroy_tween.start()
-	pass
 
 func on_destroyed():
-
 	destroy_particles = destroy_particles_scene.instance()
 	destroy_particles.set_name("destroy_particles")
 	destroy_particles.texture = destroy_particles_texture
 	get_parent().add_child(destroy_particles) # The particles must be added to the parent or otherwise they disappear when the block scene is deinstanced
 	destroy_particles.position = self.position
-	destroy_particles.emitting = true
+	#destroy_particles.emitting = true
 
 # This is called when the block is selected but the user has not released the mouse button on it yet
 func on_selected_pressed():

@@ -220,7 +220,7 @@ func collapse_null():
 			if blocks[i][j] == null:
 				for k in range(i, 0 - 1, -1): # Iterates from the bottom of the column up
 					if blocks[k][j] != null: 
-						blocks[k][j].move_bounce(grid_to_pixel(i, j))
+						blocks[k][j].move_smooth(grid_to_pixel(i, j))
 						blocks[i][j] = blocks[k][j]
 						blocks[k][j] = null 
 						break
@@ -243,7 +243,7 @@ func repopulate_grid():
 
 				add_child(new_block)
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
-				new_block.move_bounce(grid_to_pixel(i, j))
+				new_block.move_smooth(grid_to_pixel(i, j))
 				blocks[i][j] = new_block
 	find_matches()
 
