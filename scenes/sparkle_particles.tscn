@@ -40,7 +40,7 @@ damping = 0.0
 damping_random = 0.0
 angle = 0.0
 angle_random = 0.0
-scale = 0.03
+scale = 3.0
 scale_random = 0.0
 scale_curve = SubResource( 2 )
 color = Color( 1, 1, 1, 1 )
@@ -56,7 +56,7 @@ _sections_unfolded = [ "Angular Velocity", "Emission Shape", "Initial Velocity",
 [node name="Particles2D" type="Particles2D"]
 
 emitting = false
-amount = 256
+amount = 32
 lifetime = 1.0
 one_shot = true
 preprocess = 0.0

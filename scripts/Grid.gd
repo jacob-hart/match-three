@@ -127,7 +127,7 @@ var last_second_block_grid = Vector2(0, 0)
 ###
 var first_time_finding = true
 
-# Swaps on-screen positions and grid positions of two blocks as long as they are adjacent
+# Swaps on-screen positions and grid positions of two blocks as long as they are an allowed movement
 func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_squared_to(second_block_grid) <= allowed_movement_directions:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
@@ -147,22 +147,27 @@ func swap_blocks(first_block_grid, second_block_grid):
 			first_block.z_index = 1 # The user is likely more focused on the movement of the first block than the second block, so render the first block above the second
 			first_block.move_smooth(grid_to_pixel(second_block_grid.x, second_block_grid.y))
 			second_block.move_smooth(grid_to_pixel(first_block_grid.x, first_block_grid.y))
-			find_matches()
+
+			get_node("after_swap_delay").start() 
 	else:
 		# The swap must not have been possible, so let the user select again
 		interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
+
+func _on_after_swap_delay_timeout():
+	find_matches()
 
 func unswap_blocks():
 	if last_first_block != null && last_second_block != null:
 		swap_blocks(last_second_block_grid, last_first_block_grid)
 	first_time_finding = false
-	get_node("unswap_timer").start()
+	get_node("after_unswap_delay").start() 
 
-func _on_unswap_timer_timeout():
+func _on_after_unswap_delay_timeout():
 	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Marks every match found for later removal
 func find_matches():
+	var any_matches_found = false
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
@@ -170,37 +175,20 @@ func find_matches():
 				if i > 0 && i < blocks.size() - 1:
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
+							any_matches_found = true
 							set_matched(i - 1, j)
 							set_matched(i, j)
 							set_matched(i + 1, j)
 				if j > 0 && j < blocks[i].size() - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
+							any_matches_found = true
 							set_matched(i, j - 1)
 							set_matched(i, j)
 							set_matched(i, j + 1)
-	get_node("destroy_timer").start()
-
-# Called whenever a location becomes part of a match
-func set_matched(i, j):
-	blocks[i][j].on_matched()
-	matched_locations[i][j] = true
-
-# Destroys all blocks that are matched
-func destroy_matched():
-	var any_matches_found = false
-	for i in blocks.size():
-		for j in blocks[i].size():
-			if blocks[i][j] != null:
-				if matched_locations[i][j]:
-					any_matches_found = true
-					blocks[i][j].on_destroyed()
-					blocks[i][j].queue_free()
-					blocks[i][j] = null
 
 	if any_matches_found:
-		reset_matched_locations()
-		get_node("collapse_timer").start()
+		get_node("destroy_animation_delay").start()
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
 		if first_time_finding:
@@ -209,8 +197,25 @@ func destroy_matched():
 			first_time_finding = true
 			interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
-func _on_destroy_timer_timeout():
-	destroy_matched() 
+# Called whenever a location becomes part of a match
+func set_matched(i, j):
+	blocks[i][j].play_destroy_animation()
+	matched_locations[i][j] = true
+
+func _on_destroy_animation_delay_timeout():
+	destroy_matched()
+
+# Destroys all blocks that are matched
+func destroy_matched():
+	for i in blocks.size():
+		for j in blocks[i].size():
+			if blocks[i][j] != null:
+				if matched_locations[i][j]:
+					blocks[i][j].queue_free()
+					blocks[i][j] = null
+
+	reset_matched_locations()
+	collapse_null()
 
 # Collapses grid columns, moving any null spaces to the top of the column
 func collapse_null():
@@ -224,10 +229,10 @@ func collapse_null():
 						blocks[i][j] = blocks[k][j]
 						blocks[k][j] = null 
 						break
-	get_node("repopulate_timer").start()
+	get_node("after_collapse_delay").start()
 
-func _on_collapse_timer_timeout():
-	collapse_null()
+func _on_after_collapse_delay_timeout():
+	repopulate_grid()
 
 # Adds new blocks to empty spaces after matches were destroyed
 func repopulate_grid():
@@ -245,11 +250,10 @@ func repopulate_grid():
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
 				new_block.move_smooth(grid_to_pixel(i, j))
 				blocks[i][j] = new_block
-	find_matches()
+	get_node("after_repopulate_delay").start()
 
-# TODO: if no waiting is desired, remove the timer aspect of this 
-func _on_repopulate_timer_timeout():
-	repopulate_grid()
+func _on_after_repopulate_delay_timeout():
+	find_matches()
 
 func _process(delta):
 	get_user_mouse_input()
