@@ -103,13 +103,13 @@ var first_click = Vector2(0, 0)
 var second_click = Vector2(0, 0)
 # Gets click locations and selects blocks based on that input
 func get_user_mouse_input():
-	if Input.is_action_just_pressed("ui_touch"):
+	if Input.is_action_just_pressed("ui_click"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
 			var click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
 				blocks[click.x][click.y].on_selected_pressed()
 
-	if Input.is_action_just_released("ui_touch"):
+	if Input.is_action_just_released("ui_click"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
 			if interaction_state == STATE_WAITING_FOR_FIRST_SELECTION:
 				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
@@ -147,8 +147,10 @@ func swap_blocks(first_block_grid, second_block_grid):
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
-			first_block.z_index = 1 # The user is likely more focused on the movement of the first block than the second block, so render the first block above the second
+			# The user is likely more focused on the movement of the first block than the second block, so render the first block above the second
+			first_block.z_index = 1 
 			second_block.z_index = 0
+
 			first_block.move_smooth(grid_to_pixel(second_block_grid.x, second_block_grid.y))
 			second_block.move_smooth(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 
