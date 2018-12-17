@@ -32,14 +32,14 @@ autostart = false
 [node name="destroy_animation_delay" type="Timer" parent="grid" index="2"]
 
 process_mode = 1
-wait_time = 0.3
+wait_time = 0.45
 one_shot = true
 autostart = false
 
 [node name="after_collapse_delay" type="Timer" parent="grid" index="3"]
 
 process_mode = 1
-wait_time = 0.35
+wait_time = 0.1
 one_shot = true
 autostart = false
 

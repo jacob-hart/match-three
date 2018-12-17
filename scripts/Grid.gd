@@ -68,6 +68,7 @@ func populate_grid():
 
 			add_child(new_block)
 			new_block.position = grid_to_pixel(i, j)
+
 			blocks[i][j] = new_block
 
 # Determines if a match of block_color would be formed by placing a block_color block at row, column
@@ -119,12 +120,19 @@ func get_user_mouse_input():
 				blocks[first_click.x][first_click.y].on_unselected()
 				swap_blocks(first_click, second_click)
 
-### TODO: replace this block with a struct of some sort
-var last_first_block = null
-var last_second_block = null
-var last_first_block_grid = Vector2(0, 0)
-var last_second_block_grid = Vector2(0, 0)
-###
+var last_swap = {
+	first_block =  null,
+	second_block =  null,
+	first_block_grid = Vector2(0, 0),
+	second_block_grid = Vector2(0, 0)
+}
+
+func store_last_swap(first_block, second_block, first_block_grid, second_block_grid):
+	last_swap["first_block"] = first_block
+	last_swap["second_block"] = second_block
+	last_swap["first_block_grid"] = first_block_grid
+	last_swap["second_block_grid"] = second_block_grid
+
 var first_time_finding = true
 
 # Swaps on-screen positions and grid positions of two blocks as long as they are an allowed movement
@@ -133,12 +141,8 @@ func swap_blocks(first_block_grid, second_block_grid):
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
 		if first_block != null && second_block != null:
-			### TODO: replace this block with a method perhaps or something more robust
-			last_first_block = first_block
-			last_second_block = second_block
-			last_first_block_grid = first_block_grid
-			last_second_block_grid = second_block_grid
-			###
+			store_last_swap(first_block, second_block, first_block_grid, second_block_grid)
+
 			interaction_state = STATE_WAITING_ON_ANIMATION
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
@@ -157,8 +161,8 @@ func _on_after_swap_delay_timeout():
 	find_matches()
 
 func unswap_blocks():
-	if last_first_block != null && last_second_block != null:
-		swap_blocks(last_second_block_grid, last_first_block_grid)
+	if last_swap["first_block"] != null && last_swap["second_block"] != null:
+		swap_blocks(last_swap["second_block_grid"], last_swap["first_block_grid"])
 	first_time_finding = false
 	get_node("after_unswap_delay").start() 
 

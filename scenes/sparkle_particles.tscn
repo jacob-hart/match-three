@@ -5,7 +5,7 @@
 min_value = 0.0
 max_value = 1.0
 bake_resolution = 100
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.248861, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.750112, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.99971, 0.00597751 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.153849, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.750112, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.99971, 0.00597751 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=2]
 
@@ -26,7 +26,7 @@ flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 75.0
 initial_velocity_random = 0.0
-angular_velocity = 360.0
+angular_velocity = 180.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
@@ -51,7 +51,7 @@ anim_speed_random = 0.0
 anim_offset = 0.0
 anim_offset_random = 0.0
 anim_loop = false
-_sections_unfolded = [ "Angular Velocity", "Emission Shape", "Initial Velocity", "Linear Accel", "Scale", "Spread" ]
+_sections_unfolded = [ "Emission Shape", "Scale" ]
 
 [node name="Particles2D" type="Particles2D"]
 
