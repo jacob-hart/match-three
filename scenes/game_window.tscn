@@ -22,28 +22,21 @@ wait_time = 0.3
 one_shot = true
 autostart = false
 
-[node name="after_unswap_delay" type="Timer" parent="grid" index="1"]
-
-process_mode = 1
-wait_time = 0.3
-one_shot = true
-autostart = false
-
-[node name="destroy_animation_delay" type="Timer" parent="grid" index="2"]
+[node name="destroy_animation_delay" type="Timer" parent="grid" index="1"]
 
 process_mode = 1
 wait_time = 0.45
 one_shot = true
 autostart = false
 
-[node name="after_collapse_delay" type="Timer" parent="grid" index="3"]
+[node name="after_collapse_delay" type="Timer" parent="grid" index="2"]
 
 process_mode = 1
 wait_time = 0.1
 one_shot = true
 autostart = false
 
-[node name="after_repopulate_delay" type="Timer" parent="grid" index="4"]
+[node name="after_repopulate_delay" type="Timer" parent="grid" index="3"]
 
 process_mode = 1
 wait_time = 0.3
@@ -53,8 +46,6 @@ autostart = false
 [node name="game_mode_time_attack" parent="." index="1" instance=ExtResource( 2 )]
 
 [connection signal="timeout" from="grid/after_swap_delay" to="grid" method="_on_after_swap_delay_timeout"]
-
-[connection signal="timeout" from="grid/after_unswap_delay" to="grid" method="_on_after_unswap_delay_timeout"]
 
 [connection signal="timeout" from="grid/destroy_animation_delay" to="grid" method="_on_destroy_animation_delay_timeout"]
 

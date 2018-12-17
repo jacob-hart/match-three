@@ -133,7 +133,7 @@ func store_last_swap(first_block, second_block, first_block_grid, second_block_g
 	last_swap["first_block_grid"] = first_block_grid
 	last_swap["second_block_grid"] = second_block_grid
 
-var first_time_finding = true
+var is_first_time_finding_matches = true
 
 # Swaps on-screen positions and grid positions of two blocks as long as they are an allowed movement
 func swap_blocks(first_block_grid, second_block_grid):
@@ -161,13 +161,9 @@ func _on_after_swap_delay_timeout():
 	find_matches()
 
 func unswap_blocks():
+	is_first_time_finding_matches = false # This prevents the unswapped blocks from entering an infinite loop of swapping back and forth 
 	if last_swap["first_block"] != null && last_swap["second_block"] != null:
 		swap_blocks(last_swap["second_block_grid"], last_swap["first_block_grid"])
-	first_time_finding = false
-	get_node("after_unswap_delay").start() 
-
-func _on_after_unswap_delay_timeout():
-	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Marks every match found for later removal
 func find_matches():
@@ -195,10 +191,10 @@ func find_matches():
 		get_node("destroy_animation_delay").start()
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
-		if first_time_finding:
+		if is_first_time_finding_matches:
 			unswap_blocks()
 		else:
-			first_time_finding = true
+			is_first_time_finding_matches = true
 			interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 # Called whenever a location becomes part of a match
@@ -223,7 +219,7 @@ func destroy_matched():
 
 # Collapses grid columns, moving any null spaces to the top of the column
 func collapse_null():
-	first_time_finding = false
+	is_first_time_finding_matches = false
 	for i in range(blocks.size() - 1, 0 - 1, -1): # Iterates from the bottom of the grid up
 		for j in blocks[i].size():
 			if blocks[i][j] == null:
