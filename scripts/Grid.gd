@@ -199,10 +199,13 @@ func find_matches():
 			is_first_time_finding_matches = true
 			interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
+onready var game_mode = get_parent().get_node("game_mode_time_attack") # TODO: more polymorphic way to locate current game mode
+
 # Called whenever a location becomes part of a match
 func set_matched(i, j):
 	blocks[i][j].play_destroy_animation()
 	matched_locations[i][j] = true
+	game_mode.add_match(1, 0.3)
 
 func _on_destroy_animation_delay_timeout():
 	destroy_matched()
