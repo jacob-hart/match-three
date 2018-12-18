@@ -19,13 +19,20 @@ export (MovementDirections) var allowed_movement_directions
 
 # All blocks that can possibly fill the grid
 var potential_blocks = [
-	#preload("res://scenes/block_magenta.tscn"),
-	preload("res://scenes/block_red.tscn"),
-	preload("res://scenes/block_orange.tscn"),
-	preload("res://scenes/block_yellow.tscn"),
-	preload("res://scenes/block_green.tscn"),
-	preload("res://scenes/block_blue.tscn"),
-	preload("res://scenes/block_violet.tscn"),
+	# preload("res://scenes/gems/gem_white.tscn"),
+	# preload("res://scenes/gems/gem_pink.tscn"),
+	# preload("res://scenes/gems/gem_red.tscn"),
+	# preload("res://scenes/gems/gem_orange.tscn"),
+	# preload("res://scenes/gems/gem_yellow.tscn"),
+	# preload("res://scenes/gems/gem_green.tscn"),
+	# preload("res://scenes/gems/gem_blue.tscn")
+	preload("res://scenes/blocks/block_magenta.tscn"),
+	preload("res://scenes/blocks/block_red.tscn"),
+	preload("res://scenes/blocks/block_orange.tscn"),
+	preload("res://scenes/blocks/block_yellow.tscn"),
+	preload("res://scenes/blocks/block_green.tscn"),
+	preload("res://scenes/blocks/block_blue.tscn"),
+	preload("res://scenes/blocks/block_violet.tscn")
 ]
 
 # The blocks currently in the grid, a 2D array filled at runtime
@@ -144,6 +151,8 @@ func swap_blocks(first_block_grid, second_block_grid):
 			store_last_swap(first_block, second_block, first_block_grid, second_block_grid)
 
 			interaction_state = STATE_WAITING_ON_ANIMATION
+			game_mode.on_grid_entered_wait_state()
+
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
 
@@ -158,6 +167,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 	else:
 		# The swap must not have been possible, so let the user select again
 		interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
+		game_mode.on_grid_entered_ready_state() # TODO: add this behavior to a reset iteraction state function
 
 func _on_after_swap_delay_timeout():
 	find_matches()
@@ -198,6 +208,7 @@ func find_matches():
 		else:
 			is_first_time_finding_matches = true
 			interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
+			game_mode.on_grid_entered_ready_state()
 
 onready var game_mode = get_parent().get_node("game_mode_time_attack") # TODO: more polymorphic way to locate current game mode
 

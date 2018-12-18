@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scenes/block.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/blocks/block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/textures/blocks/256/Blocks_01_256x256_Alt_00_005.png" type="Texture" id=2]
 [ext_resource path="res://assets/textures/blocks/256/Blocks_01_256x256_Alt_03_005.png" type="Texture" id=3]
+
 
 [node name="block_green" index="0" instance=ExtResource( 1 )]
 

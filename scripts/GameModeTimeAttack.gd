@@ -14,6 +14,8 @@ func _ready():
 
 func add_time(seconds):
     current_time += seconds
+    if is_timer_paused:
+        unpause_timer()
 
 func get_time():
     if current_time < 0.0:
@@ -36,6 +38,12 @@ func on_game_over():
 
 func add_match(blocks_in_match, multiplier = 1.0):
     add_time(blocks_in_match * multiplier)
+
+func on_grid_entered_wait_state():
+    pause_timer()
+    
+func on_grid_entered_ready_state():
+    unpause_timer()
 
 func _process(delta):
     if current_time > 0.0 && !is_timer_paused:

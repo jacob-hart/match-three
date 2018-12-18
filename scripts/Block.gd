@@ -1,6 +1,6 @@
 extends Node2D
 
-enum BlockColor {MAGENTA, RED, ORANGE, YELLOW, GREEN, BLUE, VIOLET, COLORLESS}
+enum BlockColor {WHITE, MAGENTA, PINK, RED, ORANGE, YELLOW, GREEN, BLUE, VIOLET, COLORLESS}
 
 export (BlockColor) var block_color
 export (float) var move_speed
