@@ -11,7 +11,7 @@ export (Vector2) var pressed_scale
 export (Vector2) var selected_scale 
 
 #var destroy_particles_scene = preload("res://scenes/block_destroy_particles.tscn")
-var destroy_particles_scene = preload("res://scenes/sparkle_particles.tscn")
+var destroy_particles_scene = preload("res://scenes/particles/sparkle_particles.tscn")
 var destroy_particles
 
 onready var move_tween = get_node("move_tween")
