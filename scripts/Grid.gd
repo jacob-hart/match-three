@@ -61,6 +61,11 @@ func reset_matched_locations():
 		for j in matched_locations[i].size():
 			matched_locations[i][j] = false
 
+func reset_interaction_state():
+	is_first_time_finding_matches = true
+	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
+	game_mode.on_grid_entered_ready_state()
+
 # Fills the grid with blocks from potential_blocks
 func populate_grid():
 	randomize()
@@ -166,8 +171,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 			get_node("after_swap_delay").start() 
 	else:
 		# The swap must not have been possible, so let the user select again
-		interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
-		game_mode.on_grid_entered_ready_state() # TODO: add this behavior to a reset iteraction state function
+		reset_interaction_state()
 
 func _on_after_swap_delay_timeout():
 	find_matches()
@@ -206,9 +210,7 @@ func find_matches():
 		if is_first_time_finding_matches:
 			unswap_blocks()
 		else:
-			is_first_time_finding_matches = true
-			interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
-			game_mode.on_grid_entered_ready_state()
+			reset_interaction_state()
 
 onready var game_mode = get_parent().get_node("game_mode_time_attack") # TODO: more polymorphic way to locate current game mode
 

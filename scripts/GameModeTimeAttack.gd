@@ -14,8 +14,6 @@ func _ready():
 
 func add_time(seconds):
     current_time += seconds
-    if is_timer_paused:
-        unpause_timer()
 
 func get_time():
     if current_time < 0.0:
