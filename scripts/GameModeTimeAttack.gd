@@ -52,4 +52,4 @@ func _process(delta):
         pause_timer()
         on_game_over()
 
-    ui_time_label.text = str(get_time_rounded())
+    ui_time_label.text = "%.1f" % get_time_rounded()
