@@ -17,15 +17,12 @@ export (int) var new_block_start_offset
 
 export (MovementDirections) var allowed_movement_directions
 
+export (NodePath) var game_mode_path
+
+onready var game_mode = get_node(game_mode_path)
+
 # All blocks that can possibly fill the grid
 var potential_blocks = [
-	# preload("res://scenes/gems/gem_white.tscn"),
-	# preload("res://scenes/gems/gem_pink.tscn"),
-	# preload("res://scenes/gems/gem_red.tscn"),
-	# preload("res://scenes/gems/gem_orange.tscn"),
-	# preload("res://scenes/gems/gem_yellow.tscn"),
-	# preload("res://scenes/gems/gem_green.tscn"),
-	# preload("res://scenes/gems/gem_blue.tscn")
 	preload("res://scenes/blocks/block_magenta.tscn"),
 	preload("res://scenes/blocks/block_red.tscn"),
 	preload("res://scenes/blocks/block_orange.tscn"),
@@ -211,8 +208,6 @@ func find_matches():
 			unswap_blocks()
 		else:
 			reset_interaction_state()
-
-onready var game_mode = get_parent().get_node("game_mode_time_attack") # TODO: more polymorphic way to locate current game mode
 
 # Called whenever a location becomes part of a match
 func set_matched(i, j):

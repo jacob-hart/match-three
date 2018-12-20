@@ -24,6 +24,7 @@ y_start_position = 128
 offset = 78
 new_block_start_offset = 1
 allowed_movement_directions = 1
+game_mode_path = NodePath("../game_mode_time_attack")
 
 [node name="after_swap_delay" type="Timer" parent="grid" index="0"]
 
@@ -55,7 +56,9 @@ autostart = false
 
 [node name="game_mode_time_attack" parent="." index="1" instance=ExtResource( 2 )]
 
+_sections_unfolded = [ "Z Index" ]
 places_to_round_to = 1
+ui_time_label_path = NodePath("../ui/time_left")
 
 [node name="ui" type="VBoxContainer" parent="." index="2"]
 

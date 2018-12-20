@@ -2,12 +2,14 @@ extends "res://scripts/GameMode.gd"
 
 export (float) var starting_time
 export (int) var places_to_round_to
+export (NodePath) var ui_time_label_path
+
+onready var ui_time_label = get_node(ui_time_label_path)
 
 var current_time
 var is_timer_timed_out = false
 var is_timer_paused = false
 
-onready var ui_time_label = get_parent().get_node("ui").get_node("time_left")
 
 func _ready():
     current_time = starting_time
