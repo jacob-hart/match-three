@@ -55,7 +55,7 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Angular Velocity", "Emission Shape", "Scale", "Spread" ]
 
-[node name="Particles2D" type="Particles2D" index="0"]
+[node name="Particles2D" type="Particles2D"]
 
 emitting = false
 amount = 16

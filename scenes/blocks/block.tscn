@@ -6,19 +6,18 @@
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Visibility" ]
-block_color = 7
+block_color = 9
 move_speed = 0.3
-select_speed = 0.1
+select_speed = 0.15
 destroy_speed = 0.3
 destroy_fade_delay = 0.1
-destroy_particles_texture = null
 pressed_scale = Vector2( 0.95, 0.95 )
 selected_scale = Vector2( 1.1, 1.1 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
 scale = Vector2( 0.25, 0.25 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Material", "Transform" ]
 
 [node name="move_tween" type="Tween" parent="." index="1"]
 
