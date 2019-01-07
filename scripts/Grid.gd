@@ -213,7 +213,7 @@ func find_matches():
 							set_matched(i, j + 1)
 
 	if any_matches_found:
-		get_node("destroy_animation_delay").start()
+		do_special_destroy_behavior()
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
 		if is_first_time_finding_matches:
@@ -223,39 +223,46 @@ func find_matches():
 
 # Called whenever a location becomes part of a match
 func set_matched(i, j):
-	if !matched_locations[i][j]:
-		if i >= 0 && i < blocks.size():
-			if j >= 0 && j < blocks[i].size():
+	if i >= 0 && i < blocks.size():
+		if j >= 0 && j < blocks[i].size():
+			if !matched_locations[i][j]:
 				blocks[i][j].play_destroy_animation()
 				matched_locations[i][j] = true
-				do_special_destroy_behavior(i, j)
 				game_mode.add_match(1, 0.3)
 
-func do_special_destroy_behavior(row, column):
-	var block = blocks[row][column]
-	var behavior = block.special_destroy_behavior
-	match behavior:
-		block.DESTROY_SQUARE:
-			# Destroys blocks adjacent and diagonal to the originating block
-			pass
-		block.DESTROY_ROW:
-			for j in blocks[row].size():
-				set_matched(row, j)
-		block.DESTROY_COLUMN:
-			for i in blocks.size():
-				set_matched(i, column)
-		block.DESTROY_CROSS:
-			# Does row and column destruction simultaneously
-			pass
-		block.DESTROY_X:
-			# Destroys in two perpendicular diagonal lines that form an X shape with the orginating block at the center
-			pass
-		block.DESTROY_ALL_OF_SAME_COLOR:
-			for i in blocks.size():
-				for j in blocks[i].size():
-					if blocks[i][j] != null:
-						if blocks[i][j].block_color == block.block_color:
-							set_matched(i, j)
+# TODO: refactor this
+func do_special_destroy_behavior():
+	for row in matched_locations.size():
+		for column in matched_locations[row].size():
+			if matched_locations[row][column]:
+				var block = blocks[row][column]
+				var behavior = block.special_destroy_behavior
+				match behavior:
+					block.DESTROY_SQUARE:
+						for i in range(row - 1, row + 1 + 1): # range() uses final - 1, so add 1 
+							for j in range(column - 1, column + 1 + 1): # range() uses final - 1, so add 1 
+								set_matched(i, j)
+					block.DESTROY_ROW:
+						for j in blocks[row].size():
+							set_matched(row, j)
+					block.DESTROY_COLUMN:
+						for i in blocks.size():
+							set_matched(i, column)
+					block.DESTROY_CROSS:
+						for i in blocks.size():
+							set_matched(i, column)
+						for j in blocks[row].size():
+							set_matched(row, j)
+					block.DESTROY_X:
+						# Destroys in two perpendicular diagonal lines that form an X shape with the orginating block at the center
+						pass
+					block.DESTROY_ALL_OF_SAME_COLOR:
+						for i in blocks.size():
+							for j in blocks[i].size():
+								if blocks[i][j] != null:
+									if blocks[i][j].block_color == block.block_color:
+										set_matched(i, j)
+	get_node("destroy_animation_delay").start()
 
 func _on_destroy_animation_delay_timeout():
 	destroy_matched()
