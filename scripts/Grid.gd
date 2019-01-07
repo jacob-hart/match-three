@@ -21,8 +21,7 @@ export (NodePath) var game_mode_path
 
 onready var game_mode = get_node(game_mode_path)
 
-# All blocks that can possibly fill the grid
-var potential_blocks = [
+var filler_blocks = [
 	preload("res://scenes/blocks/block_magenta.tscn"),
 	preload("res://scenes/blocks/block_red.tscn"),
 	preload("res://scenes/blocks/block_orange.tscn"),
@@ -32,15 +31,18 @@ var potential_blocks = [
 	preload("res://scenes/blocks/block_violet.tscn")
 ]
 
+var special_blocks = [
+
+]
+
 # The blocks currently in the grid, a 2D array filled at runtime
 var blocks
-
-# TODO: Add a get block function
 
 # Locations currently marked for destruction because they are matched
 var matched_locations
 
 func _ready():
+	randomize()
 	blocks = make_2D_array()
 	populate_grid()
 	matched_locations = make_2D_array()
@@ -65,17 +67,25 @@ func reset_interaction_state():
 	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 	game_mode.on_grid_entered_ready_state()
 
-# Fills the grid with blocks from potential_blocks
+func get_new_block():
+	var total_chance_for_special = 0.0
+	for i in special_blocks.size():
+		pass # add spawn chance per block here
+	var spawn_filler_or_special = rand_range(0.0, 1.0)
+	if spawn_filler_or_special <= total_chance_for_special:
+		var random_special_block_index = floor(rand_range(0, special_blocks.size()))
+		return special_blocks[random_special_block_index].instance()
+	else:
+		var random_filler_block_index = floor(rand_range(0, filler_blocks.size()))
+		return filler_blocks[random_filler_block_index].instance()
+
 func populate_grid():
-	randomize()
 	for i in blocks.size():
 		for j in blocks[i].size():
-			var random_block_index = floor(rand_range(0, potential_blocks.size()))
-			var new_block = potential_blocks[random_block_index].instance()
+			var new_block = get_new_block()
 
 			while would_match_be_formed_at(i, j, new_block.block_color): # Make sure that index will not form a match
-				random_block_index = floor(rand_range(0, potential_blocks.size())) # Generate a new index to use
-				new_block = potential_blocks[random_block_index].instance() # Form a new block with that index
+				new_block = get_new_block()
 
 			add_child(new_block)
 			new_block.position = grid_to_pixel(i, j)
@@ -284,12 +294,10 @@ func repopulate_grid():
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] == null:
-				var random_block_index = floor(rand_range(0, potential_blocks.size()))
-				var new_block = potential_blocks[random_block_index].instance()
+				var new_block = get_new_block()
 
 				while would_match_be_formed_at(i, j, new_block.block_color): # Make sure that index will not form a match
-					random_block_index = floor(rand_range(0, potential_blocks.size())) # Generate a new index to use
-					new_block = potential_blocks[random_block_index].instance() # Form a new block with that index
+					new_block = get_new_block()
 
 				add_child(new_block)
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
