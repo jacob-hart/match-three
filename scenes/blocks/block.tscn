@@ -7,6 +7,7 @@
 script = ExtResource( 1 )
 _sections_unfolded = [ "Visibility" ]
 block_color = 9
+special_destroy_behavior = 0
 move_speed = 0.3
 select_speed = 0.15
 destroy_speed = 0.3

@@ -35,6 +35,8 @@ var potential_blocks = [
 # The blocks currently in the grid, a 2D array filled at runtime
 var blocks
 
+# TODO: Add a get block function
+
 # Locations currently marked for destruction because they are matched
 var matched_locations
 
@@ -211,9 +213,39 @@ func find_matches():
 
 # Called whenever a location becomes part of a match
 func set_matched(i, j):
-	blocks[i][j].play_destroy_animation()
-	matched_locations[i][j] = true
-	game_mode.add_match(1, 0.3)
+	if !matched_locations[i][j]:
+		if i >= 0 && i < blocks.size():
+			if j >= 0 && j < blocks[i].size():
+				blocks[i][j].play_destroy_animation()
+				matched_locations[i][j] = true
+				do_special_destroy_behavior(i, j)
+				game_mode.add_match(1, 0.3)
+
+func do_special_destroy_behavior(row, column):
+	var block = blocks[row][column]
+	var behavior = block.special_destroy_behavior
+	match behavior:
+		block.DESTROY_SQUARE:
+			# Destroys blocks adjacent and diagonal to the originating block
+			pass
+		block.DESTROY_ROW:
+			for j in blocks[row].size():
+				set_matched(row, j)
+		block.DESTROY_COLUMN:
+			for i in blocks.size():
+				set_matched(i, column)
+		block.DESTROY_CROSS:
+			# Does row and column destruction simultaneously
+			pass
+		block.DESTROY_X:
+			# Destroys in two perpendicular diagonal lines that form an X shape with the orginating block at the center
+			pass
+		block.DESTROY_ALL_OF_SAME_COLOR:
+			for i in blocks.size():
+				for j in blocks[i].size():
+					if blocks[i][j] != null:
+						if blocks[i][j].block_color == block.block_color:
+							set_matched(i, j)
 
 func _on_destroy_animation_delay_timeout():
 	destroy_matched()
