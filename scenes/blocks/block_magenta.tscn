@@ -6,7 +6,6 @@
 [node name="block_magenta" index="0" instance=ExtResource( 1 )]
 
 block_color = 0
-special_destroy_behavior = 1
 
 [node name="Sprite" parent="." index="0"]
 

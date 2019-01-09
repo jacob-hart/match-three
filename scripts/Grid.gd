@@ -222,15 +222,16 @@ func find_matches():
 			reset_interaction_state()
 
 # Called whenever a location becomes part of a match
-func set_matched(i, j):
-	if i >= 0 && i < blocks.size():
-		if j >= 0 && j < blocks[i].size():
-			if !matched_locations[i][j]:
-				blocks[i][j].play_destroy_animation()
-				matched_locations[i][j] = true
+func set_matched(row, column):
+	# Verify row and column are accessible
+	if row >= 0 && row < blocks.size():
+		if column >= 0 && column < blocks[row].size():
+			# Blocks can only be set as matched once
+			if !matched_locations[row][column]:
+				matched_locations[row][column] = true
+				blocks[row][column].play_destroy_animation()
 				game_mode.add_match(1, 0.3)
 
-# TODO: refactor this
 func do_special_destroy_behavior():
 	for row in matched_locations.size():
 		for column in matched_locations[row].size():
@@ -254,7 +255,6 @@ func do_special_destroy_behavior():
 						for j in blocks[row].size():
 							set_matched(row, j)
 					block.DESTROY_X:
-						# Destroys in two perpendicular diagonal lines that form an X shape with the orginating block at the center
 						pass
 					block.DESTROY_ALL_OF_SAME_COLOR:
 						for i in blocks.size():
