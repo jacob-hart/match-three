@@ -6,14 +6,14 @@ var interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 enum MovementDirections {ADJACENT_ONLY = 1, DIAGONAL_AND_ADJACENT = 2}
 
-export (int) var width_in_blocks
-export (int) var height_in_blocks
+export (int) var width_in_blocks = 8
+export (int) var height_in_blocks = 10
 
 # TODO make these determined programmatically
-export (int) var x_start_position
-export (int) var y_start_position 
-export (int) var offset
-export (int) var new_block_start_offset
+export (int) var x_start_position = 64
+export (int) var y_start_position = 128
+export (int) var offset = 78
+export (int) var new_block_start_offset = 1
 
 export (MovementDirections) var allowed_movement_directions
 
@@ -39,6 +39,16 @@ var special_blocks = [
 	preload("res://scenes/blocks/special/cross/block_green_cross.tscn"),
 	preload("res://scenes/blocks/special/cross/block_blue_cross.tscn"),
 	preload("res://scenes/blocks/special/cross/block_violet_cross.tscn")
+]
+
+var special_blocks_spawn_percent = [
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
 ]
 
 # The blocks currently in the grid, a 2D array filled at runtime
@@ -76,8 +86,7 @@ func reset_interaction_state():
 func get_new_block():
 	var total_chance_for_special = 0.0
 	for i in special_blocks.size():
-		total_chance_for_special += 0.005
-		pass # add spawn chance per block here
+		total_chance_for_special += special_blocks_spawn_percent[i] * 0.01
 	var spawn_filler_or_special = rand_range(0.0, 1.0)
 	if spawn_filler_or_special <= total_chance_for_special:
 		var random_special_block_index = floor(rand_range(0, special_blocks.size()))
@@ -247,26 +256,22 @@ func do_special_destroy_behavior():
 				var block = blocks[row][column]
 				var behavior = block.special_destroy_behavior
 				match behavior:
-					block.DESTROY_SQUARE:
-					# TODO: fix this
+					block.SpecialDestroyBehavior.SQUARE:
 						for i in range(row - 1, row + 1 + 1): # range() uses final - 1, so add 1 
 							for j in range(column - 1, column + 1 + 1): # range() uses final - 1, so add 1 
 								set_matched(i, j)
-					block.DESTROY_ROW:
+					block.SpecialDestroyBehavior.ROW:
 						for j in blocks[row].size():
 							set_matched(row, j)
-					block.DESTROY_COLUMN:
+					block.SpecialDestroyBehavior.COLUMN:
 						for i in blocks.size():
 							set_matched(i, column)
-					block.DESTROY_CROSS:
+					block.SpecialDestroyBehavior.CROSS:
 						for i in blocks.size():
 							set_matched(i, column)
 						for j in blocks[row].size():
 							set_matched(row, j)
-					block.DESTROY_X:
-					# TODO: fix this
-						pass
-					block.DESTROY_ALL_OF_SAME_COLOR:
+					block.SpecialDestroyBehavior.ALL_OF_SAME_COLOR:
 						for i in blocks.size():
 							for j in blocks[i].size():
 								if blocks[i][j] != null:

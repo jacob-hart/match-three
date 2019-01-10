@@ -2,7 +2,7 @@ extends Node2D
 
 enum BlockColor {MAGENTA, RED, ORANGE, YELLOW, GREEN, BLUE, VIOLET, COLORLESS}
 
-enum SpecialDestroyBehavior {NO_SPECIAL_BEHAVIOR, DESTROY_SQUARE, DESTROY_ROW, DESTROY_COLUMN, DESTROY_CROSS, DESTROY_X, DESTROY_ALL_OF_SAME_COLOR}
+enum SpecialDestroyBehavior {NO_SPECIAL_BEHAVIOR, SQUARE, ROW, COLUMN, CROSS, ALL_OF_SAME_COLOR}
 
 export (BlockColor) var block_color
 export (SpecialDestroyBehavior) var special_destroy_behavior = NO_SPECIAL_BEHAVIOR
