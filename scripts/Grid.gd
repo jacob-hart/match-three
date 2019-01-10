@@ -22,17 +22,23 @@ export (NodePath) var game_mode_path
 onready var game_mode = get_node(game_mode_path)
 
 var filler_blocks = [
-	preload("res://scenes/blocks/block_magenta.tscn"),
-	preload("res://scenes/blocks/block_red.tscn"),
-	preload("res://scenes/blocks/block_orange.tscn"),
-	preload("res://scenes/blocks/block_yellow.tscn"),
-	preload("res://scenes/blocks/block_green.tscn"),
-	preload("res://scenes/blocks/block_blue.tscn"),
-	preload("res://scenes/blocks/block_violet.tscn")
+	preload("res://scenes/blocks/filler/block_magenta.tscn"),
+	preload("res://scenes/blocks/filler/block_red.tscn"),
+	preload("res://scenes/blocks/filler/block_orange.tscn"),
+	preload("res://scenes/blocks/filler/block_yellow.tscn"),
+	preload("res://scenes/blocks/filler/block_green.tscn"),
+	preload("res://scenes/blocks/filler/block_blue.tscn"),
+	preload("res://scenes/blocks/filler/block_violet.tscn")
 ]
 
 var special_blocks = [
-
+	preload("res://scenes/blocks/special/cross/block_magenta_cross.tscn"),
+	preload("res://scenes/blocks/special/cross/block_red_cross.tscn"),
+	preload("res://scenes/blocks/special/cross/block_orange_cross.tscn"),
+	preload("res://scenes/blocks/special/cross/block_yellow_cross.tscn"),
+	preload("res://scenes/blocks/special/cross/block_green_cross.tscn"),
+	preload("res://scenes/blocks/special/cross/block_blue_cross.tscn"),
+	preload("res://scenes/blocks/special/cross/block_violet_cross.tscn")
 ]
 
 # The blocks currently in the grid, a 2D array filled at runtime
@@ -70,6 +76,7 @@ func reset_interaction_state():
 func get_new_block():
 	var total_chance_for_special = 0.0
 	for i in special_blocks.size():
+		total_chance_for_special += 0.005
 		pass # add spawn chance per block here
 	var spawn_filler_or_special = rand_range(0.0, 1.0)
 	if spawn_filler_or_special <= total_chance_for_special:
@@ -232,6 +239,7 @@ func set_matched(row, column):
 				blocks[row][column].play_destroy_animation()
 				game_mode.add_match(1, 0.3)
 
+# TODO: refactor this
 func do_special_destroy_behavior():
 	for row in matched_locations.size():
 		for column in matched_locations[row].size():
@@ -240,6 +248,7 @@ func do_special_destroy_behavior():
 				var behavior = block.special_destroy_behavior
 				match behavior:
 					block.DESTROY_SQUARE:
+					# TODO: fix this
 						for i in range(row - 1, row + 1 + 1): # range() uses final - 1, so add 1 
 							for j in range(column - 1, column + 1 + 1): # range() uses final - 1, so add 1 
 								set_matched(i, j)
@@ -255,6 +264,7 @@ func do_special_destroy_behavior():
 						for j in blocks[row].size():
 							set_matched(row, j)
 					block.DESTROY_X:
+					# TODO: fix this
 						pass
 					block.DESTROY_ALL_OF_SAME_COLOR:
 						for i in blocks.size():
