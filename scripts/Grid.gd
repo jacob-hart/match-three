@@ -177,7 +177,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 	if first_block_grid.distance_squared_to(second_block_grid) <= allowed_movement_directions:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
-		if first_block != null && second_block != null:
+		if first_block != null && second_block != null && first_block.is_swappable && second_block.is_swappable:
 			store_last_swap(first_block, second_block, first_block_grid, second_block_grid)
 
 			interaction_state = STATE_WAITING_ON_ANIMATION
@@ -194,6 +194,9 @@ func swap_blocks(first_block_grid, second_block_grid):
 			second_block.move_smooth(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 
 			get_node("after_swap_delay").start() 
+		else:
+			# play error tone, whatever
+			reset_interaction_state() # TODO: this is ugly, fix this by adding get_block(row, col)
 	else:
 		# The swap must not have been possible, so let the user select again
 		reset_interaction_state()

@@ -6,6 +6,7 @@ enum SpecialDestroyBehavior {NO_SPECIAL_BEHAVIOR, SQUARE, ROW, COLUMN, CROSS, AL
 
 export (BlockColor) var block_color
 export (SpecialDestroyBehavior) var special_destroy_behavior = NO_SPECIAL_BEHAVIOR
+export (bool) var is_swappable = true
 export (float) var move_speed
 export (float) var select_speed
 export (float) var destroy_speed
