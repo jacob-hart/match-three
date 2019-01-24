@@ -10,7 +10,6 @@ var current_time
 var is_timer_timed_out = false
 var is_timer_paused = false
 
-
 func _ready():
     current_time = starting_time
 
