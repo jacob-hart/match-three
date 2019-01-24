@@ -1,25 +1,12 @@
 extends Node2D
 
-# Grid state machine variables
-enum {STATE_WAITING_ON_ANIMATION, STATE_WAITING_FOR_FIRST_SELECTION, STATE_WAITING_FOR_SECOND_SELECTION}
-var interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
-
-enum MovementDirections {ADJACENT_ONLY = 1, DIAGONAL_AND_ADJACENT = 2}
-
+# Grid setup variables
 export (int) var width_in_blocks = 8
 export (int) var height_in_blocks = 10
-
-# TODO make these determined programmatically
 export (int) var x_start_position = 64
 export (int) var y_start_position = 128
 export (int) var offset = 78
 export (int) var new_block_start_offset = 1
-
-export (MovementDirections) var allowed_movement_directions
-
-export (NodePath) var game_mode_path
-
-onready var game_mode = get_node(game_mode_path)
 
 var filler_blocks = [
 	preload("res://scenes/blocks/filler/block_magenta.tscn"),
@@ -30,7 +17,6 @@ var filler_blocks = [
 	preload("res://scenes/blocks/filler/block_blue.tscn"),
 	preload("res://scenes/blocks/filler/block_violet.tscn")
 ]
-
 var special_blocks = [
 	preload("res://scenes/blocks/special/cross/block_magenta_cross.tscn"),
 	preload("res://scenes/blocks/special/cross/block_red_cross.tscn"),
@@ -40,7 +26,6 @@ var special_blocks = [
 	preload("res://scenes/blocks/special/cross/block_blue_cross.tscn"),
 	preload("res://scenes/blocks/special/cross/block_violet_cross.tscn")
 ]
-
 var special_blocks_spawn_percent = [
 	1,
 	1,
@@ -56,6 +41,15 @@ var blocks
 
 # Locations currently marked for destruction because they are matched
 var matched_locations
+
+export (NodePath) var game_mode_path
+
+onready var game_mode = get_node(game_mode_path)
+
+const MAX_MOVEMENT_DISTANCE = 1
+
+enum {STATE_WAITING_ON_ANIMATION, STATE_WAITING_FOR_FIRST_SELECTION, STATE_WAITING_FOR_SECOND_SELECTION}
+var interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 
 func _ready():
 	randomize()
@@ -83,6 +77,12 @@ func reset_interaction_state():
 	interaction_state = STATE_WAITING_FOR_FIRST_SELECTION
 	game_mode.on_grid_entered_ready_state()
 
+# func get_block(row, column):
+# 	assert(row >= 0 && row < height_in_blocks)
+# 	assert(column >= 0 && column < width_in_blocks)
+# 	assert(blocks[row][column] != null)
+# 	return blocks[row][column]
+
 func get_new_block():
 	var total_chance_for_special = 0.0
 	for i in special_blocks.size():
@@ -94,6 +94,12 @@ func get_new_block():
 	else:
 		var random_filler_block_index = floor(rand_range(0, filler_blocks.size()))
 		return filler_blocks[random_filler_block_index].instance()
+
+# func set_block(row, column, new_block):
+# 	assert(row >= 0 && row < height_in_blocks)
+# 	assert(column >= 0 && column < width_in_blocks)
+# 	assert(new_block != null)
+# 	blocks[row][column] = new_block
 
 func populate_grid():
 	for i in blocks.size():
@@ -119,6 +125,16 @@ func would_match_be_formed_at(row, column, block_color):
 			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color:
 				return true
 	return false
+
+func shuffle_grid():
+	if OS.is_debug_build():
+		for i in blocks.size():
+			for j in blocks[i].size():
+				blocks[i][j].queue_free()
+				blocks[i][j] = null
+		reset_matched_locations()
+		populate_grid()
+		reset_interaction_state()
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
@@ -174,7 +190,7 @@ var is_first_time_finding_matches = true
 
 # Swaps on-screen positions and grid positions of two blocks as long as they are an allowed movement
 func swap_blocks(first_block_grid, second_block_grid):
-	if first_block_grid.distance_squared_to(second_block_grid) <= allowed_movement_directions:
+	if first_block_grid.distance_squared_to(second_block_grid) <= MAX_MOVEMENT_DISTANCE:
 		var first_block = blocks[first_block_grid.x][first_block_grid.y]
 		var second_block = blocks[second_block_grid.x][second_block_grid.y]
 		if first_block != null && second_block != null && first_block.is_swappable && second_block.is_swappable:
@@ -212,6 +228,13 @@ func unswap_blocks():
 # Marks every match found for later removal
 func find_matches():
 	var any_matches_found = false
+	# for each block
+	# get all the nearby ones within the valid distance for matching
+	# find any with same color
+	# extend the chain in the same direction until color stops being the same
+	# save length
+	# set matched
+
 	for i in blocks.size():
 		for j in blocks[i].size():
 			if blocks[i][j] != null:
