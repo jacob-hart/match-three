@@ -35,8 +35,8 @@ func unpause_timer():
 func on_game_over():
     pass
 
-func add_match(blocks_in_match, multiplier = 1.0):
-    add_time(blocks_in_match * multiplier)
+func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
+    add_time(0) # TODO: cool scoring and time adding here
 
 func on_grid_entered_wait_state():
     pause_timer()
