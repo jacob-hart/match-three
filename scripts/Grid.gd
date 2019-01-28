@@ -281,6 +281,11 @@ func set_matched(row, column):
 				matched_locations[row][column] = true
 				blocks[row][column].play_destroy_animation()
 
+# Adds a match to the game mode for processing
+func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
+	for i in iterations:
+		game_mode.add_matched_block(match_size, chain_count, custom_weighting)
+
 # TODO: refactor this
 func do_special_destroy_behavior():
 	for row in height_in_blocks:
