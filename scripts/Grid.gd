@@ -52,6 +52,13 @@ const MAX_MOVEMENT_DISTANCE = 1
 enum InteractionState {WAITING_ON_ANIMATION, WAITING_FOR_FIRST_SELECTION, WAITING_FOR_SECOND_SELECTION}
 var interaction_state = WAITING_FOR_FIRST_SELECTION
 
+const directions = {
+	up = Vector2(0, 1),
+	down = Vector2(0, -1),
+	left = Vector2(-1, 0),
+	right = Vector2(1, 0)
+}
+
 func _ready():
 	randomize()
 	blocks = make_2D_array()
@@ -59,7 +66,7 @@ func _ready():
 	matched_locations = make_2D_array()
 	reset_matched_locations()
 
-# Creates and returns a 2-dimensional array the old-fashioned way
+# Creates and returns a 2-dimensional array
 func make_2D_array():
 	var array = []
 	for i in height_in_blocks:
@@ -69,8 +76,8 @@ func make_2D_array():
 	return array
 
 func reset_matched_locations():
-	for i in matched_locations.size():
-		for j in matched_locations[i].size():
+	for i in height_in_blocks:
+		for j in width_in_blocks:
 			matched_locations[i][j] = false
 
 func reset_interaction_state():
@@ -103,8 +110,8 @@ func get_new_block():
 # 	blocks[row][column] = new_block
 
 func populate_grid():
-	for i in blocks.size():
-		for j in blocks[i].size():
+	for i in height_in_blocks:
+		for j in width_in_blocks:
 			var new_block = get_new_block()
 
 			while would_match_be_formed_at(i, j, new_block.block_color): # Make sure that index will not form a match
@@ -129,8 +136,8 @@ func would_match_be_formed_at(row, column, block_color):
 
 func shuffle_grid():
 	if OS.is_debug_build():
-		for i in blocks.size():
-			for j in blocks[i].size():
+		for i in height_in_blocks:
+			for j in width_in_blocks:
 				blocks[i][j].queue_free()
 				blocks[i][j] = null
 		reset_matched_locations()
@@ -236,18 +243,18 @@ func find_matches():
 	# save length
 	# set matched
 
-	for i in blocks.size():
-		for j in blocks[i].size():
+	for i in height_in_blocks:
+		for j in width_in_blocks:
 			if blocks[i][j] != null:
 				var color_to_check = blocks[i][j].block_color
-				if i > 0 && i < blocks.size() - 1:
+				if i > 0 && i < height_in_blocks - 1:
 					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
 						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
 							any_matches_found = true
 							set_matched(i - 1, j)
 							set_matched(i, j)
 							set_matched(i + 1, j)
-				if j > 0 && j < blocks[i].size() - 1:
+				if j > 0 && j < width_in_blocks - 1:
 					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
 						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
 							any_matches_found = true
@@ -267,18 +274,17 @@ func find_matches():
 # Called whenever a location becomes part of a match
 func set_matched(row, column):
 	# Verify row and column are accessible
-	if row >= 0 && row < blocks.size():
+	if row >= 0 && row < height_in_blocks:
 		if column >= 0 && column < blocks[row].size():
 			# Blocks can only be set as matched once
 			if !matched_locations[row][column]:
 				matched_locations[row][column] = true
 				blocks[row][column].play_destroy_animation()
-				game_mode.add_match(1, 0.3)
 
 # TODO: refactor this
 func do_special_destroy_behavior():
-	for row in matched_locations.size():
-		for column in matched_locations[row].size():
+	for row in height_in_blocks:
+		for column in width_in_blocks:
 			if matched_locations[row][column]:
 				var block = blocks[row][column]
 				var behavior = block.special_destroy_behavior
@@ -291,16 +297,16 @@ func do_special_destroy_behavior():
 						for j in blocks[row].size():
 							set_matched(row, j)
 					block.SpecialDestroyBehavior.COLUMN:
-						for i in blocks.size():
+						for i in height_in_blocks:
 							set_matched(i, column)
 					block.SpecialDestroyBehavior.CROSS:
-						for i in blocks.size():
+						for i in height_in_blocks:
 							set_matched(i, column)
 						for j in blocks[row].size():
 							set_matched(row, j)
 					block.SpecialDestroyBehavior.ALL_OF_SAME_COLOR:
-						for i in blocks.size():
-							for j in blocks[i].size():
+						for i in height_in_blocks:
+							for j in width_in_blocks:
 								if blocks[i][j] != null:
 									if blocks[i][j].block_color == block.block_color:
 										set_matched(i, j)
@@ -311,8 +317,8 @@ func _on_destroy_animation_delay_timeout():
 
 # Destroys all blocks that are matched
 func destroy_matched():
-	for i in blocks.size():
-		for j in blocks[i].size():
+	for i in height_in_blocks:
+		for j in width_in_blocks:
 			if blocks[i][j] != null:
 				if matched_locations[i][j]:
 					blocks[i][j].queue_free()
@@ -324,8 +330,8 @@ func destroy_matched():
 # Collapses grid columns, moving any null spaces to the top of the column
 func collapse_null():
 	is_first_time_finding_matches = false
-	for i in range(blocks.size() - 1, 0 - 1, -1): # Iterates from the bottom of the grid up
-		for j in blocks[i].size():
+	for i in range(height_in_blocks - 1, 0 - 1, -1): # Iterates from the bottom of the grid up
+		for j in width_in_blocks:
 			if blocks[i][j] == null:
 				for k in range(i, 0 - 1, -1): # Iterates from the bottom of the column up
 					if blocks[k][j] != null: 
@@ -340,8 +346,8 @@ func _on_after_collapse_delay_timeout():
 
 # Adds new blocks to empty spaces after matches were destroyed
 func repopulate_grid():
-	for i in blocks.size():
-		for j in blocks[i].size():
+	for i in height_in_blocks:
+		for j in width_in_blocks:
 			if blocks[i][j] == null:
 				var new_block = get_new_block()
 

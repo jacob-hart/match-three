@@ -13,7 +13,7 @@ extra_spacing_char = -2
 font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[node name="game_window" type="Node2D"]
+[node name="game_window" type="Node2D" index="0"]
 
 [node name="grid" parent="." index="0" instance=ExtResource( 1 )]
 
@@ -23,7 +23,6 @@ x_start_position = 64
 y_start_position = 128
 offset = 78
 new_block_start_offset = 1
-allowed_movement_directions = 1
 game_mode_path = NodePath("../game_mode_time_attack")
 
 [node name="after_swap_delay" type="Timer" parent="grid" index="0"]
