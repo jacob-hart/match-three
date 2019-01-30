@@ -268,12 +268,10 @@ func find_matches():
 
 # Called whenever a location becomes part of a match
 func set_matched(row, column):
-	if row >= 0 && row < height_in_blocks:
-		if column >= 0 && column < blocks[row].size():
-			# Blocks can only be set as matched once
-			if !matched_locations[row][column]:
-				matched_locations[row][column] = true
-				blocks[row][column].play_destroy_animation()
+	if (is_in_grid(Vector2(row, column))):
+		if !matched_locations[row][column]:
+			matched_locations[row][column] = true
+			blocks[row][column].play_destroy_animation()
 
 # Adds a match to the game mode for processing
 func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
