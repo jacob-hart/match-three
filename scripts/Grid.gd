@@ -162,7 +162,7 @@ func is_in_grid(grid_coordinate):
 
 var first_click = Vector2(0, 0)
 var second_click = Vector2(0, 0)
-# Gets click locations and selects blocks based on that input
+# Gets click locations and selects blocks based on user input
 func get_user_mouse_input():
 	if Input.is_action_just_pressed("ui_click"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
@@ -236,32 +236,27 @@ func unswap_blocks():
 # Marks every match found for later removal
 func find_matches():
 	var any_matches_found = false
-	# for each block
-	# get all the nearby ones within the valid distance for matching
-	# find any with same color
-	# extend the chain in the same direction until color stops being the same
-	# save length
-	# set matched
 
+	# TODO: debug this
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			if blocks[i][j] != null:
-				var color_to_check = blocks[i][j].block_color
-				if i > 0 && i < height_in_blocks - 1:
-					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
-						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
-							any_matches_found = true
-							set_matched(i - 1, j)
-							set_matched(i, j)
-							set_matched(i + 1, j)
-				if j > 0 && j < width_in_blocks - 1:
-					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
-						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
-							any_matches_found = true
-							set_matched(i, j - 1)
-							set_matched(i, j)
-							set_matched(i, j + 1)
-
+				for direction in directions.values():
+					var coordinate_to_check = direction + Vector2(i, j)
+					var row_to_check = floor(coordinate_to_check.x)
+					var column_to_check = floor(coordinate_to_check.y)
+					var match_size_counter = 1
+					# This while loop will never throw an error because of short-circuit evaluation
+					while is_in_grid(coordinate_to_check) && (blocks[i][j].block_color == blocks[row_to_check][column_to_check].block_color):
+						# this currently will never increment the match counter, that needs to be fixed while also saving the blocks to add points for later
+						match_size_counter += 1
+						#set_matched(row_to_check, column_to_check)
+						coordinate_to_check += direction
+					if match_size_counter >= 3:
+						any_matches_found = true
+						# process either an array, or work backwards from the final
+						pass
+					
 	if any_matches_found:
 		do_special_destroy_behavior()
 	else: 
@@ -273,7 +268,6 @@ func find_matches():
 
 # Called whenever a location becomes part of a match
 func set_matched(row, column):
-	# Verify row and column are accessible
 	if row >= 0 && row < height_in_blocks:
 		if column >= 0 && column < blocks[row].size():
 			# Blocks can only be set as matched once
