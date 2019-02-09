@@ -241,6 +241,7 @@ func find_matches():
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			if blocks[i][j] != null:
+				# NOTE: Do not optimize by only checking unmatched locations because that will break how intersecting matches are detected.  set_matched already accounts for this issue and will not score duplicates.
 				for direction in directions.values():
 					var coordinate_to_check = direction + Vector2(i, j)
 					var row_to_check = floor(coordinate_to_check.x)
