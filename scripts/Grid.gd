@@ -66,7 +66,7 @@ func _ready():
 	matched_locations = make_2D_array()
 	reset_matched_locations()
 
-# Creates and returns a 2-dimensional array
+# Creates and returns a two-dimensional array
 func make_2D_array():
 	var array = []
 	for i in height_in_blocks:
@@ -110,6 +110,7 @@ func get_new_block():
 # 	blocks[row][column] = new_block
 
 func populate_grid():
+	interaction_state = WAITING_ON_ANIMATION
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			var new_block = get_new_block()
@@ -118,9 +119,15 @@ func populate_grid():
 				new_block = get_new_block()
 
 			add_child(new_block)
-			new_block.position = grid_to_pixel(i, j)
+			new_block.position = grid_to_pixel(i - new_block_start_offset, j)
+			new_block.move_smooth(grid_to_pixel(i, j))
 
 			blocks[i][j] = new_block
+
+	get_node("after_populate_delay").start()
+
+func _on_after_populate_delay_timeout():
+	reset_interaction_state()
 
 # Determines if a match of block_color would be formed by placing a block_color block at row, column
 func would_match_be_formed_at(row, column, block_color):
@@ -133,16 +140,6 @@ func would_match_be_formed_at(row, column, block_color):
 			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color:
 				return true
 	return false
-
-func shuffle_grid():
-	if OS.is_debug_build():
-		for i in height_in_blocks:
-			for j in width_in_blocks:
-				blocks[i][j].queue_free()
-				blocks[i][j] = null
-		reset_matched_locations()
-		populate_grid()
-		reset_interaction_state()
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):

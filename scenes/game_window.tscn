@@ -13,7 +13,7 @@ extra_spacing_char = -2
 font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[node name="game_window" type="Node2D"]
+[node name="game_window" type="Node2D" index="0"]
 
 [node name="grid" parent="." index="0" instance=ExtResource( 1 )]
 
@@ -25,28 +25,35 @@ offset = 78
 new_block_start_offset = 1
 game_mode_path = NodePath("../game_mode_time_attack")
 
-[node name="after_swap_delay" type="Timer" parent="grid" index="0"]
+[node name="after_populate_delay" type="Timer" parent="grid" index="0"]
 
 process_mode = 1
 wait_time = 0.3
 one_shot = true
 autostart = false
 
-[node name="destroy_animation_delay" type="Timer" parent="grid" index="1"]
+[node name="after_swap_delay" type="Timer" parent="grid" index="1"]
+
+process_mode = 1
+wait_time = 0.3
+one_shot = true
+autostart = false
+
+[node name="destroy_animation_delay" type="Timer" parent="grid" index="2"]
 
 process_mode = 1
 wait_time = 0.45
 one_shot = true
 autostart = false
 
-[node name="after_collapse_delay" type="Timer" parent="grid" index="2"]
+[node name="after_collapse_delay" type="Timer" parent="grid" index="3"]
 
 process_mode = 1
 wait_time = 0.1
 one_shot = true
 autostart = false
 
-[node name="after_repopulate_delay" type="Timer" parent="grid" index="3"]
+[node name="after_repopulate_delay" type="Timer" parent="grid" index="4"]
 
 process_mode = 1
 wait_time = 0.3
@@ -112,6 +119,8 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_colors", "custom_fonts" ]
+
+[connection signal="timeout" from="grid/after_populate_delay" to="grid" method="_on_after_populate_delay_timeout"]
 
 [connection signal="timeout" from="grid/after_swap_delay" to="grid" method="_on_after_swap_delay_timeout"]
 
