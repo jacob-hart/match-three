@@ -148,13 +148,13 @@ func shuffle_grid():
 func grid_to_pixel(row, column):
 	var new_x = x_start_position + offset * column
 	var new_y = y_start_position + offset * row
-	return Vector2(abs(new_x), abs(new_y))
+	return Vector2(new_x, new_y)
 
 # Converts a screen pixel coordinate to a grid coordinate
 func pixel_to_grid(x, y):
 	var row = round((y - y_start_position) / offset)
 	var column = round((x - x_start_position) / offset)
-	return Vector2(abs(row), abs(column))
+	return Vector2(row, column)
 	
 # Checks if a grid coordinate is in the grid and usable
 func is_in_grid(grid_coordinate):
@@ -237,26 +237,46 @@ func unswap_blocks():
 func find_matches():
 	var any_matches_found = false
 
-	# TODO: debug this
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			if blocks[i][j] != null:
-				# NOTE: Do not optimize by only checking unmatched locations because that will break how intersecting matches are detected.  set_matched already accounts for this issue and will not score duplicates.
-				for direction in directions.values():
-					var coordinate_to_check = direction + Vector2(i, j)
-					var row_to_check = floor(coordinate_to_check.x)
-					var column_to_check = floor(coordinate_to_check.y)
-					var match_size_counter = 1
-					# This while loop will never throw an error because of short-circuit evaluation
-					while is_in_grid(coordinate_to_check) && (blocks[i][j].block_color == blocks[row_to_check][column_to_check].block_color):
-						# this currently will never increment the match counter, that needs to be fixed while also saving the blocks to add points for later
-						match_size_counter += 1
-						#set_matched(row_to_check, column_to_check)
-						coordinate_to_check += direction
-					if match_size_counter >= 3:
-						any_matches_found = true
-						# process either an array, or work backwards from the final
-						pass
+				var color_to_check = blocks[i][j].block_color
+				if i > 0 && i < height_in_blocks - 1:
+					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
+						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
+							any_matches_found = true
+							set_matched(i - 1, j)
+							set_matched(i, j)
+							set_matched(i + 1, j)
+				if j > 0 && j < width_in_blocks - 1:
+					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
+						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
+							any_matches_found = true
+							set_matched(i, j - 1)
+							set_matched(i, j)
+							set_matched(i, j + 1)
+
+
+	# # TODO: debug this
+	# for i in height_in_blocks:
+	# 	for j in width_in_blocks:
+	# 		if blocks[i][j] != null:
+	# 			# NOTE: Do not optimize by only checking unmatched locations because that will break how intersecting matches are detected.  set_matched already accounts for this issue and will not score duplicates.
+	# 			for direction in directions.values():
+	# 				var coordinate_to_check = direction + Vector2(i, j)
+	# 				var row_to_check = floor(coordinate_to_check.x)
+	# 				var column_to_check = floor(coordinate_to_check.y)
+	# 				var match_size_counter = 1
+	# 				# This while loop will never throw an error because of short-circuit evaluation
+	# 				while is_in_grid(coordinate_to_check) && (blocks[i][j].block_color == blocks[row_to_check][column_to_check].block_color):
+	# 					# this currently will never increment the match counter, that needs to be fixed while also saving the blocks to add points for later
+	# 					match_size_counter += 1
+	# 					#set_matched(row_to_check, column_to_check)
+	# 					coordinate_to_check += direction
+	# 				if match_size_counter >= 3:
+	# 					any_matches_found = true
+	# 					# process either an array, or work backwards from the final
+	# 					pass
 					
 	if any_matches_found:
 		do_special_destroy_behavior()
