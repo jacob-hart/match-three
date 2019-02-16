@@ -43,6 +43,9 @@ var blocks
 # Locations currently marked for destruction because they are matched
 var matched_locations
 
+# How many times repeated matches have been formed without a swap
+var chain_count = 0
+
 export (NodePath) var game_mode_path
 
 onready var game_mode = get_node(game_mode_path)
@@ -80,7 +83,9 @@ func reset_matched_locations():
 		for j in width_in_blocks:
 			matched_locations[i][j] = false
 
-func reset_interaction_state():
+func reset_game_state():
+	print("Chain count was ", chain_count)
+	chain_count = 0
 	is_first_time_finding_matches = true
 	interaction_state = WAITING_FOR_FIRST_SELECTION
 	game_mode.on_grid_entered_ready_state()
@@ -127,7 +132,7 @@ func populate_grid():
 	get_node("after_populate_delay").start()
 
 func _on_after_populate_delay_timeout():
-	reset_interaction_state()
+	reset_game_state()
 
 # Determines if a match of block_color would be formed by placing a block_color block at row, column
 func would_match_be_formed_at(row, column, block_color):
@@ -217,10 +222,10 @@ func swap_blocks(first_block_grid, second_block_grid):
 			get_node("after_swap_delay").start() 
 		else:
 			# play error tone, whatever
-			reset_interaction_state() # TODO: this is ugly, fix this by adding get_block(row, col)
+			reset_game_state() # TODO: this is ugly, fix this by adding get_block(row, col)
 	else:
 		# The swap must not have been possible, so let the user select again
-		reset_interaction_state()
+		reset_game_state()
 
 func _on_after_swap_delay_timeout():
 	find_matches()
@@ -233,7 +238,6 @@ func unswap_blocks():
 # Marks every match found for later removal
 func find_matches():
 	var any_matches_found = false
-
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			if blocks[i][j] != null:
@@ -253,7 +257,7 @@ func find_matches():
 							set_matched(i, j)
 							set_matched(i, j + 1)
 
-
+	
 	# # TODO: debug this
 	# for i in height_in_blocks:
 	# 	for j in width_in_blocks:
@@ -276,13 +280,14 @@ func find_matches():
 	# 					pass
 					
 	if any_matches_found:
+		chain_count += 1
 		do_special_destroy_behavior()
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
 		if is_first_time_finding_matches:
 			unswap_blocks()
 		else:
-			reset_interaction_state()
+			reset_game_state()
 
 # Called whenever a location becomes part of a match
 func set_matched(row, column):

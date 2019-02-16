@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=1]
 
-[node name="main_menu" type="CanvasLayer"]
+[node name="main_menu" type="CanvasLayer" index="0"]
 
 layer = 1
 offset = Vector2( 0, 0 )
