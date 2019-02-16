@@ -146,6 +146,10 @@ func would_match_be_formed_at(row, column, block_color):
 				return true
 	return false
 
+
+func play_sound(sound_name):
+	get_node(sound_name +"_sound").playing = true
+
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
 	var new_x = x_start_position + offset * column
@@ -285,6 +289,7 @@ func find_matches():
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
 		if is_first_time_finding_matches:
+			play_sound("error")
 			unswap_blocks()
 		else:
 			reset_game_state()
@@ -330,6 +335,7 @@ func do_special_destroy_behavior():
 								if blocks[i][j] != null:
 									if blocks[i][j].block_color == block.block_color:
 										set_matched(i, j)
+	play_sound("destroy")
 	get_node("destroy_animation_delay").start()
 
 func _on_destroy_animation_delay_timeout():
