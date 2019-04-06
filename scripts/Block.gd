@@ -5,7 +5,7 @@ enum BlockColor {MAGENTA, RED, ORANGE, YELLOW, GREEN, BLUE, VIOLET, COLORLESS}
 enum SpecialDestroyBehavior {NO_SPECIAL_BEHAVIOR, SQUARE, ROW, COLUMN, CROSS, ALL_OF_SAME_COLOR}
 
 export (BlockColor) var block_color
-export (SpecialDestroyBehavior) var special_destroy_behavior = NO_SPECIAL_BEHAVIOR
+export (SpecialDestroyBehavior) var special_destroy_behavior = SpecialDestroyBehavior.NO_SPECIAL_BEHAVIOR
 export (bool) var is_swappable = true
 export (float) var move_speed
 export (float) var select_speed

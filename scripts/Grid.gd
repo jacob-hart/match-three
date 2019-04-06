@@ -17,6 +17,7 @@ var filler_blocks = [
 	preload("res://scenes/blocks/filler/block_blue.tscn"),
 	preload("res://scenes/blocks/filler/block_violet.tscn")
 ]
+
 var special_blocks = [
 	preload("res://scenes/blocks/special/cross/block_magenta_cross.tscn"),
 	preload("res://scenes/blocks/special/cross/block_red_cross.tscn"),
@@ -53,7 +54,7 @@ onready var game_mode = get_node(game_mode_path)
 const MAX_MOVEMENT_DISTANCE = 1
 
 enum InteractionState {WAITING_ON_ANIMATION, WAITING_FOR_FIRST_SELECTION, WAITING_FOR_SECOND_SELECTION}
-var interaction_state = WAITING_FOR_FIRST_SELECTION
+var interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 
 const directions = {
 	up = Vector2(0, 1),
@@ -87,7 +88,7 @@ func reset_game_state():
 	print("Chain count was ", chain_count)
 	chain_count = 0
 	is_first_time_finding_matches = true
-	interaction_state = WAITING_FOR_FIRST_SELECTION
+	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 	game_mode.on_grid_entered_ready_state()
 
 # func get_block(row, column):
@@ -115,7 +116,7 @@ func get_new_block():
 # 	blocks[row][column] = new_block
 
 func populate_grid():
-	interaction_state = WAITING_ON_ANIMATION
+	interaction_state = InteractionState.WAITING_ON_ANIMATION
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			var new_block = get_new_block()
@@ -173,16 +174,16 @@ func get_user_mouse_input():
 	if Input.is_action_just_pressed("ui_click"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
 			var click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			if interaction_state == WAITING_FOR_FIRST_SELECTION:
+			if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
 				blocks[click.x][click.y].on_selected_pressed()
 
 	if Input.is_action_just_released("ui_click"):
 		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
-			if interaction_state == WAITING_FOR_FIRST_SELECTION:
+			if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
 				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 				blocks[first_click.x][first_click.y].on_selected_released()
-				interaction_state = WAITING_FOR_SECOND_SELECTION
-			elif interaction_state == WAITING_FOR_SECOND_SELECTION:
+				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION
+			elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
 				second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 				blocks[first_click.x][first_click.y].on_unselected()
 				swap_blocks(first_click, second_click)
@@ -210,7 +211,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 		if first_block != null && second_block != null && first_block.is_swappable && second_block.is_swappable:
 			store_last_swap(first_block, second_block, first_block_grid, second_block_grid)
 
-			interaction_state = WAITING_ON_ANIMATION
+			interaction_state = InteractionState.WAITING_ON_ANIMATION
 			game_mode.on_grid_entered_wait_state()
 
 			blocks[first_block_grid.x][first_block_grid.y] = second_block

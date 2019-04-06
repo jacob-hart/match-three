@@ -4,8 +4,7 @@
 [ext_resource path="res://assets/sounds/fade away.wav" type="AudioStream" id=2]
 [ext_resource path="res://assets/sounds/loud.wav" type="AudioStream" id=3]
 
-[node name="grid" type="Node2D" index="0"]
-
+[node name="grid" type="Node2D"]
 script = ExtResource( 1 )
 width_in_blocks = 8
 height_in_blocks = 10
@@ -15,67 +14,36 @@ offset = 78
 new_block_start_offset = 1
 game_mode_path = null
 
-[node name="destroy_sound" type="AudioStreamPlayer" parent="." index="0"]
-
+[node name="destroy_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
 volume_db = -35.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "Master"
 
-[node name="error_sound" type="AudioStreamPlayer" parent="." index="1"]
-
+[node name="error_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -40.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "Master"
 
-[node name="after_populate_delay" type="Timer" parent="." index="2"]
-
-process_mode = 1
+[node name="after_populate_delay" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
-autostart = false
 
-[node name="after_swap_delay" type="Timer" parent="." index="3"]
-
-process_mode = 1
+[node name="after_swap_delay" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
-autostart = false
 
-[node name="destroy_animation_delay" type="Timer" parent="." index="4"]
-
-process_mode = 1
+[node name="destroy_animation_delay" type="Timer" parent="."]
 wait_time = 0.45
 one_shot = true
-autostart = false
 
-[node name="after_collapse_delay" type="Timer" parent="." index="5"]
-
-process_mode = 1
+[node name="after_collapse_delay" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
-autostart = false
 
-[node name="after_repopulate_delay" type="Timer" parent="." index="6"]
-
-process_mode = 1
+[node name="after_repopulate_delay" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
-autostart = false
 
 [connection signal="timeout" from="after_populate_delay" to="." method="_on_after_populate_delay_timeout"]
-
 [connection signal="timeout" from="after_swap_delay" to="." method="_on_after_swap_delay_timeout"]
-
 [connection signal="timeout" from="destroy_animation_delay" to="." method="_on_destroy_animation_delay_timeout"]
-
 [connection signal="timeout" from="after_collapse_delay" to="." method="_on_after_collapse_delay_timeout"]
-
 [connection signal="timeout" from="after_repopulate_delay" to="." method="_on_after_repopulate_delay_timeout"]
-
-
