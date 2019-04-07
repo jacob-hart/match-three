@@ -1,26 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=1]
-[ext_resource path="res://assets/sounds/fade away.wav" type="AudioStream" id=2]
-[ext_resource path="res://assets/sounds/loud.wav" type="AudioStream" id=3]
 
 [node name="grid" type="Node2D"]
 script = ExtResource( 1 )
-width_in_blocks = 8
-height_in_blocks = 10
-x_start_position = 64
-y_start_position = 128
-offset = 78
-new_block_start_offset = 1
-game_mode_path = null
-
-[node name="destroy_sound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 2 )
-volume_db = -35.0
-
-[node name="error_sound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 3 )
-volume_db = -40.0
 
 [node name="after_populate_delay" type="Timer" parent="."]
 wait_time = 0.3
