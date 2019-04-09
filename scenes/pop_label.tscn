@@ -2,10 +2,7 @@
 
 [ext_resource path="res://scripts/PopLabel.gd" type="Script" id=1]
 
-[node name="pop_label" type="Node2D"]
-script = ExtResource( 1 )
-
-[node name="label" type="Label" parent="."]
+[node name="pop_label" type="Label"]
 margin_left = -64.0
 margin_top = -16.0
 margin_right = 64.0
@@ -13,6 +10,7 @@ margin_bottom = 16.0
 rect_pivot_offset = Vector2( 64, 16 )
 align = 1
 valign = 1
+script = ExtResource( 1 )
 
 [node name="tween" type="Tween" parent="."]
 

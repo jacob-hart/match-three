@@ -23,7 +23,10 @@ margin_right = 8.0
 margin_bottom = 40.0
 
 [node name="time_left" parent="MarginContainer/HBoxContainer" instance=ExtResource( 3 )]
-position = Vector2( 338, 32 )
+margin_left = 0.0
+margin_top = 13.0
+margin_right = 0.0
+margin_bottom = 27.0
 pop_scale = Vector2( 2, 2 )
 pop_time = 2.0
 
