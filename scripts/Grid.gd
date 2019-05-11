@@ -226,7 +226,6 @@ func swap_blocks(first_block_grid, second_block_grid):
 
 			get_node("after_swap_delay").start() 
 		else:
-			# play error tone, whatever
 			reset_game_state() # TODO: this is ugly, fix this by adding get_block(row, col)
 	else:
 		# The swap must not have been possible, so let the user select again
@@ -238,7 +237,10 @@ func _on_after_swap_delay_timeout():
 func unswap_blocks():
 	is_first_time_finding_matches = false # This prevents the unswapped blocks from entering an infinite loop of swapping back and forth 
 	if last_swap["first_block"] != null && last_swap["second_block"] != null:
+		if last_swap["first_block_grid"] != last_swap["second_block_grid"]:
+			play_sound("error")
 		swap_blocks(last_swap["second_block_grid"], last_swap["first_block_grid"])
+
 
 # Marks every match found for later removal
 func find_matches():
@@ -290,7 +292,6 @@ func find_matches():
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
 		if is_first_time_finding_matches:
-			play_sound("error")
 			unswap_blocks()
 		else:
 			reset_game_state()
