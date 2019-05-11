@@ -17,7 +17,8 @@ custom_constants/margin_bottom = 32
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 644.0
-margin_bottom = 864.0
+margin_bottom = 150.0
+size_flags_vertical = 0
 custom_constants/separation = 32
 
 [node name="name" type="Label" parent="margin/vbox"]
@@ -25,6 +26,7 @@ margin_right = 612.0
 margin_bottom = 14.0
 text = "Godot Game"
 align = 1
+valign = 1
 
 [node name="button_play" type="Button" parent="margin/vbox"]
 margin_top = 46.0
@@ -34,4 +36,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 2
 text = "Play"
 
+[node name="button_quit" type="Button" parent="margin/vbox"]
+margin_top = 98.0
+margin_right = 612.0
+margin_bottom = 118.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Quit"
+
 [connection signal="pressed" from="margin/vbox/button_play" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="margin/vbox/button_quit" to="." method="_on_button_quit_pressed"]
