@@ -9,23 +9,23 @@ export (int) var offset = 78
 export (int) var new_block_start_offset = 1
 
 var filler_blocks = [
-	preload("res://scenes/blocks/filler/block_magenta.tscn"),
-	preload("res://scenes/blocks/filler/block_red.tscn"),
-	preload("res://scenes/blocks/filler/block_orange.tscn"),
-	preload("res://scenes/blocks/filler/block_yellow.tscn"),
-	preload("res://scenes/blocks/filler/block_green.tscn"),
-	preload("res://scenes/blocks/filler/block_blue.tscn"),
-	preload("res://scenes/blocks/filler/block_violet.tscn")
+	preload("res://scenes/blocks/filler/BlockMagenta.tscn"),
+	preload("res://scenes/blocks/filler/BlockRed.tscn"),
+	preload("res://scenes/blocks/filler/BlockOrange.tscn"),
+	preload("res://scenes/blocks/filler/BlockYellow.tscn"),
+	preload("res://scenes/blocks/filler/BlockGreen.tscn"),
+	preload("res://scenes/blocks/filler/BlockBlue.tscn"),
+	preload("res://scenes/blocks/filler/BlockViolet.tscn")
 ]
 
 var special_blocks = [
-	preload("res://scenes/blocks/special/cross/block_magenta_cross.tscn"),
-	preload("res://scenes/blocks/special/cross/block_red_cross.tscn"),
-	preload("res://scenes/blocks/special/cross/block_orange_cross.tscn"),
-	preload("res://scenes/blocks/special/cross/block_yellow_cross.tscn"),
-	preload("res://scenes/blocks/special/cross/block_green_cross.tscn"),
-	preload("res://scenes/blocks/special/cross/block_blue_cross.tscn"),
-	preload("res://scenes/blocks/special/cross/block_violet_cross.tscn")
+	preload("res://scenes/blocks/special/cross/BlockMagentaCross.tscn"),
+	preload("res://scenes/blocks/special/cross/BlockRedCross.tscn"),
+	preload("res://scenes/blocks/special/cross/BlockOrangeCross.tscn"),
+	preload("res://scenes/blocks/special/cross/BlockYellowCross.tscn"),
+	preload("res://scenes/blocks/special/cross/BlockGreenCross.tscn"),
+	preload("res://scenes/blocks/special/cross/BlockBlueCross.tscn"),
+	preload("res://scenes/blocks/special/cross/BlockVioletCross.tscn")
 ]
 # TOOD: do something more robust than this (if only this language supported structures)
 var special_blocks_spawn_percent = [
@@ -149,7 +149,7 @@ func would_match_be_formed_at(row, column, block_color):
 
 
 func play_sound(sound_name):
-	get_parent().get_node("audio_manager").play(sound_name)
+	get_parent().get_node("AudioManager").play(sound_name)
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):

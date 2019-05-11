@@ -3,7 +3,6 @@
 [ext_resource path="res://scripts/Block.gd" type="Script" id=1]
 
 [node name="block" type="Node2D" index="0"]
-
 script = ExtResource( 1 )
 _sections_unfolded = [ "Visibility" ]
 block_color = 9
@@ -16,12 +15,10 @@ pressed_scale = Vector2( 0.95, 0.95 )
 selected_scale = Vector2( 1.1, 1.1 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
-
 scale = Vector2( 0.25, 0.25 )
 _sections_unfolded = [ "Material", "Transform" ]
 
 [node name="move_tween" type="Tween" parent="." index="1"]
-
 repeat = false
 playback_process_mode = 1
 playback_speed = 1.0
@@ -30,7 +27,6 @@ playback/repeat = false
 playback/speed = 1.0
 
 [node name="select_tween" type="Tween" parent="." index="2"]
-
 repeat = false
 playback_process_mode = 1
 playback_speed = 1.0
@@ -39,12 +35,10 @@ playback/repeat = false
 playback/speed = 1.0
 
 [node name="destroy_tween" type="Tween" parent="." index="3"]
-
 repeat = false
 playback_process_mode = 1
 playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
-
 
