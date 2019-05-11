@@ -33,7 +33,8 @@ func unpause_timer():
     is_timer_paused = false
 
 func on_game_over():
-    pass
+    print("Game over!")
+    get_tree().paused = true
 
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
     add_time(0) # TODO: cool scoring and time adding here
