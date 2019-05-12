@@ -2,8 +2,6 @@
 
 [ext_resource path="res://scripts/GameMode.gd" type="Script" id=1]
 
-[node name="game_mode" type="Node2D"]
-
+[node name="GameMode" type="Node2D"]
 script = ExtResource( 1 )
-
 

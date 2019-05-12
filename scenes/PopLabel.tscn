@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/PopLabel.gd" type="Script" id=1]
 
-[node name="pop_label" type="Label"]
+[node name="PopLabel" type="Label"]
 margin_left = -64.0
 margin_top = -16.0
 margin_right = 64.0

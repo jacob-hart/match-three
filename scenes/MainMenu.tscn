@@ -17,7 +17,7 @@ custom_constants/margin_bottom = 32
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 644.0
-margin_bottom = 150.0
+margin_bottom = 202.0
 size_flags_vertical = 0
 custom_constants/separation = 32
 
@@ -28,21 +28,30 @@ text = "Godot Game"
 align = 1
 valign = 1
 
-[node name="ButtonPlay" type="Button" parent="Margin/VBoxContainer"]
+[node name="ButtonTimeAttack" type="Button" parent="Margin/VBoxContainer"]
 margin_top = 46.0
 margin_right = 612.0
 margin_bottom = 66.0
 size_flags_horizontal = 3
 size_flags_vertical = 2
-text = "Play"
+text = "Play Time Attack"
 
-[node name="ButtonQuit" type="Button" parent="Margin/VBoxContainer"]
+[node name="ButtonHighScore" type="Button" parent="Margin/VBoxContainer"]
 margin_top = 98.0
 margin_right = 612.0
 margin_bottom = 118.0
 size_flags_horizontal = 3
 size_flags_vertical = 2
+text = "Play High Score"
+
+[node name="ButtonQuit" type="Button" parent="Margin/VBoxContainer"]
+margin_top = 150.0
+margin_right = 612.0
+margin_bottom = 170.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
 text = "Quit"
 
-[connection signal="pressed" from="Margin/VBoxContainer/ButtonPlay" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="Margin/VBoxContainer/ButtonTimeAttack" to="." method="_on_button_play_time_pressed"]
+[connection signal="pressed" from="Margin/VBoxContainer/ButtonHighScore" to="." method="_on_button_play_score_pressed"]
 [connection signal="pressed" from="Margin/VBoxContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
