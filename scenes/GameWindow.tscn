@@ -7,12 +7,15 @@
 [ext_resource path="res://scenes/AudioManager.tscn" type="PackedScene" id=5]
 
 [node name="GameWindow" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
+pause_mode = 1
 game_mode_path = NodePath("../GameModeTimeAttack")
 
 [node name="GameModeTimeAttack" parent="." instance=ExtResource( 3 )]
+pause_mode = 1
 places_to_round_to = 1
 ui_time_label_path = NodePath("../MarginContainer/HBoxContainer/TimeLeft")
 
@@ -33,4 +36,5 @@ pop_scale = Vector2( 2, 2 )
 pop_time = 2.0
 
 [node name="AudioManager" parent="." instance=ExtResource( 5 )]
+pause_mode = 1
 
