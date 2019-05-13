@@ -6,19 +6,16 @@
 [ext_resource path="res://scenes/PopLabel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/AudioManager.tscn" type="PackedScene" id=5]
 
-[node name="GameModeTimeAttack" index="0" instance=ExtResource( 1 )]
-pause_mode = 2
+[node name="GameModeTimeAttack" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 starting_time = 10.0
 places_to_round_to = 1
 ui_time_label_path = NodePath("MarginContainer/HBoxContainer/PopLabel")
 
 [node name="Grid" parent="." index="0" instance=ExtResource( 3 )]
-pause_mode = 1
 game_mode_path = NodePath("..")
 
 [node name="MarginContainer" type="MarginContainer" parent="." index="1"]
-pause_mode = 1
 margin_right = 40.0
 margin_bottom = 40.0
 
@@ -33,5 +30,4 @@ margin_right = 0.0
 margin_bottom = 27.0
 
 [node name="AudioManager" parent="." index="2" instance=ExtResource( 5 )]
-pause_mode = 1
 
