@@ -149,7 +149,7 @@ func would_match_be_formed_at(row, column, block_color):
 
 
 func play_sound(sound_name):
-	get_parent().get_node("AudioManager").play(sound_name)
+	AudioManager.play(sound_name)
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):

@@ -19,6 +19,10 @@ config/name="godot-game"
 run/main_scene="res://scenes/MainMenu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+AudioManager="*res://scenes/AudioManager.tscn"
+
 [debug]
 
 gdscript/warnings/enable=false
