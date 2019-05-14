@@ -35,4 +35,5 @@ func play(sample):
 	var player = pool[idx]
 	player.stream = stream
 	player.volume_db = SFX_DB
+	player.bus = "Sound"
 	player.play()
