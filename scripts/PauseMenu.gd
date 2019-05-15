@@ -21,6 +21,7 @@ func show():
 func _on_game_mode_game_over():
 	print("Pause menu should no longer function")
 	self.set_process(false)
+	self.set_process_input(false)
 
 func _on_button_resume_pressed():
 	unpause_tree()
