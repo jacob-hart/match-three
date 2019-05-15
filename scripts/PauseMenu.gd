@@ -18,6 +18,10 @@ func show():
 	get_node("MarginContainer").show()
 	get_node("Tint").show()
 
+func _on_game_mode_game_over():
+	print("Pause menu should no longer function")
+	self.set_process(false)
+
 func _on_button_resume_pressed():
 	unpause_tree()
 
