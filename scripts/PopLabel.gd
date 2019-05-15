@@ -3,9 +3,9 @@ extends Label
 export (Vector2) var pop_scale = Vector2(1.25, 1.25)
 export (float) var pop_time = 0.5
 
-
 func set_text(new_text):
 	text = new_text
+	pop()
 
 func pop():
 	pass
