@@ -12,9 +12,11 @@ func unpause_tree():
 
 func hide():
 	get_node("MarginContainer").hide()
+	get_node("Tint").hide()
 
 func show():
 	get_node("MarginContainer").show()
+	get_node("Tint").show()
 
 func _on_button_resume_pressed():
 	unpause_tree()
@@ -30,5 +32,12 @@ func _ready():
 	hide()
 
 func _notification(what):
-    if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
-        pause_tree()
+	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
+		pause_tree()
+		
+func _process(delta):
+	if Input.is_action_just_pressed("pause"):
+		if get_tree().paused:
+			unpause_tree()
+		else:
+			pause_tree()
