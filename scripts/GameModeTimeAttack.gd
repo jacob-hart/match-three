@@ -3,6 +3,7 @@ extends "res://scripts/GameModeScore.gd"
 export (float) var starting_time
 export (int) var places_to_round_to
 export (NodePath) var ui_time_label_path
+export (float) var max_time_weight
 
 onready var ui_time_label = get_node(ui_time_label_path)
 
@@ -34,7 +35,10 @@ func unpause_timer():
 
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
     add_time(0)
-    .add_matched_block(match_size, chain_count, 1.0) # TODO: add custom weighting based on how long the time has gone on for
+    .add_matched_block(match_size, chain_count, get_time_weighting()) # TODO: add custom weighting based on how long the time has gone on for
+
+func get_time_weighting():
+    return (-1.0 * ((max_time_weight - 1.0) / starting_time)) * current_time + max_time_weight
 
 func on_grid_entered_wait_state():
     pause_timer()
@@ -49,6 +53,6 @@ func _process(delta):
         is_timer_timed_out = true
         current_time = 0
         pause_timer()
-        on_game_over()
+        .on_game_over()
 
     ui_time_label.set_text("%.1f" % get_time_rounded())
