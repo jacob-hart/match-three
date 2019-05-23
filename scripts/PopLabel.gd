@@ -1,13 +1,17 @@
 extends Label
 
-export (Vector2) var pop_scale = Vector2(1.25, 1.25)
-export (float) var pop_time = 0.5
+export (Vector2) var pop_scale = Vector2(2.5, 2.5)
+export (float) var pop_time = 0.15
+export (float) var fade_out_time = 4.0
+
+onready var pop_tween = get_node("pop_tween")
 
 func set_text(new_text):
 	text = new_text
-	pop()
+	self.rect_pivot_offset.x = self.rect_size.x / 2.0
+	self.rect_pivot_offset.y = self.rect_size.y / 2.0
 
 func pop():
-	pass
-	#get_node("tween").interpolate_property(self, "scale", self.scale, pop_scale, pop_time / 2, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	#get_node("tween").interpolate_property(self, "scale", self.scale, Vector2(1.0, 1.0), pop_time / 2, Tween.TRANS_QUINT, Tween.EASE_OUT, pop_time / 2)
+	pop_tween.interpolate_property(self, "rect_scale", self.rect_scale, pop_scale, pop_time, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	pop_tween.interpolate_property(self, "rect_scale", self.rect_scale, Vector2(1.0, 1.0), fade_out_time, Tween.TRANS_QUINT, Tween.EASE_IN, pop_time)
+	pop_tween.start()

@@ -7,7 +7,7 @@
 [ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/GameOverMenu.tscn" type="PackedScene" id=6]
 
-[node name="GameModeTimeAttack" index="0" instance=ExtResource( 1 )]
+[node name="GameModeTimeAttack" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 starting_time = 10.0
 places_to_round_to = 1
@@ -18,18 +18,20 @@ max_time_weight = 3.0
 game_mode_path = NodePath("..")
 
 [node name="MarginContainer" type="MarginContainer" parent="." index="1"]
-margin_right = 40.0
+margin_right = 676.0
 margin_bottom = 40.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" index="0"]
-margin_right = 40.0
+margin_right = 676.0
 margin_bottom = 40.0
+alignment = 1
 
 [node name="PopLabel" parent="MarginContainer/HBoxContainer" index="0" instance=ExtResource( 4 )]
-margin_left = 0.0
+margin_left = 338.0
 margin_top = 13.0
-margin_right = 0.0
+margin_right = 338.0
 margin_bottom = 27.0
+rect_pivot_offset = Vector2( 14, 7 )
 
 [node name="PauseMenu" parent="." index="2" instance=ExtResource( 5 )]
 

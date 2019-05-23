@@ -303,6 +303,7 @@ func set_matched(row, column):
 		if !matched_locations[row][column]:
 			matched_locations[row][column] = true
 			blocks[row][column].play_destroy_animation()
+			add_match(1.0, 1.0)
 
 # Adds a match to the game mode for processing
 func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):

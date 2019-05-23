@@ -9,4 +9,4 @@ func on_game_over():
 	.on_game_over()
 
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
-	print("Add score for size: ", match_size, ", chain: ", chain_count, " and weight: ", custom_weighting)
+	print("Add score for size ", match_size, ", chain ", chain_count, " and weight ", custom_weighting)
