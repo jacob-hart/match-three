@@ -1,6 +1,6 @@
 extends Label
 
-export (Vector2) var pop_scale = Vector2(2.5, 2.5)
+export (Vector2) var pop_scale = Vector2(3.0, 3.0)
 export (float) var pop_time = 0.15
 export (float) var fade_out_time = 0.5
 

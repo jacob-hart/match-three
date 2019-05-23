@@ -34,7 +34,6 @@ func unpause_timer():
     is_timer_paused = false
 
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
-    add_time(0)
     .add_matched_block(match_size, chain_count, get_time_weighting())
     ui_time_label.pop()
 
