@@ -85,7 +85,8 @@ func reset_matched_locations():
 			matched_locations[i][j] = false
 
 func reset_game_state():
-	print("Chain count was ", chain_count)
+	if chain_count:
+		print("Chain count was ", chain_count)
 	chain_count = 0
 	is_first_time_finding_matches = true
 	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
@@ -149,7 +150,7 @@ func would_match_be_formed_at(row, column, block_color):
 
 
 func play_sound(sound_name):
-	AudioManager.play(sound_name)
+	Audio.play(sound_name)
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
