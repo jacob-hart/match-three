@@ -27,7 +27,7 @@ func _get_next_player_idx():
 	next_player = (next_player + 1) % POOL_SIZE
 	return next
 
-func play(sample):
+func play(sample, bus = "Sound"):
 	assert(sample in SAMPLES)
 	var stream = SAMPLES[sample]
 	var idx = _get_next_player_idx()
@@ -35,5 +35,5 @@ func play(sample):
 	var player = pool[idx]
 	player.stream = stream
 	player.volume_db = SFX_DB
-	player.bus = "Sound"
+	player.bus = bus
 	player.play()
