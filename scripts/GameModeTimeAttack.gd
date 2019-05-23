@@ -1,4 +1,4 @@
-extends "res://scripts/GameMode.gd"
+extends "res://scripts/GameModeScore.gd"
 
 export (float) var starting_time
 export (int) var places_to_round_to
@@ -32,11 +32,9 @@ func pause_timer():
 func unpause_timer():
     is_timer_paused = false
 
-func on_game_over():
-    emit_signal("game_over")
-
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
-    add_time(0) # TODO: cool scoring and time adding here
+    add_time(0)
+    .add_matched_block(match_size, chain_count, 1.0) # TODO: add custom weighting based on how long the time has gone on for
 
 func on_grid_entered_wait_state():
     pause_timer()
@@ -54,12 +52,3 @@ func _process(delta):
         on_game_over()
 
     ui_time_label.set_text("%.1f" % get_time_rounded())
-
-# func _process(delta):
-# 	if Input.is_action_just_released("pause"):
-# 		if (get_tree().paused):
-# 			get_tree().paused = false
-# 			print("Just unpaused!")
-# 		else:
-# 			print("Just paused!")
-# 			get_tree().paused = true

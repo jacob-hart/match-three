@@ -4,7 +4,7 @@
 
 [node name="Block" type="Node2D"]
 script = ExtResource( 1 )
-block_color = 9
+block_color = 7
 move_speed = 0.3
 select_speed = 0.15
 destroy_speed = 0.3
