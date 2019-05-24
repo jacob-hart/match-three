@@ -162,22 +162,22 @@ var first_click = Vector2(0, 0)
 var second_click = Vector2(0, 0)
 # Gets click locations and selects blocks based on user input
 func get_user_mouse_input():
-	if Input.is_action_just_pressed("ui_click"):
-		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
-			var click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
-				blocks[click.x][click.y].on_selected_pressed()
-
-	if Input.is_action_just_released("ui_click"):
-		if is_in_grid(pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)):
-			if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
-				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-				blocks[first_click.x][first_click.y].on_selected_released()
-				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION
-			elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
-				second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-				blocks[first_click.x][first_click.y].on_unselected()
+	if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
+		if Input.is_action_just_pressed("ui_click"):
+			first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+		if Input.is_action_just_released("ui_click"):
+			var current_mouse_location = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+			if current_mouse_location == first_click:
+				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION # Cursor stayed on the same block
+			else:
+				swap_blocks(first_click, current_mouse_location) # User dragged the cursor to another block
+	elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
+		if Input.is_action_just_released("ui_click"):
+			second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+			if second_click != first_click:
 				swap_blocks(first_click, second_click)
+			else:
+				interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 
 var last_swap = {
 	first_block =  null,
