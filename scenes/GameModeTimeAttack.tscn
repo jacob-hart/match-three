@@ -11,9 +11,10 @@
 
 [node name="GameModeTimeAttack" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+ui_score_label_path = NodePath("MarginContainer/HBoxContainer/Score")
 starting_time = 60.0
 places_to_round_to = 1
-ui_time_label_path = NodePath("MarginContainer/HBoxContainer/PopLabel")
+ui_time_label_path = NodePath("MarginContainer/HBoxContainer/Time")
 max_time_weight = 3.0
 
 [node name="Grid" parent="." index="0" instance=ExtResource( 3 )]
@@ -29,12 +30,18 @@ margin_right = 676.0
 margin_bottom = 40.0
 alignment = 1
 
-[node name="PopLabel" parent="MarginContainer/HBoxContainer" index="0" instance=ExtResource( 6 )]
-margin_left = 338.0
+[node name="Time" parent="MarginContainer/HBoxContainer" index="0" instance=ExtResource( 6 )]
+margin_left = 336.0
 margin_top = 13.0
-margin_right = 338.0
+margin_right = 336.0
 margin_bottom = 27.0
 rect_pivot_offset = Vector2( 14, 7 )
+
+[node name="Score" parent="MarginContainer/HBoxContainer" index="1" instance=ExtResource( 6 )]
+margin_left = 340.0
+margin_top = 13.0
+margin_right = 340.0
+margin_bottom = 27.0
 
 [node name="PauseMenu" parent="." index="2" instance=ExtResource( 7 )]
 

@@ -56,3 +56,4 @@ func _process(delta):
         .on_game_over()
 
     ui_time_label.set_text("%.1f" % get_time_rounded())
+    ._process(delta)
