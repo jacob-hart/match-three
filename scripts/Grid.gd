@@ -48,15 +48,16 @@ func _ready():
 	reset_matched_locations()
 
 func load_blocks():
+	print("Loading blocks:")
 	for list in block_lists:
 		for filler_block in list.filler:
-			print("Loaded filler ", filler_block)
+			print(filler_block.get_state().get_node_name(0))
 			filler_blocks.push_back(filler_block)
 		for special_block in list.special:
-			print("Loaded special ", special_block)
+			print(special_block.get_state().get_node_name(0))
 			special_blocks.push_back(special_block)
 		for spawn_chance in list.special_spawn_chance:
-			print("Loaded chance ", spawn_chance)
+			print(spawn_chance)
 			special_blocks_spawn_chance.push_back(spawn_chance)
 
 # Creates and returns a two-dimensional array
