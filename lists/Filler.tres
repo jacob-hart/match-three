@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=9 format=2]
+
+[ext_resource path="res://scenes/blocks/filler/BlockMagenta.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/blocks/filler/BlockRed.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/blocks/filler/BlockOrange.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/blocks/filler/BlockYellow.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/blocks/filler/BlockGreen.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/blocks/filler/BlockBlue.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/blocks/filler/BlockViolet.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/BlockList.gd" type="Script" id=8]
+
+[resource]
+script = ExtResource( 8 )
+filler = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ]
+special = [  ]
+special_spawn_chance = [  ]
+

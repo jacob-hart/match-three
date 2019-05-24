@@ -8,35 +8,11 @@ export (int) var y_start_position = 128
 export (int) var offset = 78
 export (int) var new_block_start_offset = 1
 
-var filler_blocks = [
-	preload("res://scenes/blocks/filler/BlockMagenta.tscn"),
-	preload("res://scenes/blocks/filler/BlockRed.tscn"),
-	preload("res://scenes/blocks/filler/BlockOrange.tscn"),
-	preload("res://scenes/blocks/filler/BlockYellow.tscn"),
-	preload("res://scenes/blocks/filler/BlockGreen.tscn"),
-	preload("res://scenes/blocks/filler/BlockBlue.tscn"),
-	preload("res://scenes/blocks/filler/BlockViolet.tscn")
-]
+export (Array, Resource) var block_lists
 
-var special_blocks = [
-	preload("res://scenes/blocks/special/cross/BlockMagentaCross.tscn"),
-	preload("res://scenes/blocks/special/cross/BlockRedCross.tscn"),
-	preload("res://scenes/blocks/special/cross/BlockOrangeCross.tscn"),
-	preload("res://scenes/blocks/special/cross/BlockYellowCross.tscn"),
-	preload("res://scenes/blocks/special/cross/BlockGreenCross.tscn"),
-	preload("res://scenes/blocks/special/cross/BlockBlueCross.tscn"),
-	preload("res://scenes/blocks/special/cross/BlockVioletCross.tscn")
-]
-# TOOD: do something more robust than this (if only this language supported structures)
-var special_blocks_spawn_percent = [
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-]
+var filler_blocks = []
+var special_blocks = []
+var special_blocks_spawn_chance = []
 
 # The blocks currently in the grid, a 2D array filled at runtime
 var blocks
@@ -65,10 +41,23 @@ const directions = {
 
 func _ready():
 	randomize()
+	load_blocks()
 	blocks = make_2D_array()
 	populate_grid()
 	matched_locations = make_2D_array()
 	reset_matched_locations()
+
+func load_blocks():
+	for list in block_lists:
+		for filler_block in list.filler:
+			print("Loaded filler ", filler_block)
+			filler_blocks.push_back(filler_block)
+		for special_block in list.special:
+			print("Loaded special ", special_block)
+			special_blocks.push_back(special_block)
+		for spawn_chance in list.special_spawn_chance:
+			print("Loaded chance ", spawn_chance)
+			special_blocks_spawn_chance.push_back(spawn_chance)
 
 # Creates and returns a two-dimensional array
 func make_2D_array():
@@ -101,7 +90,7 @@ func reset_game_state():
 func get_new_block():
 	var total_chance_for_special = 0.0
 	for i in special_blocks.size():
-		total_chance_for_special += special_blocks_spawn_percent[i] * 0.01
+		total_chance_for_special += special_blocks_spawn_chance[i] * 0.01
 	var spawn_filler_or_special = rand_range(0.0, 1.0)
 	if spawn_filler_or_special <= total_chance_for_special:
 		var random_special_block_index = floor(rand_range(0, special_blocks.size()))
