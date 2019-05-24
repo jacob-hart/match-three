@@ -163,16 +163,20 @@ var first_click = Vector2(0, 0)
 var second_click = Vector2(0, 0)
 # Gets click locations and selects blocks based on user input
 func get_user_mouse_input():
+	var current_mouse_location = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 	if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
 		if Input.is_action_just_pressed("ui_click"):
 			first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 		if Input.is_action_just_released("ui_click"):
-			var current_mouse_location = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 			if current_mouse_location == first_click:
 				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION # Cursor stayed on the same block
-			else:
+			elif is_in_grid(current_mouse_location):
 				swap_blocks(first_click, current_mouse_location) # User dragged the cursor to another block
 	elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
+		if Input.is_action_just_pressed("ui_click"):
+			if first_click.distance_squared_to(current_mouse_location) > MAX_MOVEMENT_DISTANCE:
+				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
+				interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 		if Input.is_action_just_released("ui_click"):
 			second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 			if second_click != first_click:
