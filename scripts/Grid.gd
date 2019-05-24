@@ -21,7 +21,7 @@ var blocks
 var matched_locations
 
 # How many times repeated matches have been formed without a swap
-var chain_count = 0
+var chain_count = 1
 
 export (NodePath) var game_mode_path
 
@@ -75,9 +75,7 @@ func reset_matched_locations():
 			matched_locations[i][j] = false
 
 func reset_game_state():
-	if chain_count:
-		print("Chain count was ", chain_count)
-	chain_count = 0
+	chain_count = 1
 	is_first_time_finding_matches = true
 	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 	game_mode.on_grid_entered_ready_state()
@@ -293,7 +291,7 @@ func set_matched(row, column):
 		if !matched_locations[row][column]:
 			matched_locations[row][column] = true
 			blocks[row][column].play_destroy_animation()
-			add_match(1.0, 1.0)
+			add_match(1.0, chain_count)
 
 # Adds a match to the game mode for processing
 func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
