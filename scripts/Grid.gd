@@ -47,6 +47,9 @@ func _ready():
 	matched_locations = make_2D_array()
 	reset_matched_locations()
 
+func _process(delta):
+	get_user_mouse_input()
+
 func load_blocks():
 	print("Loading blocks:")
 	for list in block_lists:
@@ -215,7 +218,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 
 			get_node("after_swap_delay").start() 
 		else:
-			reset_game_state() # TODO: this is ugly, fix this by adding get_block(row, col)
+			reset_game_state()
 	else:
 		# The swap must not have been possible, so let the user select again
 		reset_game_state()
@@ -253,28 +256,6 @@ func find_matches():
 							set_matched(i, j)
 							set_matched(i, j + 1)
 
-	
-	# # TODO: debug this
-	# for i in height_in_blocks:
-	# 	for j in width_in_blocks:
-	# 		if blocks[i][j] != null:
-	# 			# NOTE: Do not optimize by only checking unmatched locations because that will break how intersecting matches are detected.  set_matched already accounts for this issue and will not score duplicates.
-	# 			for direction in directions.values():
-	# 				var coordinate_to_check = direction + Vector2(i, j)
-	# 				var row_to_check = floor(coordinate_to_check.x)
-	# 				var column_to_check = floor(coordinate_to_check.y)
-	# 				var match_size_counter = 1
-	# 				# This while loop will never throw an error because of short-circuit evaluation
-	# 				while is_in_grid(coordinate_to_check) && (blocks[i][j].block_color == blocks[row_to_check][column_to_check].block_color):
-	# 					# this currently will never increment the match counter, that needs to be fixed while also saving the blocks to add points for later
-	# 					match_size_counter += 1
-	# 					#set_matched(row_to_check, column_to_check)
-	# 					coordinate_to_check += direction
-	# 				if match_size_counter >= 3:
-	# 					any_matches_found = true
-	# 					# process either an array, or work backwards from the final
-	# 					pass
-					
 	if any_matches_found:
 		chain_count += 1
 		do_special_destroy_behavior()
@@ -298,7 +279,6 @@ func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
 	for i in iterations:
 		game_mode.add_matched_block(match_size, chain_count, custom_weighting)
 
-# TODO: refactor this
 func do_special_destroy_behavior():
 	for row in height_in_blocks:
 		for column in width_in_blocks:
@@ -311,7 +291,7 @@ func do_special_destroy_behavior():
 							for j in range(column - 1, column + 1 + 1): # range() uses final - 1, so add 1 
 								set_matched(i, j)
 					block.SpecialDestroyBehavior.ROW:
-						for j in blocks[row].size():
+						for j in width_in_blocks:
 							set_matched(row, j)
 					block.SpecialDestroyBehavior.COLUMN:
 						for i in height_in_blocks:
@@ -319,7 +299,7 @@ func do_special_destroy_behavior():
 					block.SpecialDestroyBehavior.CROSS:
 						for i in height_in_blocks:
 							set_matched(i, column)
-						for j in blocks[row].size():
+						for j in width_in_blocks:
 							set_matched(row, j)
 					block.SpecialDestroyBehavior.ALL_OF_SAME_COLOR:
 						for i in height_in_blocks:
@@ -380,6 +360,3 @@ func repopulate_grid():
 
 func _on_after_repopulate_delay_timeout():
 	find_matches()
-
-func _process(delta):
-	get_user_mouse_input()
