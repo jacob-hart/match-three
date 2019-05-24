@@ -174,12 +174,11 @@ func get_user_mouse_input():
 				swap_blocks(first_click, current_mouse_location) # User dragged the cursor to another block
 	elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
 		if Input.is_action_just_pressed("ui_click"):
-			if first_click.distance_squared_to(current_mouse_location) > MAX_MOVEMENT_DISTANCE:
-				first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-				interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
-		if Input.is_action_just_released("ui_click"):
 			second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			if second_click != first_click:
+		if Input.is_action_just_released("ui_click"):
+			if current_mouse_location != second_click:
+				swap_blocks(second_click, current_mouse_location)
+			elif second_click != first_click:
 				swap_blocks(first_click, second_click)
 			else:
 				interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
