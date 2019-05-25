@@ -176,12 +176,13 @@ func get_user_mouse_input():
 		if Input.is_action_just_pressed("ui_click"):
 			second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
 		if Input.is_action_just_released("ui_click"):
-			if current_mouse_location != second_click:
+			if is_in_grid(current_mouse_location) && current_mouse_location != second_click: # User dragged after already having a first selection
 				swap_blocks(second_click, current_mouse_location)
-			elif second_click != first_click:
+			elif second_click != first_click && second_click.distance_squared_to(first_click) <= MAX_MOVEMENT_DISTANCE: # User made a valid second click
 				swap_blocks(first_click, second_click)
-			else:
-				interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
+			else: # User made an out-of-range second click, so treat it as a first click
+				first_click = second_click
+				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION
 
 var last_swap = {
 	first_block =  null,
