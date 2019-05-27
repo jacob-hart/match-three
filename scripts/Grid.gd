@@ -240,25 +240,54 @@ func unswap_blocks():
 
 # Marks every match found for later removal
 func find_matches():
-	var any_matches_found = false
+	var checked = make_2D_array()
 	for i in height_in_blocks:
 		for j in width_in_blocks:
-			if blocks[i][j] != null:
-				var color_to_check = blocks[i][j].block_color
-				if i > 0 && i < height_in_blocks - 1:
-					if blocks[i - 1][j] != null && blocks[i + 1][j] != null:
-						if blocks[i - 1][j].block_color == color_to_check && blocks[i + 1][j].block_color == color_to_check:
-							any_matches_found = true
-							set_matched(i - 1, j)
-							set_matched(i, j)
-							set_matched(i + 1, j)
-				if j > 0 && j < width_in_blocks - 1:
-					if blocks[i][j - 1] != null && blocks[i][j + 1] != null:
-						if blocks[i][j - 1].block_color == color_to_check && blocks[i][j + 1].block_color == color_to_check:
-							any_matches_found = true
-							set_matched(i, j - 1)
-							set_matched(i, j)
-							set_matched(i, j + 1)
+			checked[i][j] = false
+
+	var any_matches_found = false
+
+	# Check right
+	for i in height_in_blocks:
+		for j in width_in_blocks:
+			if !checked[i][j]:
+				var match_size = 0
+				var probe = j
+				for counter in range(1, 5 + 1):
+					probe += 1
+					if probe >= width_in_blocks || blocks[i][probe].block_color != blocks[i][j].block_color:
+						break
+					checked[i][probe] = true
+				match_size = probe - j
+				probe -= 1
+				if match_size >= 3:
+					#print("Found a match of size ", match_size, " starting at ", i, ", ", j, " and ending at ", i, ", ", probe)
+					for y_index in range(j, probe + 1):
+						set_matched(i, y_index)
+					add_match(match_size, chain_count)
+					any_matches_found = true
+					match_size = 0
+
+	# Check down
+	for i in height_in_blocks:
+		for j in width_in_blocks:
+			if !checked[i][j]:
+				var match_size = 0
+				var probe = i
+				for counter in range(1, 5 + 1):
+					probe += 1
+					if probe >= height_in_blocks || blocks[probe][j].block_color != blocks[i][j].block_color:
+						break
+					checked[probe][j] = true
+				match_size = probe - i
+				probe -= 1
+				if match_size >= 3:
+					#print("Found a match of size ", match_size, " starting at ", i, ", ", j, " and ending at ", probe, ", ", j)
+					for x_index in range(i, probe + 1):
+						set_matched(x_index, j)
+					add_match(match_size, chain_count)
+					any_matches_found = true
+					match_size = 0
 
 	if any_matches_found:
 		chain_count += 1
@@ -276,7 +305,6 @@ func set_matched(row, column):
 		if !matched_locations[row][column]:
 			matched_locations[row][column] = true
 			blocks[row][column].play_destroy_animation()
-			add_match(1.0, chain_count)
 
 # Adds a match to the game mode for processing
 func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
