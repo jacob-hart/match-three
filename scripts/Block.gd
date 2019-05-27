@@ -33,10 +33,12 @@ func play_destroy_animation():
 	destroy_tween.interpolate_property(self, "modulate", null, Color(1.0, 1.0, 1.0, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
 	destroy_tween.start()
 
-func on_selected():
-	select_tween.interpolate_property(self, "scale", null, selected_scale, select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	select_tween.start()
+func select():
+	get_node("SelectSprite").show()
+	#select_tween.interpolate_property(self, "scale", null, selected_scale, select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	#select_tween.start()
 
-func on_unselected():
-	select_tween.interpolate_property(self, "scale", null, Vector2(1.0, 1.0), select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	select_tween.start()
+func deselect():
+	get_node("SelectSprite").hide()
+	#select_tween.interpolate_property(self, "scale", null, Vector2(1.0, 1.0), select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	#select_tween.start()

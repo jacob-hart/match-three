@@ -167,28 +167,25 @@ func get_user_mouse_input():
 	if interaction_state == InteractionState.WAITING_FOR_FIRST_SELECTION:
 		if Input.is_action_just_pressed("ui_click"):
 			first_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			blocks[first_click.x][first_click.y].on_selected()
 		if Input.is_action_just_released("ui_click"):
 			if current_mouse_location == first_click:
 				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION # Cursor stayed on the same block
+				blocks[first_click.x][first_click.y].select()
 			elif is_in_grid(current_mouse_location):
 				swap_blocks(first_click, current_mouse_location) # User dragged the cursor to another block
-				blocks[first_click.x][first_click.y].on_unselected()
 	elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
 		if Input.is_action_just_pressed("ui_click"):
 			second_click = pixel_to_grid(get_global_mouse_position().x, get_global_mouse_position().y)
-			blocks[second_click.x][second_click.y].on_selected()
 		if Input.is_action_just_released("ui_click"):
 			if is_in_grid(current_mouse_location) && current_mouse_location != second_click: # User dragged after already having a first selection
-				blocks[first_click.x][first_click.y].on_unselected()
-				blocks[second_click.x][second_click.y].on_unselected()
+				blocks[first_click.x][first_click.y].deselect()
 				swap_blocks(second_click, current_mouse_location)
 			elif second_click != first_click && second_click.distance_squared_to(first_click) <= MAX_MOVEMENT_DISTANCE: # User made a valid second click
-				blocks[first_click.x][first_click.y].on_unselected()
-				blocks[second_click.x][second_click.y].on_unselected()
+				blocks[first_click.x][first_click.y].deselect()
 				swap_blocks(first_click, second_click)
 			else: # User made an out-of-range second click, so treat it as a first click
-				blocks[first_click.x][first_click.y].on_unselected()
+				blocks[first_click.x][first_click.y].deselect()
+				blocks[second_click.x][second_click.y].select()
 				first_click = second_click
 				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION
 
