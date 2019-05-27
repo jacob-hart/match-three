@@ -35,7 +35,6 @@ func unpause_timer():
 
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
     .add_matched_block(match_size, chain_count, get_time_weighting())
-    ui_time_label.pop()
 
 func get_time_weighting():
     return (-1.0 * ((max_time_weight - 1.0) / starting_time)) * current_time + max_time_weight
