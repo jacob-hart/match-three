@@ -39,6 +39,11 @@ func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
 func get_time_weighting():
     return (-1.0 * ((max_time_weight - 1.0) / starting_time)) * current_time + max_time_weight
 
+func on_game_over():
+    if score > high_score:
+        SavedData.set_value(self.name, "high_score", score)
+    .on_game_over()
+
 func on_grid_entered_wait_state():
     pause_timer()
     
@@ -52,7 +57,7 @@ func _process(delta):
         is_timer_timed_out = true
         current_time = 0
         pause_timer()
-        .on_game_over()
+        on_game_over()
 
     ui_time_label.set_text("%.1f" % get_time_rounded())
     ._process(delta)

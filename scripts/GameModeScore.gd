@@ -21,7 +21,6 @@ func _process(delta):
 	ui_score_label.set_text(String(score))
 
 func on_game_over():
-	print("FINAL SCORE: ", score)
 	.on_game_over()
 
 func add_matched_block(match_size, chain_count, custom_weighting = 1.0):
