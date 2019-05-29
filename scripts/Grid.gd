@@ -45,7 +45,7 @@ func _ready():
 	blocks = make_2D_array()
 	populate_grid()
 	matched_locations = make_2D_array()
-	reset_matched_locations()
+	clear_2D_array(matched_locations)
 
 func _process(delta):
 	get_user_mouse_input()
@@ -72,10 +72,10 @@ func make_2D_array():
 			array[i].append(null)
 	return array
 
-func reset_matched_locations():
+func clear_2D_array(array):
 	for i in height_in_blocks:
 		for j in width_in_blocks:
-			matched_locations[i][j] = false
+			array[i][j] = false
 
 func reset_game_state():
 	chain_count = 1
@@ -245,13 +245,9 @@ func unswap_blocks():
 
 # Marks every match found for later removal
 func find_matches():
-	var checked = make_2D_array()
-	for i in height_in_blocks:
-		for j in width_in_blocks:
-			checked[i][j] = false
-
 	var any_matches_found = false
-
+	var checked = make_2D_array()
+	clear_2D_array(checked)
 	# Check right
 	for i in height_in_blocks:
 		for j in width_in_blocks:
@@ -273,6 +269,7 @@ func find_matches():
 					any_matches_found = true
 					match_size = 0
 
+	clear_2D_array(checked)
 	# Check down
 	for i in height_in_blocks:
 		for j in width_in_blocks:
@@ -359,7 +356,7 @@ func destroy_matched():
 					blocks[i][j].queue_free()
 					blocks[i][j] = null
 
-	reset_matched_locations()
+	clear_2D_array(matched_locations)
 	collapse_null()
 
 # Collapses grid columns, moving any null spaces to the top of the column
