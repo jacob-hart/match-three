@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Audio="*res://scenes/Audio.tscn"
+SavedData="*res://scenes/SavedData.tscn"
 
 [debug]
 

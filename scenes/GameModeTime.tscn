@@ -8,9 +8,10 @@
 [ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/GameOverMenu.tscn" type="PackedScene" id=7]
 
-[node name="GameModeTime" index="0" instance=ExtResource( 1 )]
+[node name="GameModeTime" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 ui_score_label_path = NodePath("../GameModeTime/MarginContainer/HBoxContainer/Score")
+ui_high_score_label_path = NodePath("MarginContainer/HBoxContainer/HighScore")
 starting_time = 60.0
 places_to_round_to = 1
 ui_time_label_path = NodePath("../GameModeTime/MarginContainer/HBoxContainer/Time")
@@ -31,16 +32,22 @@ custom_constants/separation = 32
 alignment = 1
 
 [node name="Time" parent="MarginContainer/HBoxContainer" index="0" instance=ExtResource( 5 )]
-margin_left = 322.0
+margin_left = 306.0
 margin_top = 13.0
-margin_right = 322.0
+margin_right = 306.0
 margin_bottom = 27.0
 rect_pivot_offset = Vector2( 14, 7 )
 
 [node name="Score" parent="MarginContainer/HBoxContainer" index="1" instance=ExtResource( 5 )]
-margin_left = 354.0
+margin_left = 338.0
 margin_top = 13.0
-margin_right = 354.0
+margin_right = 338.0
+margin_bottom = 27.0
+
+[node name="HighScore" parent="MarginContainer/HBoxContainer" index="2" instance=ExtResource( 5 )]
+margin_left = 370.0
+margin_top = 13.0
+margin_right = 370.0
 margin_bottom = 27.0
 
 [node name="PauseMenu" parent="." index="2" instance=ExtResource( 6 )]
