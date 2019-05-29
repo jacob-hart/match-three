@@ -32,6 +32,18 @@ func _ready():
         high_score = default_high_score
     ui_high_score_label.set_text(String(high_score))
 
+func _process(delta):
+    if current_time > 0.0 && !is_timer_paused:
+        current_time -= delta
+    elif current_time <= 0.0 && !is_timer_timed_out:
+        is_timer_timed_out = true
+        current_time = 0
+        pause_timer()
+        on_game_over()
+
+    ui_time_label.set_text("%.1f" % get_time_rounded())
+    ui_score_label.set_text(String(score))
+
 func add_time(seconds):
     current_time += seconds
 
@@ -71,15 +83,3 @@ func on_grid_entered_wait_state():
     
 func on_grid_entered_ready_state():
     unpause_timer()
-
-func _process(delta):
-    if current_time > 0.0 && !is_timer_paused:
-        current_time -= delta
-    elif current_time <= 0.0 && !is_timer_timed_out:
-        is_timer_timed_out = true
-        current_time = 0
-        pause_timer()
-        on_game_over()
-
-    ui_time_label.set_text("%.1f" % get_time_rounded())
-    ui_score_label.set_text(String(score))

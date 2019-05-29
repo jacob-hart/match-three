@@ -11,15 +11,14 @@ func unpause_tree():
 	hide()
 
 func hide():
-	get_node("MarginContainer").hide()
 	get_node("Tint").hide()
+	get_node("MarginContainer").hide()
 
 func show():
-	get_node("MarginContainer").show()
 	get_node("Tint").show()
+	get_node("MarginContainer").show()
 
 func _on_game_mode_game_over():
-	print("Pause menu should no longer function")
 	self.set_process(false)
 	self.set_process_input(false)
 

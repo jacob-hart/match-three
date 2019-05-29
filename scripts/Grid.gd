@@ -185,9 +185,12 @@ func get_user_mouse_input():
 				swap_blocks(first_click, second_click)
 			else: # User made an out-of-range second click, so treat it as a first click
 				blocks[first_click.x][first_click.y].deselect()
-				blocks[second_click.x][second_click.y].select()
-				first_click = second_click
-				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION
+				if is_in_grid(second_click):
+					blocks[second_click.x][second_click.y].select()
+					first_click = second_click
+					interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION
+				else:
+					interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 
 var last_swap = {
 	first_block =  null,
