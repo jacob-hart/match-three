@@ -15,3 +15,6 @@ func get_value(section, key):
 func set_value(section, key, value):
 	file.set_value(section, key, value)
 	file.save("user://SavedData.ini")
+
+func has_section_key(section, key):
+	return file.has_section_key(section, key)
