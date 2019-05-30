@@ -1,11 +1,11 @@
 extends Node2D
 
 const MIN_DB = -80.0
-const SFX_DB = -40.0
+const SFX_DB = -33.0
 
 const SAMPLES = {
 	"destroy": preload("res://assets/sounds/chime.wav"),
-	"error": preload("res://assets/sounds/loud.wav")
+	"error": preload("res://assets/sounds/close.wav")
 }
 
 const major_scale = [1.0, 1.122462, 1.259921, 1.334840, 1.498307, 1.681793, 1.887749, 2.0]

@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/fade away.wav-aba3051af64f95db2000d16034bb84f9.sample"
+path="res://.import/close.wav-c2671b9d02a5fba833c7c9ae0fdd97be.sample"
 
 [deps]
 
-source_file="res://assets/sounds/fade away.wav"
-dest_files=[ "res://.import/fade away.wav-aba3051af64f95db2000d16034bb84f9.sample" ]
+source_file="res://assets/sounds/close.wav"
+dest_files=[ "res://.import/close.wav-c2671b9d02a5fba833c7c9ae0fdd97be.sample" ]
 
 [params]
 

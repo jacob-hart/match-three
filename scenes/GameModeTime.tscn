@@ -29,14 +29,14 @@ custom_constants/margin_top = 16
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" index="0"]
 margin_top = 16.0
 margin_right = 676.0
-margin_bottom = 91.0
+margin_bottom = 74.0
 custom_constants/separation = 32
 alignment = 1
 
 [node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="0"]
 margin_left = 190.0
 margin_right = 244.0
-margin_bottom = 75.0
+margin_bottom = 58.0
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer" index="0"]
 margin_right = 54.0
@@ -53,7 +53,7 @@ rect_pivot_offset = Vector2( 14, 7 )
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="1"]
 margin_left = 276.0
 margin_right = 337.0
-margin_bottom = 75.0
+margin_bottom = 58.0
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer" index="0"]
 margin_right = 61.0
@@ -69,7 +69,7 @@ margin_bottom = 58.0
 [node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="2"]
 margin_left = 369.0
 margin_right = 486.0
-margin_bottom = 75.0
+margin_bottom = 58.0
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer" index="0"]
 margin_right = 117.0

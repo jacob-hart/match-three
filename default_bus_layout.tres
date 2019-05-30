@@ -1,7 +1,12 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=2]
+[gd_resource type="AudioBusLayout" load_steps=3 format=2]
 
 [sub_resource type="AudioEffectPitchShift" id=1]
 resource_name = "PitchShift"
+
+[sub_resource type="AudioEffectReverb" id=2]
+resource_name = "Reverb"
+room_size = 0.3
+damping = 0.25
 
 [resource]
 bus/1/name = "Music"
@@ -24,4 +29,6 @@ bus/3/volume_db = 0.0
 bus/3/send = "Master"
 bus/3/effect/0/effect = SubResource( 1 )
 bus/3/effect/0/enabled = true
+bus/3/effect/1/effect = SubResource( 2 )
+bus/3/effect/1/enabled = true
 
