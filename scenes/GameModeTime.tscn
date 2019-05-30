@@ -33,22 +33,22 @@ alignment = 1
 
 [node name="Time" parent="MarginContainer/HBoxContainer" index="0" instance=ExtResource( 5 )]
 margin_left = 306.0
-margin_top = 13.0
+margin_top = 7.0
 margin_right = 306.0
-margin_bottom = 27.0
+margin_bottom = 32.0
 rect_pivot_offset = Vector2( 14, 7 )
 
 [node name="Score" parent="MarginContainer/HBoxContainer" index="1" instance=ExtResource( 5 )]
 margin_left = 338.0
-margin_top = 13.0
+margin_top = 7.0
 margin_right = 338.0
-margin_bottom = 27.0
+margin_bottom = 32.0
 
 [node name="HighScore" parent="MarginContainer/HBoxContainer" index="2" instance=ExtResource( 5 )]
 margin_left = 370.0
-margin_top = 13.0
+margin_top = 7.0
 margin_right = 370.0
-margin_bottom = 27.0
+margin_bottom = 32.0
 
 [node name="PauseMenu" parent="." index="2" instance=ExtResource( 6 )]
 

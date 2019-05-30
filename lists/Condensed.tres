@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://scenes/blocks/filler/BlockBlue.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/blocks/filler/BlockGreen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/blocks/filler/BlockViolet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/BlockList.gd" type="Script" id=4]
+
+[resource]
+script = ExtResource( 4 )
+filler = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ) ]
+special = [  ]
+special_spawn_chance = [  ]
+

@@ -4,9 +4,13 @@ const MIN_DB = -80.0
 const SFX_DB = -40.0
 
 const SAMPLES = {
-	"destroy": preload("res://assets/sounds/fade away.wav"),
+	"destroy": preload("res://assets/sounds/chime.wav"),
 	"error": preload("res://assets/sounds/loud.wav")
 }
+
+const major_scale = [1.0, 1.122462, 1.259921, 1.334840, 1.498307, 1.681793, 1.887749, 2.0]
+const minor_scale = [1.0, 1.059463, 1.189207, 1.334840, 1.414214, 1.587401, 1.781797, 2.0]
+const chromatic_scale = [1.0, 1.059463, 1.122462, 1.189207, 1.259921, 1.334840, 1.414214, 1.498307, 1.587401, 1.681793, 1.781797, 1.887749, 2.0]
 
 const POOL_SIZE = 8
 var pool = []
@@ -37,3 +41,7 @@ func play(sample, bus = "Sound"):
 	player.volume_db = SFX_DB
 	player.bus = bus
 	player.play()
+
+func set_bus_pitch_by_note(bus, note):
+	var pitch_scale = major_scale[clamp(note, 0, major_scale.size() - 1)]
+	AudioServer.get_bus_effect(AudioServer.get_bus_index(bus), 0).pitch_scale = pitch_scale

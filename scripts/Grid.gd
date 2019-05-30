@@ -7,8 +7,8 @@ export (int) var x_start_position = 64
 export (int) var y_start_position = 128
 export (int) var offset = 78
 export (int) var new_block_start_offset = 1
-
 export (Array, Resource) var block_lists
+
 
 var filler_blocks = []
 var special_blocks = []
@@ -31,13 +31,6 @@ const MAX_MOVEMENT_DISTANCE = 1
 
 enum InteractionState {WAITING_ON_ANIMATION, WAITING_FOR_FIRST_SELECTION, WAITING_FOR_SECOND_SELECTION}
 var interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
-
-const directions = {
-	up = Vector2(0, 1),
-	down = Vector2(0, -1),
-	left = Vector2(-1, 0),
-	right = Vector2(1, 0)
-}
 
 func _ready():
 	randomize()
@@ -83,12 +76,6 @@ func reset_game_state():
 	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 	game_mode.on_grid_entered_ready_state()
 
-# func get_block(row, column):
-# 	assert(row >= 0 && row < height_in_blocks)
-# 	assert(column >= 0 && column < width_in_blocks)
-# 	assert(blocks[row][column] != null)
-# 	return blocks[row][column]
-
 func get_new_block():
 	var total_chance_for_special = 0.0
 	for i in special_blocks.size():
@@ -100,12 +87,6 @@ func get_new_block():
 	else:
 		var random_filler_block_index = floor(rand_range(0, filler_blocks.size()))
 		return filler_blocks[random_filler_block_index].instance()
-
-# func set_block(row, column, new_block):
-# 	assert(row >= 0 && row < height_in_blocks)
-# 	assert(column >= 0 && column < width_in_blocks)
-# 	assert(new_block != null)
-# 	blocks[row][column] = new_block
 
 func populate_grid():
 	interaction_state = InteractionState.WAITING_ON_ANIMATION
@@ -139,9 +120,12 @@ func would_match_be_formed_at(row, column, block_color):
 				return true
 	return false
 
-
 func play_sound(sound_name):
-	Audio.play(sound_name)
+	Audio.set_bus_pitch_by_note("Destroy", chain_count - 1)
+	if sound_name == "destroy":
+		Audio.play(sound_name, "Destroy")
+	else:
+		Audio.play(sound_name)
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
@@ -295,7 +279,6 @@ func find_matches():
 					match_size = 0
 
 	if any_matches_found:
-		chain_count += 1
 		do_special_destroy_behavior()
 	else: 
 		# No matches were found, so either swap back (the match was invalid) or select again (the chain is finished)
@@ -314,7 +297,7 @@ func set_matched(row, column):
 # Adds a match to the game mode for processing
 func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
 	for i in iterations:
-		game_mode.add_matched_block(match_size, chain_count, custom_weighting)
+		game_mode.add_matched_block(match_size, clamp(chain_count, 1, Audio.major_scale.size()), custom_weighting)
 
 func do_special_destroy_behavior():
 	for row in height_in_blocks:
@@ -393,6 +376,7 @@ func repopulate_grid():
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
 				new_block.move_smooth(grid_to_pixel(i, j))
 				blocks[i][j] = new_block
+	chain_count += 1
 	get_node("after_repopulate_delay").start()
 
 func _on_after_repopulate_delay_timeout():
