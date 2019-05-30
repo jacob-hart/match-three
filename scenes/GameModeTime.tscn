@@ -12,9 +12,9 @@
 script = ExtResource( 2 )
 starting_time = 60.0
 places_to_round_to = 1
-ui_time_label_path = NodePath("../GameModeTime/MarginContainer/HBoxContainer/Time")
-ui_score_label_path = NodePath("../GameModeTime/MarginContainer/HBoxContainer/Score")
-ui_high_score_label_path = NodePath("MarginContainer/HBoxContainer/HighScore")
+ui_time_label_path = NodePath("MarginContainer/HBoxContainer/TimeContainer/Time")
+ui_score_label_path = NodePath("MarginContainer/HBoxContainer/ScoreContainer/Score")
+ui_high_score_label_path = NodePath("MarginContainer/HBoxContainer/HighScoreContainer/HighScore")
 max_time_weight = 3.0
 
 [node name="Grid" parent="." index="0" instance=ExtResource( 3 )]
@@ -24,31 +24,63 @@ game_mode_path = NodePath("../../GameModeTime")
 [node name="MarginContainer" type="MarginContainer" parent="." index="1"]
 margin_right = 676.0
 margin_bottom = 40.0
+custom_constants/margin_top = 16
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" index="0"]
+margin_top = 16.0
 margin_right = 676.0
-margin_bottom = 40.0
+margin_bottom = 91.0
 custom_constants/separation = 32
 alignment = 1
 
-[node name="Time" parent="MarginContainer/HBoxContainer" index="0" instance=ExtResource( 5 )]
-margin_left = 306.0
-margin_top = 7.0
-margin_right = 306.0
-margin_bottom = 32.0
+[node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="0"]
+margin_left = 190.0
+margin_right = 244.0
+margin_bottom = 75.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer" index="0"]
+margin_right = 54.0
+margin_bottom = 25.0
+text = "Time"
+
+[node name="Time" parent="MarginContainer/HBoxContainer/TimeContainer" index="1" instance=ExtResource( 5 )]
+margin_left = 0.0
+margin_top = 33.0
+margin_right = 54.0
+margin_bottom = 58.0
 rect_pivot_offset = Vector2( 14, 7 )
 
-[node name="Score" parent="MarginContainer/HBoxContainer" index="1" instance=ExtResource( 5 )]
-margin_left = 338.0
-margin_top = 7.0
-margin_right = 338.0
-margin_bottom = 32.0
+[node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="1"]
+margin_left = 276.0
+margin_right = 337.0
+margin_bottom = 75.0
 
-[node name="HighScore" parent="MarginContainer/HBoxContainer" index="2" instance=ExtResource( 5 )]
-margin_left = 370.0
-margin_top = 7.0
-margin_right = 370.0
-margin_bottom = 32.0
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer" index="0"]
+margin_right = 61.0
+margin_bottom = 25.0
+text = "Score"
+
+[node name="Score" parent="MarginContainer/HBoxContainer/ScoreContainer" index="1" instance=ExtResource( 5 )]
+margin_left = 0.0
+margin_top = 33.0
+margin_right = 61.0
+margin_bottom = 58.0
+
+[node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="2"]
+margin_left = 369.0
+margin_right = 486.0
+margin_bottom = 75.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer" index="0"]
+margin_right = 117.0
+margin_bottom = 25.0
+text = "High Score"
+
+[node name="HighScore" parent="MarginContainer/HBoxContainer/HighScoreContainer" index="1" instance=ExtResource( 5 )]
+margin_left = 0.0
+margin_top = 33.0
+margin_right = 117.0
+margin_bottom = 58.0
 
 [node name="PauseMenu" parent="." index="2" instance=ExtResource( 6 )]
 
