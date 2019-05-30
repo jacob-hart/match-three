@@ -11,7 +11,6 @@ export (float) var move_speed
 export (float) var select_speed
 export (float) var destroy_speed
 export (float) var destroy_fade_delay
-export (Vector2) var selected_scale 
 
 onready var move_tween = get_node("move_tween")
 
@@ -35,10 +34,6 @@ func play_destroy_animation():
 
 func select():
 	get_node("SelectSprite").show()
-	#select_tween.interpolate_property(self, "scale", null, selected_scale, select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	#select_tween.start()
 
 func deselect():
 	get_node("SelectSprite").hide()
-	#select_tween.interpolate_property(self, "scale", null, Vector2(1.0, 1.0), select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	#select_tween.start()

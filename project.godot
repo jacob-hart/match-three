@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Audio="*res://scenes/Audio.tscn"
 SavedData="*res://scenes/SavedData.tscn"
+SceneChanger="*res://scenes/SceneChanger.tscn"
 
 [debug]
 

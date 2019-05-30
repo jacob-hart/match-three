@@ -12,11 +12,11 @@ func unpause_tree():
 
 func hide():
 	get_node("MarginContainer").hide()
-	get_node("Tint").hide()
+	get_node("Shade").hide()
 
 func show():
 	get_node("MarginContainer").show()
-	get_node("Tint").show()
+	get_node("Shade").show()
 
 func _on_game_mode_game_over():
 	pause_tree()
@@ -27,7 +27,7 @@ func _on_button_play_again_pressed():
 
 func _on_button_quit_to_menu_pressed():
 	unpause_tree()
-	get_tree().change_scene("res://scenes/MainMenu.tscn")
+	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
 
 func _on_button_quit_to_desktop_pressed():
 	get_tree().quit()
