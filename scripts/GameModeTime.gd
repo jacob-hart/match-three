@@ -1,4 +1,4 @@
-extends "res://scripts/GameMode.gd"
+extends Node2D
 
 export (float) var starting_time
 export (int) var places_to_round_to
@@ -12,6 +12,7 @@ export (int) var base_score_for_match = 100
 onready var score:int = starting_score
 var high_score:int
 
+signal game_over
 signal score_updated(new_score)
 signal high_score_updated(new_high_score)
 signal time_updated(new_time)
@@ -64,7 +65,7 @@ func get_time_weighting():
 func on_game_over():
     if score > high_score:
         SavedData.set_value(self.name, "high_score", score)
-    .on_game_over()
+    emit_signal("game_over")
 
 func _on_grid_entered_wait_state():
     pause_timer()

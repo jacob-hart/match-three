@@ -1,44 +1,43 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scenes/GameMode.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/GameModeTime.gd" type="Script" id=2]
-[ext_resource path="res://scenes/Grid.tscn" type="PackedScene" id=3]
-[ext_resource path="res://lists/Filler.tres" type="Resource" id=4]
-[ext_resource path="res://scenes/PopLabel.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/GameOverMenu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/GameModeTime.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Grid.tscn" type="PackedScene" id=2]
+[ext_resource path="res://lists/Filler.tres" type="Resource" id=3]
+[ext_resource path="res://scenes/PopLabel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/GameOverMenu.tscn" type="PackedScene" id=6]
 
-[node name="GameModeTime" index="0" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="GameModeTime" type="Node2D"]
+script = ExtResource( 1 )
 starting_time = 60.0
 max_time_weight = 3.0
 
-[node name="Grid" parent="." index="0" instance=ExtResource( 3 )]
-block_lists = [ ExtResource( 4 ) ]
+[node name="Grid" parent="." instance=ExtResource( 2 )]
+block_lists = [ ExtResource( 3 ) ]
 
-[node name="MarginContainer" type="MarginContainer" parent="." index="1"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 676.0
 margin_bottom = 40.0
 custom_constants/margin_top = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 margin_top = 16.0
 margin_right = 676.0
 margin_bottom = 74.0
 custom_constants/separation = 32
 alignment = 1
 
-[node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="0"]
+[node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 190.0
 margin_right = 244.0
 margin_bottom = 58.0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer" index="0"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
 margin_right = 54.0
 margin_bottom = 25.0
 text = "Time"
 
-[node name="Time" parent="MarginContainer/HBoxContainer/TimeContainer" index="1" instance=ExtResource( 5 )]
+[node name="Time" parent="MarginContainer/HBoxContainer/TimeContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 33.0
 margin_right = 54.0
@@ -46,41 +45,41 @@ margin_bottom = 58.0
 rect_pivot_offset = Vector2( 14, 7 )
 pop_on_value_changed = false
 
-[node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="1"]
+[node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 276.0
 margin_right = 337.0
 margin_bottom = 58.0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer" index="0"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
 margin_right = 61.0
 margin_bottom = 25.0
 text = "Score"
 
-[node name="Score" parent="MarginContainer/HBoxContainer/ScoreContainer" index="1" instance=ExtResource( 5 )]
+[node name="Score" parent="MarginContainer/HBoxContainer/ScoreContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 33.0
 margin_right = 61.0
 margin_bottom = 58.0
 
-[node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="2"]
+[node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 369.0
 margin_right = 486.0
 margin_bottom = 58.0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer" index="0"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]
 margin_right = 117.0
 margin_bottom = 25.0
 text = "High Score"
 
-[node name="HighScore" parent="MarginContainer/HBoxContainer/HighScoreContainer" index="1" instance=ExtResource( 5 )]
+[node name="HighScore" parent="MarginContainer/HBoxContainer/HighScoreContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 33.0
 margin_right = 117.0
 margin_bottom = 58.0
 
-[node name="PauseMenu" parent="." index="2" instance=ExtResource( 6 )]
+[node name="PauseMenu" parent="." instance=ExtResource( 5 )]
 
-[node name="GameOverMenu" parent="." index="3" instance=ExtResource( 7 )]
+[node name="GameOverMenu" parent="." instance=ExtResource( 6 )]
 
 [connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
 [connection signal="game_over" from="." to="GameOverMenu" method="_on_game_mode_game_over"]
