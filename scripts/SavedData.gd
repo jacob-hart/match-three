@@ -9,8 +9,8 @@ func _init():
 	else:
 		print("Error loading config file: ", result)
 
-func get_value(section, key):
-	return file.get_value(section, key)
+func get_value(section, key, default=null):
+	return file.get_value(section, key, default)
 
 func set_value(section, key, value):
 	file.set_value(section, key, value)

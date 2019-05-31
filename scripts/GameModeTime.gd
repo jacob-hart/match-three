@@ -1,10 +1,10 @@
 extends Node2D
 
-export (float) var starting_time
-export (int) var places_to_round_to
+export (float) var starting_time = 60
+export (int) var places_to_round_to = 0
 export (int) var starting_score = 0
 export (int) var default_high_score = 1000
-export (float) var max_time_weight
+export (float) var max_weighting_from_time = 3.0
 export (float) var match_size_weighting = 1.0
 export (float) var chain_count_weighting = 1.0
 export (int) var base_score_for_match = 100
@@ -12,21 +12,17 @@ export (int) var base_score_for_match = 100
 onready var score:int = starting_score
 var high_score:int
 
-signal game_over
+signal game_over()
 signal score_updated(new_score)
 signal high_score_updated(new_high_score)
 signal time_updated(new_time)
 
-var current_time
+onready var current_time = starting_time
 var is_timer_timed_out = false
 var is_timer_paused = false
 
 func _ready():
-    current_time = starting_time
-    if SavedData.has_section_key(self.name, "high_score"):
-        high_score = SavedData.get_value(self.name, "high_score")
-    else:
-        high_score = default_high_score
+    high_score = SavedData.get_value(self.name, "high_score", default_high_score)
     emit_signal("score_updated", score)
     emit_signal("high_score_updated", high_score)
 
@@ -60,7 +56,7 @@ func unpause_timer():
     is_timer_paused = false
 
 func get_time_weighting():
-    return (-1.0 * ((max_time_weight - 1.0) / starting_time)) * current_time + max_time_weight
+    return (-1.0 * ((max_weighting_from_time - 1.0) / starting_time)) * current_time + max_weighting_from_time
 
 func on_game_over():
     if score > high_score:

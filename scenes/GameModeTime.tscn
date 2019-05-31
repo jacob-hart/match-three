@@ -9,8 +9,6 @@
 
 [node name="GameModeTime" type="Node2D"]
 script = ExtResource( 1 )
-starting_time = 60.0
-max_time_weight = 3.0
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
 block_lists = [ ExtResource( 3 ) ]
@@ -32,30 +30,30 @@ margin_left = 190.0
 margin_right = 244.0
 margin_bottom = 58.0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
+[node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
 margin_right = 54.0
 margin_bottom = 25.0
 text = "Time"
 
-[node name="Time" parent="MarginContainer/HBoxContainer/TimeContainer" instance=ExtResource( 4 )]
+[node name="TimePopLabel" parent="MarginContainer/HBoxContainer/TimeContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 33.0
 margin_right = 54.0
 margin_bottom = 58.0
 rect_pivot_offset = Vector2( 14, 7 )
-pop_on_value_changed = false
+pop_on_value_change = false
 
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 276.0
 margin_right = 337.0
 margin_bottom = 58.0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
+[node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
 margin_right = 61.0
 margin_bottom = 25.0
 text = "Score"
 
-[node name="Score" parent="MarginContainer/HBoxContainer/ScoreContainer" instance=ExtResource( 4 )]
+[node name="ScorePopLabel" parent="MarginContainer/HBoxContainer/ScoreContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 33.0
 margin_right = 61.0
@@ -66,12 +64,12 @@ margin_left = 369.0
 margin_right = 486.0
 margin_bottom = 58.0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]
+[node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]
 margin_right = 117.0
 margin_bottom = 25.0
 text = "High Score"
 
-[node name="HighScore" parent="MarginContainer/HBoxContainer/HighScoreContainer" instance=ExtResource( 4 )]
+[node name="HighScorePopLabel" parent="MarginContainer/HBoxContainer/HighScoreContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 33.0
 margin_right = 117.0
@@ -83,9 +81,9 @@ margin_bottom = 58.0
 
 [connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
 [connection signal="game_over" from="." to="GameOverMenu" method="_on_game_mode_game_over"]
-[connection signal="high_score_updated" from="." to="MarginContainer/HBoxContainer/HighScoreContainer/HighScore" method="_on_value_source_updated"]
-[connection signal="score_updated" from="." to="MarginContainer/HBoxContainer/ScoreContainer/Score" method="_on_value_source_updated"]
-[connection signal="time_updated" from="." to="MarginContainer/HBoxContainer/TimeContainer/Time" method="_on_value_source_updated"]
+[connection signal="high_score_updated" from="." to="MarginContainer/HBoxContainer/HighScoreContainer/HighScorePopLabel" method="_on_value_source_updated"]
+[connection signal="score_updated" from="." to="MarginContainer/HBoxContainer/ScoreContainer/ScorePopLabel" method="_on_value_source_updated"]
+[connection signal="time_updated" from="." to="MarginContainer/HBoxContainer/TimeContainer/TimePopLabel" method="_on_value_source_updated"]
 [connection signal="entered_ready_state" from="Grid" to="." method="_on_grid_entered_ready_state"]
 [connection signal="entered_wait_state" from="Grid" to="." method="_on_grid_entered_wait_state"]
 [connection signal="match_found" from="Grid" to="." method="_on_grid_match_found"]
