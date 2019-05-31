@@ -18,7 +18,7 @@ func show():
 	get_node("Shade").show()
 	get_node("MarginContainer").show()
 
-func _on_game_mode_game_over():
+func _on_game_mode_game_over(final_score):
 	self.set_process(false)
 	self.set_process_input(false)
 

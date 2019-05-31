@@ -18,7 +18,8 @@ func show():
 	get_node("MarginContainer").show()
 	get_node("Shade").show()
 
-func _on_game_mode_game_over():
+func _on_game_mode_game_over(final_score):
+	get_node("MarginContainer/VBoxContainer/FinalScore").set_text("Final Score: " + String(final_score))
 	pause_tree()
 
 func _on_button_play_again_pressed():
