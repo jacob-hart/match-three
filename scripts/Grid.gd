@@ -122,10 +122,7 @@ func would_match_be_formed_at(row, column, block_color):
 
 func play_sound(sound_name):
 	Audio.set_bus_pitch_by_note("Destroy", chain_count - 1)
-	if sound_name == "destroy":
-		Audio.play(sound_name, "Destroy")
-	else:
-		Audio.play(sound_name)
+	Audio.play(sound_name, sound_name.capitalize())
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
