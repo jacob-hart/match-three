@@ -30,8 +30,9 @@ func _on_button_restart_pressed():
 	get_tree().reload_current_scene()
 
 func _on_button_quit_to_menu_pressed():
-	unpause_tree()
 	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
+	yield(SceneChanger, "about_to_change_scene")
+	unpause_tree()
 
 func _on_button_quit_to_desktop_pressed():
 	get_tree().quit()
