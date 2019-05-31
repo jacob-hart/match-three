@@ -23,9 +23,9 @@ var matched_locations
 # How many times repeated matches have been formed without a swap
 var chain_count = 1
 
-export (NodePath) var game_mode_path
-
-onready var game_mode = get_node(game_mode_path)
+signal entered_ready_state()
+signal entered_wait_state()
+signal match_found(match_size, chain_count, custom_weighting)
 
 const MAX_MOVEMENT_DISTANCE = 1
 
@@ -74,7 +74,7 @@ func reset_game_state():
 	chain_count = 1
 	is_first_time_finding_matches = true
 	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
-	game_mode.on_grid_entered_ready_state()
+	emit_signal("entered_ready_state")
 
 func get_new_block():
 	var total_chance_for_special = 0.0
@@ -121,7 +121,7 @@ func would_match_be_formed_at(row, column, block_color):
 	return false
 
 func play_sound(sound_name):
-	Audio.set_bus_pitch_by_note("Destroy", chain_count - 1)
+	Audio.set_bus_pitch_by_note("Destroy", clamp(chain_count - 1, 0, Audio.major_scale.size() - 1))
 	Audio.play(sound_name, sound_name.capitalize())
 
 # Converts a grid coordinate to a screen pixel coordinate
@@ -197,7 +197,7 @@ func swap_blocks(first_block_grid, second_block_grid):
 			store_last_swap(first_block, second_block, first_block_grid, second_block_grid)
 
 			interaction_state = InteractionState.WAITING_ON_ANIMATION
-			game_mode.on_grid_entered_wait_state()
+			emit_signal("entered_wait_state")
 
 			blocks[first_block_grid.x][first_block_grid.y] = second_block
 			blocks[second_block_grid.x][second_block_grid.y] = first_block
@@ -249,7 +249,7 @@ func find_matches():
 					#print("Found a match of size ", match_size, " starting at ", i, ", ", j, " and ending at ", i, ", ", probe)
 					for y_index in range(j, probe + 1):
 						set_matched(i, y_index)
-					add_match(match_size, chain_count)
+					found_match(match_size, chain_count)
 					any_matches_found = true
 					match_size = 0
 
@@ -271,7 +271,7 @@ func find_matches():
 					#print("Found a match of size ", match_size, " starting at ", i, ", ", j, " and ending at ", probe, ", ", j)
 					for x_index in range(i, probe + 1):
 						set_matched(x_index, j)
-					add_match(match_size, chain_count)
+					found_match(match_size, chain_count)
 					any_matches_found = true
 					match_size = 0
 
@@ -292,9 +292,8 @@ func set_matched(row, column):
 			blocks[row][column].play_destroy_animation()
 
 # Adds a match to the game mode for processing
-func add_match(match_size, chain_count, custom_weighting = 1.0, iterations = 1):
-	for i in iterations:
-		game_mode.add_matched_block(match_size, clamp(chain_count, 1, Audio.major_scale.size()), custom_weighting)
+func found_match(match_size, chain_count, custom_weighting = 1.0):
+	emit_signal("match_found", match_size, chain_count, custom_weighting)
 
 func do_special_destroy_behavior():
 	for row in height_in_blocks:

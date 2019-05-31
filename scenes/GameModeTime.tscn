@@ -11,15 +11,10 @@
 [node name="GameModeTime" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 starting_time = 60.0
-places_to_round_to = 1
-ui_time_label_path = NodePath("MarginContainer/HBoxContainer/TimeContainer/Time")
-ui_score_label_path = NodePath("MarginContainer/HBoxContainer/ScoreContainer/Score")
-ui_high_score_label_path = NodePath("MarginContainer/HBoxContainer/HighScoreContainer/HighScore")
 max_time_weight = 3.0
 
 [node name="Grid" parent="." index="0" instance=ExtResource( 3 )]
 block_lists = [ ExtResource( 4 ) ]
-game_mode_path = NodePath("../../GameModeTime")
 
 [node name="MarginContainer" type="MarginContainer" parent="." index="1"]
 margin_right = 676.0
@@ -49,6 +44,7 @@ margin_top = 33.0
 margin_right = 54.0
 margin_bottom = 58.0
 rect_pivot_offset = Vector2( 14, 7 )
+pop_on_value_changed = false
 
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="1"]
 margin_left = 276.0
@@ -88,3 +84,9 @@ margin_bottom = 58.0
 
 [connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
 [connection signal="game_over" from="." to="GameOverMenu" method="_on_game_mode_game_over"]
+[connection signal="high_score_updated" from="." to="MarginContainer/HBoxContainer/HighScoreContainer/HighScore" method="_on_value_source_updated"]
+[connection signal="score_updated" from="." to="MarginContainer/HBoxContainer/ScoreContainer/Score" method="_on_value_source_updated"]
+[connection signal="time_updated" from="." to="MarginContainer/HBoxContainer/TimeContainer/Time" method="_on_value_source_updated"]
+[connection signal="entered_ready_state" from="Grid" to="." method="_on_grid_entered_ready_state"]
+[connection signal="entered_wait_state" from="Grid" to="." method="_on_grid_entered_wait_state"]
+[connection signal="match_found" from="Grid" to="." method="_on_grid_match_found"]
