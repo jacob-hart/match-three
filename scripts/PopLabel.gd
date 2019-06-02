@@ -14,9 +14,7 @@ func set_text(new_text):
 	self.rect_pivot_offset.x = self.rect_size.x / 2.0
 	self.rect_pivot_offset.y = self.rect_size.y / 2.0
 	if pop_on_value_change:
-		if !pop_on_first_change && is_first_change:
-			pass
-		else:
+		if !(!pop_on_first_change && is_first_change):
 			pop()
 	if is_first_change:
 		is_first_change = false
