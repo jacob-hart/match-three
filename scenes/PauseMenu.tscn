@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/PauseMenu.gd" type="Script" id=1]
+[ext_resource path="res://scenes/AudioOptions.tscn" type="PackedScene" id=2]
 
 [node name="PauseMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -60,6 +61,11 @@ margin_top = 219.0
 margin_right = 612.0
 margin_bottom = 239.0
 text = "Quit to Desktop"
+
+[node name="AudioOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 115.0
+margin_right = -236.0
+margin_bottom = -169.0
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonResume" to="." method="_on_button_resume_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]

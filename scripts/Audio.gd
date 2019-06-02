@@ -45,3 +45,6 @@ func play(sample, bus = "Master"):
 func set_bus_pitch_by_note(bus, note):
 	var pitch_scale = major_scale[clamp(note, 0, major_scale.size() - 1)]
 	AudioServer.get_bus_effect(AudioServer.get_bus_index(bus), 0).pitch_scale = pitch_scale
+
+func set_bus_muted(bus, is_muted):
+	AudioServer.set_bus_mute(AudioServer.get_bus_index(bus), is_muted)
