@@ -16,10 +16,8 @@ block_lists = [ ExtResource( 3 ) ]
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 676.0
 margin_bottom = 40.0
-custom_constants/margin_top = 16
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-margin_top = 16.0
 margin_right = 676.0
 margin_bottom = 74.0
 custom_constants/separation = 32
@@ -28,7 +26,7 @@ alignment = 1
 [node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 190.0
 margin_right = 244.0
-margin_bottom = 58.0
+margin_bottom = 74.0
 
 [node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
 margin_right = 54.0
@@ -46,7 +44,7 @@ pop_on_value_change = false
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 276.0
 margin_right = 337.0
-margin_bottom = 58.0
+margin_bottom = 74.0
 
 [node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
 margin_right = 61.0
@@ -62,7 +60,7 @@ margin_bottom = 58.0
 [node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 369.0
 margin_right = 486.0
-margin_bottom = 58.0
+margin_bottom = 74.0
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]
 margin_right = 117.0

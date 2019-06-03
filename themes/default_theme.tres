@@ -1,0 +1,48 @@
+[gd_resource type="Theme" load_steps=5 format=2]
+
+[ext_resource path="res://themes/button_normal_style.tres" type="StyleBox" id=1]
+[ext_resource path="res://themes/button_hovered_style.tres" type="StyleBox" id=2]
+[ext_resource path="res://themes/checkbox_normal_style.tres" type="StyleBox" id=3]
+[ext_resource path="res://assets/fonts/montreal/Montreal.tres" type="DynamicFont" id=4]
+
+[resource]
+default_font = ExtResource( 4 )
+Button/colors/font_color = Color( 0.972549, 0.972549, 0.94902, 1 )
+Button/colors/font_color_disabled = Color( 0.972549, 0.972549, 0.94902, 1 )
+Button/colors/font_color_hover = Color( 0.972549, 0.972549, 0.94902, 1 )
+Button/colors/font_color_pressed = Color( 0.972549, 0.972549, 0.94902, 1 )
+Button/constants/hseparation = 4
+Button/fonts/font = null
+Button/styles/disabled = ExtResource( 1 )
+Button/styles/focus = ExtResource( 1 )
+Button/styles/hover = ExtResource( 2 )
+Button/styles/normal = ExtResource( 1 )
+Button/styles/pressed = ExtResource( 1 )
+CheckBox/colors/font_color = Color( 0.972549, 0.972549, 0.94902, 1 )
+CheckBox/colors/font_color_disabled = Color( 0.972549, 0.972549, 0.94902, 1 )
+CheckBox/colors/font_color_hover = Color( 0.972549, 0.972549, 0.94902, 1 )
+CheckBox/colors/font_color_hover_pressed = Color( 0.972549, 0.972549, 0.94902, 1 )
+CheckBox/colors/font_color_pressed = Color( 0.972549, 0.972549, 0.94902, 1 )
+CheckBox/constants/check_vadjust = 0
+CheckBox/constants/hseparation = 8
+CheckBox/fonts/font = null
+CheckBox/icons/checked = null
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/unchecked = null
+CheckBox/styles/disabled = ExtResource( 3 )
+CheckBox/styles/focus = ExtResource( 3 )
+CheckBox/styles/hover = ExtResource( 3 )
+CheckBox/styles/hover_pressed = ExtResource( 3 )
+CheckBox/styles/normal = ExtResource( 3 )
+CheckBox/styles/pressed = ExtResource( 3 )
+Label/colors/font_color = Color( 0.972549, 0.972549, 0.94902, 1 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
+Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+Label/constants/line_spacing = 6
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 2
+Label/constants/shadow_offset_y = 2
+Label/fonts/font = null
+Label/styles/normal = null
+
