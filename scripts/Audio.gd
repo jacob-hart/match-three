@@ -19,6 +19,8 @@ var next_player = 0
 
 func _ready():
 	_init_stream_players()
+	set_bus_muted("Sound", SavedData.get_value("Settings", "mute_sound", false))
+	set_bus_muted("Music", SavedData.get_value("Settings", "mute_music", false))
 
 func _init_stream_players():
 	for i in range(POOL_SIZE):
