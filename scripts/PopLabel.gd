@@ -19,7 +19,7 @@ func set_text(new_text):
 	if is_first_change:
 		is_first_change = false
 
-func pop(pop_scale = Vector2(3.0, 3.0)):
+func pop(pop_scale = Vector2(1.25, 1.25)):
 	pop_tween.interpolate_property(self, "rect_scale", null, pop_scale, pop_time, Tween.TRANS_QUINT, Tween.EASE_OUT)
 	pop_tween.interpolate_property(self, "rect_scale", pop_scale, Vector2(1.0, 1.0), fade_out_time, Tween.TRANS_QUINT, Tween.EASE_OUT, pop_time)
 	pop_tween.start()
