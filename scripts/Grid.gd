@@ -98,8 +98,9 @@ func populate_grid():
 				new_block = get_new_block()
 
 			add_child(new_block)
-			new_block.position = grid_to_pixel(i - new_block_start_offset, j)
-			new_block.move_smooth(grid_to_pixel(i, j))
+			new_block.position = grid_to_pixel(i, j)
+			#new_block.position = grid_to_pixel(i - new_block_start_offset, j)
+			#new_block.move_smooth(grid_to_pixel(i, j))
 
 			blocks[i][j] = new_block
 

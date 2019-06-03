@@ -29,7 +29,7 @@ func move_bounce(position_to_move_to):
 # All changes to the block that happen when it is in the destruction process go here
 func play_destroy_animation():
 	destroy_tween.interpolate_property(self, "scale", null, Vector2(0.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	destroy_tween.interpolate_property(self, "modulate", null, Color(1.0, 1.0, 1.0, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
+	destroy_tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
 	destroy_tween.start()
 
 func select():
