@@ -42,7 +42,7 @@ func _ready():
 
 func _process(delta):
 	get_user_mouse_input()
-
+	
 func load_blocks():
 	print("Loading blocks:")
 	for list in block_lists:
