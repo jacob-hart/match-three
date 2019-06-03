@@ -6,6 +6,6 @@
 [node name="BlockBlue" index="0" instance=ExtResource( 1 )]
 block_color = 5
 
-[node name="Sprite" parent="." index="0"]
+[node name="Sprite" parent="." index="1"]
 texture = ExtResource( 2 )
 

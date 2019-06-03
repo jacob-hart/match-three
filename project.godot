@@ -18,7 +18,7 @@ _global_script_class_icons={
 config/name="godot-game"
 run/main_scene="res://scenes/MainMenu.tscn"
 boot_splash/image="res://assets/textures/empty.png"
-boot_splash/bg_color=Color( 0.152941, 0.156863, 0.133333, 1 )
+boot_splash/bg_color=Color( 0.172549, 0.160784, 0.176471, 1 )
 config/icon="res://icon.png"
 
 [autoload]
@@ -60,6 +60,6 @@ pause={
 [rendering]
 
 quality/2d/use_pixel_snap=true
-environment/default_clear_color=Color( 0.152941, 0.156863, 0.133333, 1 )
+environment/default_clear_color=Color( 0.172549, 0.160784, 0.176471, 1 )
 quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"

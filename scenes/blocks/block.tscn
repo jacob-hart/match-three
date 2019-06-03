@@ -10,7 +10,6 @@ move_speed = 0.3
 select_speed = 0.15
 destroy_speed = 0.3
 destroy_fade_delay = 0.1
-selected_scale = Vector2( 1.1, 1.1 )
 
 [node name="SelectSprite" type="Sprite" parent="."]
 visible = false
