@@ -34,14 +34,14 @@ custom_constants/margin_left = 32
 margin_left = 32.0
 margin_top = 8.0
 margin_right = 644.0
-margin_bottom = 57.0
+margin_bottom = 40.0
 custom_constants/separation = 32
 alignment = 2
 
 [node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 373.0
 margin_right = 414.0
-margin_bottom = 49.0
+margin_bottom = 32.0
 custom_constants/separation = -4
 
 [node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
@@ -63,7 +63,7 @@ pop_on_value_change = false
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 446.0
 margin_right = 492.0
-margin_bottom = 49.0
+margin_bottom = 32.0
 custom_constants/separation = -4
 
 [node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
@@ -83,7 +83,7 @@ valign = 0
 [node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 524.0
 margin_right = 612.0
-margin_bottom = 49.0
+margin_bottom = 32.0
 custom_constants/separation = -4
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]

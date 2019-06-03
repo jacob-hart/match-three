@@ -73,5 +73,4 @@ func _on_grid_match_found(match_size, chain_count, custom_weighting):
     score += match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * get_time_weighting() * base_score_for_match
     emit_signal("score_updated", score)
     if score > high_score:
-        high_score = score
-        emit_signal("high_score_updated", high_score)
+        emit_signal("high_score_updated", score)
