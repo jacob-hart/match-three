@@ -1,7 +1,7 @@
 extends Label
 
-export (float) var pop_time = 0.15
-export (float) var fade_out_time = 0.15
+export (float) var pop_time = 0.1
+export (float) var fade_out_time = 0.1
 export (bool) var pop_on_value_change = true
 export (bool) var pop_on_first_change = false
 

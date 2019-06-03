@@ -39,21 +39,22 @@ custom_constants/separation = 32
 alignment = 2
 
 [node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 373.0
-margin_right = 414.0
+margin_left = 349.0
+margin_right = 389.0
 margin_bottom = 32.0
 custom_constants/separation = -4
 
 [node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
-margin_right = 41.0
+margin_right = 40.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 1 )
 text = "Time"
+uppercase = true
 
 [node name="TimePopLabel" parent="MarginContainer/HBoxContainer/TimeContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 17.0
-margin_right = 41.0
+margin_right = 40.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 14, 7 )
 align = 0
@@ -61,41 +62,43 @@ valign = 0
 pop_on_value_change = false
 
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 446.0
-margin_right = 492.0
+margin_left = 421.0
+margin_right = 478.0
 margin_bottom = 32.0
 custom_constants/separation = -4
 
 [node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
-margin_right = 46.0
+margin_right = 57.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 2 )
 text = "Score"
+uppercase = true
 
 [node name="ScorePopLabel" parent="MarginContainer/HBoxContainer/ScoreContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 17.0
-margin_right = 46.0
+margin_right = 57.0
 margin_bottom = 31.0
 align = 0
 valign = 0
 
 [node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 524.0
+margin_left = 510.0
 margin_right = 612.0
 margin_bottom = 32.0
 custom_constants/separation = -4
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]
-margin_right = 88.0
+margin_right = 102.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 3 )
 text = "High Score"
+uppercase = true
 
 [node name="HighScorePopLabel" parent="MarginContainer/HBoxContainer/HighScoreContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 17.0
-margin_right = 88.0
+margin_right = 102.0
 margin_bottom = 31.0
 align = 0
 valign = 0
