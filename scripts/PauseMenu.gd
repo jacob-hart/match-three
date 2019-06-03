@@ -33,6 +33,7 @@ func _on_button_quit_to_menu_pressed():
 	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
 	yield(SceneChanger, "about_to_change_scene")
 	unpause_tree()
+	Audio.stop_all_players()
 
 func _on_button_quit_to_desktop_pressed():
 	get_tree().quit()

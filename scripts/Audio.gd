@@ -50,3 +50,7 @@ func set_bus_pitch_by_note(bus, note):
 
 func set_bus_muted(bus, is_muted):
 	AudioServer.set_bus_mute(AudioServer.get_bus_index(bus), is_muted)
+
+func stop_all_players():
+	for player in get_children():
+		player.stop()
