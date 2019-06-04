@@ -9,8 +9,8 @@ const SAMPLES = {
 }
 
 const MUSIC_TRACKS = {
-	"the_hex": preload("res://assets/music/The Hex.wav"),
-	"synthwave": preload("res://assets/music/Synthwave 3000.wav")
+	"the_hex": preload("res://assets/music/The Hex.ogg"),
+	"synthwave": preload("res://assets/music/Synthwave 3000.ogg")
 }
 
 const major_scale = [1.0, 1.122462, 1.259921, 1.334840, 1.498307, 1.681793, 1.887749, 2.0]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/The Hex.ogg-571c56cf9262e4266cba152332945105.oggstr"
+
+[deps]
+
+source_file="res://assets/music/The Hex.ogg"
+dest_files=[ "res://.import/The Hex.ogg-571c56cf9262e4266cba152332945105.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
