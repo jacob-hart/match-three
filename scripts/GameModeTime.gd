@@ -25,6 +25,8 @@ func _ready():
     high_score = SavedData.get_value(self.name, "high_score", default_high_score)
     emit_signal("score_updated", score)
     emit_signal("high_score_updated", high_score)
+    Audio.stop_music()
+    Audio.play_music("the_hex")
 
 func _process(delta):
     if current_time > 0.0 && !is_timer_paused:
