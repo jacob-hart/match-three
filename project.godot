@@ -42,7 +42,7 @@ window/stretch/aspect="expand"
 
 [gui]
 
-theme/custom="res://themes/default_theme.tres"
+theme/custom="res://themes/default_ui_theme.tres"
 
 [input]
 
@@ -62,4 +62,3 @@ pause={
 quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.172549, 0.160784, 0.176471, 1 )
 quality/filters/msaa=2
-environment/default_environment="res://default_env.tres"
