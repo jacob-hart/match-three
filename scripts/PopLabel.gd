@@ -13,11 +13,6 @@ func set_text(new_text):
 	text = new_text
 	self.rect_pivot_offset.x = self.rect_size.x / 2.0
 	self.rect_pivot_offset.y = self.rect_size.y / 2.0
-	if pop_on_value_change:
-		if !(!pop_on_first_change && is_first_change):
-			pop()
-	if is_first_change:
-		is_first_change = false
 
 func pop(pop_scale = Vector2(1.25, 1.25)):
 	pop_tween.interpolate_property(self, "rect_scale", null, pop_scale, pop_time, Tween.TRANS_QUINT, Tween.EASE_OUT)
@@ -25,4 +20,10 @@ func pop(pop_scale = Vector2(1.25, 1.25)):
 	pop_tween.start()
 
 func _on_value_source_updated(new_value):
+	if pop_on_value_change:
+		if !(!pop_on_first_change && is_first_change):
+			if (String(new_value) != text):
+				pop()
+	if is_first_change:
+		is_first_change = false
 	set_text(String(new_value))

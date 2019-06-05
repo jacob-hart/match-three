@@ -48,7 +48,7 @@ func get_time():
 
 func get_time_rounded():
     if current_time < 0:
-        return 0.00
+        return 0.0
     return floor(current_time * pow(10.0, places_to_round_to)) / (pow(10.0, places_to_round_to))
 
 func pause_timer():
