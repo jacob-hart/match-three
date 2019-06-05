@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+var can_pause = false
+
 func pause_tree():
 	print("paused")
 	show()
@@ -31,13 +33,16 @@ func _on_button_restart_pressed():
 	get_tree().reload_current_scene()
 
 func _on_button_quit_to_menu_pressed():
+	Audio.stop_all_players()
 	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
 	yield(SceneChanger, "about_to_change_scene")
 	unpause_tree()
-	Audio.stop_all_players()
 
 func _on_button_quit_to_desktop_pressed():
 	get_tree().quit()
+
+func _on_countdown_finished():
+	can_pause = true
 
 func _ready():
 	hide()
@@ -47,7 +52,7 @@ func _notification(what):
 		pause_tree()
 		
 func _process(delta):
-	if Input.is_action_just_pressed("pause"):
+	if can_pause && Input.is_action_just_pressed("pause"):
 		if get_tree().paused:
 			unpause_tree()
 		else:

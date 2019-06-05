@@ -1,7 +1,7 @@
 extends Node2D
 
-const SOUND_VOLUME_DB = -33.0
-const MUSIC_VOLUME_DB = -30.0
+const SOUND_VOLUME_DB = -25.0
+const MUSIC_VOLUME_DB = -20.0
 
 const SAMPLES = {
 	"destroy": preload("res://assets/sounds/chime.wav"),
@@ -26,6 +26,9 @@ var music_player
 func _ready():
 	add_stream_players()
 	music_player = AudioStreamPlayer.new()
+	music_player.volume_db = MUSIC_VOLUME_DB
+	music_player.bus = "Music"
+	music_player.pause_mode = PAUSE_MODE_STOP
 	add_child(music_player)
 	set_bus_muted("Sound", SavedData.get_value("Settings", "mute_sound", false))
 	set_bus_muted("Music", SavedData.get_value("Settings", "mute_music", false))
@@ -55,8 +58,6 @@ func play(sample, bus = "Master"):
 func play_music(track):
 	assert(track in MUSIC_TRACKS)
 	music_player.stream = MUSIC_TRACKS[track]
-	music_player.volume_db = MUSIC_VOLUME_DB
-	music_player.bus = "Music"
 	music_player.play()
 
 func stop_music():

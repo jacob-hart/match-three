@@ -7,15 +7,30 @@ signal countdown_started()
 signal countdown_finished()
 
 func _ready():
-	play_countdown_animation()
+	start()
 
-func play_countdown_animation():
+func start():
+	get_tree().paused = true
+	for child in get_children():
+		child.show()
 	emit_signal("countdown_started")
 	emit_signal("countdown_text_changed", "3")
+	Audio.play("error", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
+
 	emit_signal("countdown_text_changed", "2")
+	Audio.play("error", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
+
 	emit_signal("countdown_text_changed", "1")
+	Audio.play("error", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
+
 	emit_signal("countdown_text_changed", "GO!")
+	Audio.play("error", "Countdown")
+	yield(get_tree().create_timer(time_between_ticks), "timeout")
+
+	for child in get_children():
+		child.hide()
 	emit_signal("countdown_finished")
+	get_tree().paused = false

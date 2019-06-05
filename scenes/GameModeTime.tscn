@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/GameModeTime.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Grid.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/PopLabel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/GameOverMenu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/Countdown.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 4 )
@@ -34,14 +35,14 @@ custom_constants/margin_left = 32
 margin_left = 32.0
 margin_top = 12.0
 margin_right = 644.0
-margin_bottom = 48.0
+margin_bottom = 44.0
 custom_constants/separation = 16
 alignment = 2
 
 [node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 308.0
 margin_right = 356.0
-margin_bottom = 36.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 48, 32 )
 custom_constants/separation = -4
 
@@ -64,7 +65,7 @@ valign = 0
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 372.0
 margin_right = 484.0
-margin_bottom = 36.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 112, 32 )
 custom_constants/separation = -4
 
@@ -86,7 +87,7 @@ valign = 0
 [node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 500.0
 margin_right = 612.0
-margin_bottom = 36.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 112, 32 )
 custom_constants/separation = -4
 
@@ -109,11 +110,14 @@ valign = 0
 
 [node name="GameOverMenu" parent="." instance=ExtResource( 7 )]
 
-[connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
+[node name="Countdown" parent="." instance=ExtResource( 8 )]
+
 [connection signal="game_over" from="." to="GameOverMenu" method="_on_game_mode_game_over"]
+[connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
 [connection signal="high_score_updated" from="." to="MarginContainer/HBoxContainer/HighScoreContainer/HighScorePopLabel" method="_on_value_source_updated"]
 [connection signal="score_updated" from="." to="MarginContainer/HBoxContainer/ScoreContainer/ScorePopLabel" method="_on_value_source_updated"]
 [connection signal="time_updated" from="." to="MarginContainer/HBoxContainer/TimeContainer/TimePopLabel" method="_on_value_source_updated"]
 [connection signal="entered_ready_state" from="Grid" to="." method="_on_grid_entered_ready_state"]
 [connection signal="entered_wait_state" from="Grid" to="." method="_on_grid_entered_wait_state"]
 [connection signal="match_found" from="Grid" to="." method="_on_grid_match_found"]
+[connection signal="countdown_finished" from="Countdown" to="PauseMenu" method="_on_countdown_finished"]

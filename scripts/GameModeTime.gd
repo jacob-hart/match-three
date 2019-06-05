@@ -23,8 +23,9 @@ var is_timer_paused = false
 
 func _ready():
     high_score = SavedData.get_value(self.name, "high_score", default_high_score)
-    emit_signal("score_updated", score)
     emit_signal("high_score_updated", high_score)
+    emit_signal("score_updated", score)
+    emit_signal("time_updated", current_time)
     Audio.stop_music()
     Audio.play_music("the_hex")
 
