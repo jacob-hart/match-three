@@ -27,79 +27,82 @@ block_lists = [ ExtResource( 3 ) ]
 margin_right = 676.0
 margin_bottom = 40.0
 custom_constants/margin_right = 32
-custom_constants/margin_top = 8
+custom_constants/margin_top = 12
 custom_constants/margin_left = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 margin_left = 32.0
-margin_top = 8.0
+margin_top = 12.0
 margin_right = 644.0
-margin_bottom = 40.0
-custom_constants/separation = 32
+margin_bottom = 48.0
+custom_constants/separation = 16
 alignment = 2
 
 [node name="TimeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 349.0
-margin_right = 389.0
-margin_bottom = 32.0
+margin_left = 308.0
+margin_right = 356.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 48, 32 )
 custom_constants/separation = -4
 
 [node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/TimeContainer"]
-margin_right = 40.0
+margin_right = 48.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 1 )
 text = "Time"
+align = 1
 uppercase = true
 
 [node name="TimePopLabel" parent="MarginContainer/HBoxContainer/TimeContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 17.0
-margin_right = 40.0
+margin_right = 48.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 14, 7 )
-align = 0
 valign = 0
 
 [node name="ScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 421.0
-margin_right = 478.0
-margin_bottom = 32.0
+margin_left = 372.0
+margin_right = 484.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 112, 32 )
 custom_constants/separation = -4
 
 [node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/ScoreContainer"]
-margin_right = 57.0
+margin_right = 112.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 2 )
 text = "Score"
+align = 1
 uppercase = true
 
 [node name="ScorePopLabel" parent="MarginContainer/HBoxContainer/ScoreContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 17.0
-margin_right = 57.0
+margin_right = 112.0
 margin_bottom = 31.0
-align = 0
 valign = 0
 
 [node name="HighScoreContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 510.0
+margin_left = 500.0
 margin_right = 612.0
-margin_bottom = 32.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 112, 32 )
 custom_constants/separation = -4
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/HighScoreContainer"]
-margin_right = 102.0
+margin_right = 112.0
 margin_bottom = 21.0
 custom_fonts/font = SubResource( 3 )
 text = "High Score"
+align = 1
 uppercase = true
 
 [node name="HighScorePopLabel" parent="MarginContainer/HBoxContainer/HighScoreContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 17.0
-margin_right = 102.0
+margin_right = 112.0
 margin_bottom = 31.0
-align = 0
 valign = 0
 
 [node name="PauseMenu" parent="." instance=ExtResource( 6 )]

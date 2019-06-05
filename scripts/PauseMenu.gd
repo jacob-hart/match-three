@@ -27,6 +27,7 @@ func _on_button_resume_pressed():
 
 func _on_button_restart_pressed():
 	unpause_tree()
+	Audio.stop_all_players()
 	get_tree().reload_current_scene()
 
 func _on_button_quit_to_menu_pressed():
