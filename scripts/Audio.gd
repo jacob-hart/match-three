@@ -5,7 +5,8 @@ const MUSIC_VOLUME_DB = -20.0
 
 const SAMPLES = {
 	"destroy": preload("res://assets/sounds/chime.wav"),
-	"error": preload("res://assets/sounds/close.wav")
+	"error": preload("res://assets/sounds/close.wav"),
+	"tick_up": preload("res://assets/sounds/tick up.wav")
 }
 
 const MUSIC_TRACKS = {

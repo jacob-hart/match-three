@@ -153,7 +153,7 @@ func get_user_mouse_input():
 			if current_mouse_location == first_click && is_in_grid(first_click):
 				interaction_state = InteractionState.WAITING_FOR_SECOND_SELECTION # Cursor stayed on the same block
 				blocks[first_click.x][first_click.y].select()
-			elif is_in_grid(current_mouse_location):
+			elif is_in_grid(current_mouse_location) && is_in_grid(first_click):
 				swap_blocks(first_click, current_mouse_location) # User dragged the cursor to another block
 	elif interaction_state == InteractionState.WAITING_FOR_SECOND_SELECTION:
 		if Input.is_action_just_pressed("ui_click"):
