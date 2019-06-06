@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 export (int) var score_to_display = 0
-export(float) var score_tick_time = 0.94
+export(float) var score_tick_time = 1.90
 
 func pause_tree():
 	print("paused")
