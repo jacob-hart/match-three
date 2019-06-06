@@ -21,8 +21,7 @@ func show():
 	get_node("MarginContainer").show()
 
 func _on_game_mode_game_over(final_score):
-	self.set_process(false)
-	self.set_process_input(false)
+	can_pause = false
 
 func _on_button_resume_pressed():
 	unpause_tree()
@@ -49,7 +48,8 @@ func _ready():
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
-		pause_tree()
+		if can_pause:
+			pause_tree()
 		
 func _process(delta):
 	if can_pause && Input.is_action_just_pressed("pause"):
