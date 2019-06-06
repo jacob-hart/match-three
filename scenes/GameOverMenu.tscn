@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/GameOverMenu.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/montreal/Montreal-Bold.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 64
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 2 )
 
 [node name="GameOverMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -25,7 +38,7 @@ custom_constants/margin_bottom = 32
 margin_left = 64.0
 margin_top = 32.0
 margin_right = 612.0
-margin_bottom = 265.0
+margin_bottom = 315.0
 size_flags_vertical = 0
 custom_constants/separation = 32
 
@@ -37,9 +50,25 @@ text = "Game Over!
 align = 1
 valign = 1
 
-[node name="FinalScore" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 256, 64 )
+custom_constants/separation = -8
+
+[node name="FinalScoreText" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 1 )
+text = "Final Score"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="FinalScoreValue" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 margin_right = 612.0
 margin_bottom = 31.0
+custom_fonts/font = SubResource( 2 )
 align = 1
 valign = 1
 
@@ -60,6 +89,8 @@ margin_top = 167.0
 margin_right = 612.0
 margin_bottom = 187.0
 text = "Quit to Desktop"
+
+[node name="Tween" type="Tween" parent="."]
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonPlayAgain" to="." method="_on_button_play_again_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuitToMainMenu" to="." method="_on_button_quit_to_menu_pressed"]

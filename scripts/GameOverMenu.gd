@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+export (int) var score_to_display = 0
+export(float) var score_tick_time = 1.75
+
 func pause_tree():
 	print("paused")
 	show()
@@ -19,7 +22,8 @@ func show():
 	get_node("Shade").show()
 
 func _on_game_mode_game_over(final_score):
-	get_node("MarginContainer/VBoxContainer/FinalScore").set_text("Final Score: " + String(final_score))
+	get_node("Tween").interpolate_property(self, "score_to_display", null, final_score, score_tick_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	get_node("Tween").start()
 	Audio.stop_music()
 	pause_tree()
 
@@ -36,3 +40,6 @@ func _on_button_quit_to_desktop_pressed():
 
 func _ready():
 	hide()
+
+func _process(delta):
+	get_node("MarginContainer/VBoxContainer/VBoxContainer/FinalScoreValue").set_text(String(int(score_to_display)))
