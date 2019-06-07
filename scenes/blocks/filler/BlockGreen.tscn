@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/blocks/Block.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/textures/particles/stars/particleWhite_3.png" type="Texture" id=2]
+[ext_resource path="res://assets/textures/shapes/triangle.png" type="Texture" id=2]
 
 [node name="BlockGreen" instance=ExtResource( 1 )]
 block_color = 4

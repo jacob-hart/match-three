@@ -17,7 +17,7 @@ z_index = 1
 texture = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.3, 0.3 )
+scale = Vector2( 0.2, 0.2 )
 
 [node name="move_tween" type="Tween" parent="."]
 

@@ -1,6 +1,6 @@
 extends Node2D
 
-export (float) var starting_time = 5
+export (float) var starting_time = 60
 export (int) var places_to_round_to = 0
 export (int) var starting_score = 0
 export (int) var default_high_score = 1000
