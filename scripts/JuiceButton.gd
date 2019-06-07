@@ -1,7 +1,7 @@
 extends Button
 
 export (Vector2) var hover_scale = Vector2(1.05, 1.05)
-export (float) var hover_time = 0.25
+export (float) var hover_time = 0.1
 
 onready var tween = get_node("Tween")
 
@@ -21,6 +21,7 @@ func center_pivot():
 	rect_pivot_offset.y = rect_size.y / 2
 
 func expand(scale, time):
+	Audio.play("click", "UI")
 	tween.interpolate_property(self, "rect_scale", null, scale, time, Tween.TRANS_QUINT, Tween.EASE_OUT)
 	tween.start()
 
