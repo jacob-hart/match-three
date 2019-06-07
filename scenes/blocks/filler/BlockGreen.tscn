@@ -6,6 +6,9 @@
 [node name="BlockGreen" instance=ExtResource( 1 )]
 block_color = 4
 
+[node name="SelectSprite" parent="." index="0"]
+position = Vector2( 0, 5 )
+
 [node name="Sprite" parent="." index="1"]
 self_modulate = Color( 0.662745, 0.862745, 0.462745, 1 )
 texture = ExtResource( 2 )
