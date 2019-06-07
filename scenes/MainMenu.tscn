@@ -28,6 +28,7 @@ margin_bottom = 14.0
 text = "Godot Game"
 align = 1
 valign = 1
+uppercase = true
 
 [node name="ButtonPlayTime" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_top = 46.0
