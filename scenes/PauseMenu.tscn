@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/PauseMenu.gd" type="Script" id=1]
 [ext_resource path="res://scenes/AudioOptions.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/JuiceButton.tscn" type="PackedScene" id=3]
 
 [node name="PauseMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -38,36 +39,24 @@ text = "Paused
 align = 1
 valign = 1
 
-[node name="ButtonResume" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 63.0
-margin_right = 612.0
-margin_bottom = 83.0
-text = "Resume"
-
-[node name="ButtonRestart" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 115.0
-margin_right = 612.0
-margin_bottom = 135.0
-text = "Restart"
-
-[node name="ButtonQuitToMainMenu" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 167.0
-margin_right = 612.0
-margin_bottom = 187.0
-text = "Quit to Main Menu"
-
-[node name="ButtonQuitToDesktop" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 219.0
-margin_right = 612.0
-margin_bottom = 239.0
-text = "Quit to Desktop"
-
 [node name="AudioOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_top = 115.0
 margin_right = -236.0
 margin_bottom = -169.0
 
+[node name="ButtonResume" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+text = "Resume"
+
+[node name="ButtonRestart" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+text = "Restart"
+
+[node name="ButtonQuitToMenu" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+text = "Quit to Main Menu"
+
+[node name="ButtonQuitToDesktop" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+text = "Quit to Desktop"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonResume" to="." method="_on_button_resume_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuitToMainMenu" to="." method="_on_button_quit_to_menu_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuitToMenu" to="." method="_on_button_quit_to_menu_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuitToDesktop" to="." method="_on_button_quit_to_desktop_pressed"]
