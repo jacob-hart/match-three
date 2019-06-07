@@ -7,7 +7,9 @@ const SAMPLES = {
 	"destroy": preload("res://assets/sounds/chime.wav"),
 	"error": preload("res://assets/sounds/close.wav"),
 	"tick_up": preload("res://assets/sounds/tick up.wav"),
-	"click": preload("res://assets/sounds/click.wav")
+	"click": preload("res://assets/sounds/click.wav"),
+	"notify": preload("res://assets/sounds/notification.wav"),
+	"impact": preload("res://assets/sounds/impact.wav")
 }
 
 const MUSIC_TRACKS = {
@@ -46,14 +48,14 @@ func get_next_player_index():
 	next_player = (next_player + 1) % POOL_SIZE
 	return next
 
-func play(sample, bus = "Master"):
+func play(sample, bus = "Master", custom_volume_offset = 0.0):
 	assert(sample in SAMPLES)
 	var stream = SAMPLES[sample]
 	var index = get_next_player_index()
 
 	var player = pool[index]
 	player.stream = stream
-	player.volume_db = SOUND_VOLUME_DB
+	player.volume_db = SOUND_VOLUME_DB + custom_volume_offset
 	player.bus = bus
 	player.play()
 

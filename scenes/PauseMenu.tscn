@@ -34,8 +34,7 @@ custom_constants/separation = 32
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 612.0
 margin_bottom = 31.0
-text = "Paused
-"
+text = "Paused"
 align = 1
 valign = 1
 

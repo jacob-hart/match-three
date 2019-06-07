@@ -15,19 +15,19 @@ func start():
 		child.show()
 	emit_signal("countdown_started")
 	emit_signal("countdown_text_changed", "3")
-	Audio.play("error", "Countdown")
+	Audio.play("notify", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
 
 	emit_signal("countdown_text_changed", "2")
-	Audio.play("error", "Countdown")
+	Audio.play("notify", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
 
 	emit_signal("countdown_text_changed", "1")
-	Audio.play("error", "Countdown")
+	Audio.play("notify", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
 
 	emit_signal("countdown_text_changed", "GO!")
-	Audio.play("error", "Countdown")
+	Audio.play("notify", "Countdown")
 	yield(get_tree().create_timer(time_between_ticks), "timeout")
 
 	for child in get_children():
