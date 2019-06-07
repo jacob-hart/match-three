@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://scenes/JuiceButton.tscn" type="PackedScene" id=2]
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -28,21 +29,17 @@ text = "Godot Game"
 align = 1
 valign = 1
 
-[node name="ButtonTimeAttack" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonPlayTime" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_top = 46.0
 margin_right = 548.0
 margin_bottom = 66.0
-size_flags_horizontal = 3
-size_flags_vertical = 2
 text = "Play Time Attack"
 
-[node name="ButtonQuit" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonQuit" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_top = 98.0
 margin_right = 548.0
 margin_bottom = 118.0
-size_flags_horizontal = 3
-size_flags_vertical = 2
 text = "Quit"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonTimeAttack" to="." method="_on_button_play_time_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonPlayTime" to="." method="_on_button_play_time_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
