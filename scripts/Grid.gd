@@ -373,6 +373,7 @@ func repopulate_grid():
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
 				new_block.move_smooth(grid_to_pixel(i, j))
 				blocks[i][j] = new_block
+				new_block.play_entry_animation()
 	chain_count += 1
 	get_node("after_repopulate_delay").start()
 

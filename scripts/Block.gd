@@ -23,7 +23,15 @@ func move_bounce(position_to_move_to):
 	tween.interpolate_property(self, "position", null, position_to_move_to, move_speed, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	tween.start()
 	
-# All changes to the block that happen when it is in the destruction process go here
+func play_entry_animation():
+	scale =  Vector2(0.0, 0.0)
+	modulate = Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0)
+	rotation_degrees = rand_range(30, 60)
+	tween.interpolate_property(self, "scale", null, Vector2(1.0, 1.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 1.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.interpolate_property(self, "rotation_degrees", null, 0.0, destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()
+
 func play_destroy_animation():
 	tween.interpolate_property(self, "scale", null, Vector2(0.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
 	tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
