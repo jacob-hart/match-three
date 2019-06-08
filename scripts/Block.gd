@@ -9,6 +9,7 @@ export (SpecialDestroyBehavior) var special_destroy_behavior = SpecialDestroyBeh
 export (bool) var is_swappable = true
 export (float) var move_speed
 export (float) var select_speed
+export (float) var deselect_fade_speed
 export (float) var destroy_speed
 export (float) var destroy_fade_delay
 
@@ -30,7 +31,9 @@ func play_destroy_animation():
 	tween.start()
 
 func select():
-	get_node("SelectSprite").show()
+	tween.interpolate_property(get_node("SelectSprite"), "modulate", null, Color(1.0, 1.0, 1.0, 1.0), select_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()
 
 func deselect():
-	get_node("SelectSprite").hide()
+	tween.interpolate_property(get_node("SelectSprite"), "modulate", null, Color(1.0, 1.0, 1.0, 0.0), deselect_fade_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()

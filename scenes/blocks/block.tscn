@@ -7,12 +7,13 @@
 script = ExtResource( 1 )
 block_color = 7
 move_speed = 0.3
-select_speed = 0.15
+select_speed = 0.1
+deselect_fade_speed = 0.3
 destroy_speed = 0.3
 destroy_fade_delay = 0.1
 
 [node name="SelectSprite" type="Sprite" parent="."]
-visible = false
+modulate = Color( 1, 1, 1, 0 )
 scale = Vector2( 0.08, 0.08 )
 z_index = 1
 texture = ExtResource( 2 )
