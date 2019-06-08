@@ -12,25 +12,22 @@ export (float) var select_speed
 export (float) var destroy_speed
 export (float) var destroy_fade_delay
 
-onready var move_tween = get_node("move_tween")
-
-onready var select_tween = get_node("select_tween")
-
-onready var destroy_tween = get_node("destroy_tween")
+onready var tween = get_node("Tween")
 
 func move_smooth(position_to_move_to):
-	move_tween.interpolate_property(self, "position", null, position_to_move_to, move_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	move_tween.start()
+	tween.interpolate_property(self, "position", null, position_to_move_to, move_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()
 
 func move_bounce(position_to_move_to):
-	move_tween.interpolate_property(self, "position", null, position_to_move_to, move_speed, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-	move_tween.start()
+	tween.interpolate_property(self, "position", null, position_to_move_to, move_speed, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+	tween.start()
 	
 # All changes to the block that happen when it is in the destruction process go here
 func play_destroy_animation():
-	destroy_tween.interpolate_property(self, "scale", null, Vector2(0.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
-	destroy_tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
-	destroy_tween.start()
+	tween.interpolate_property(self, "scale", null, Vector2(0.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
+	tween.interpolate_property(self, "rotation_degrees", null, rand_range(30, 60), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()
 
 func select():
 	get_node("SelectSprite").show()

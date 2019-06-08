@@ -9,6 +9,7 @@ block_color = 7
 move_speed = 0.3
 select_speed = 0.15
 destroy_speed = 0.3
+destroy_fade_delay = 0.1
 
 [node name="SelectSprite" type="Sprite" parent="."]
 visible = false
@@ -19,9 +20,5 @@ texture = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.2, 0.2 )
 
-[node name="move_tween" type="Tween" parent="."]
-
-[node name="select_tween" type="Tween" parent="."]
-
-[node name="destroy_tween" type="Tween" parent="."]
+[node name="Tween" type="Tween" parent="."]
 
