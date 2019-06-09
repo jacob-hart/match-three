@@ -37,12 +37,12 @@ func start():
 
 	for child in children:
 		if !(child is Tween):
-			tween.interpolate_property(child, "modulate", null, Color(child.modulate.r, child.modulate.g, child.modulate.b, 0.0), fade_time, Tween.TRANS_QUINT, Tween.EASE_OUT)
+			tween.interpolate_property(child, "modulate", null, Color(child.modulate.r, child.modulate.g, child.modulate.b, 0.0), fade_time, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
 	tween.start()
-	emit_signal("countdown_finished")
-	get_tree().paused = false
 	yield(tween, "tween_completed")
 
+	emit_signal("countdown_finished")
+	get_tree().paused = false
 	for child in children:
 		if !(child is Tween):
 			child.hide()
