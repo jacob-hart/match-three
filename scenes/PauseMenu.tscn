@@ -32,29 +32,43 @@ size_flags_vertical = 0
 custom_constants/separation = 32
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_right = 612.0
-margin_bottom = 31.0
+margin_right = 548.0
+margin_bottom = 14.0
 text = "Paused"
 align = 1
 valign = 1
 uppercase = true
 
 [node name="ButtonResume" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 46.0
+margin_right = 548.0
+margin_bottom = 66.0
 text = "Resume"
 
 [node name="ButtonRestart" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 98.0
+margin_right = 548.0
+margin_bottom = 118.0
 text = "Restart"
 
 [node name="ButtonQuitToMenu" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 150.0
+margin_right = 548.0
+margin_bottom = 170.0
 text = "Quit to Main Menu"
 
 [node name="ButtonQuitToDesktop" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 202.0
+margin_right = 548.0
+margin_bottom = 222.0
 text = "Quit to Desktop"
 
 [node name="AudioOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 115.0
-margin_right = -236.0
-margin_bottom = -139.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 254.0
+margin_right = 548.0
+margin_bottom = 318.0
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonResume" to="." method="_on_button_resume_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]

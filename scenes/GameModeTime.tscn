@@ -20,7 +20,6 @@ font_data = ExtResource( 4 )
 
 [node name="GameModeTime" type="Node2D"]
 script = ExtResource( 1 )
-starting_time = 5.0
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
 block_lists = [ ExtResource( 3 ) ]
@@ -113,8 +112,8 @@ valign = 0
 
 [node name="Countdown" parent="." instance=ExtResource( 8 )]
 
-[connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
 [connection signal="game_over" from="." to="GameOverMenu" method="_on_game_mode_game_over"]
+[connection signal="game_over" from="." to="PauseMenu" method="_on_game_mode_game_over"]
 [connection signal="high_score_updated" from="." to="MarginContainer/HBoxContainer/HighScoreContainer/HighScorePopLabel" method="_on_value_source_updated"]
 [connection signal="score_updated" from="." to="MarginContainer/HBoxContainer/ScoreContainer/ScorePopLabel" method="_on_value_source_updated"]
 [connection signal="time_updated" from="." to="MarginContainer/HBoxContainer/TimeContainer/TimePopLabel" method="_on_value_source_updated"]

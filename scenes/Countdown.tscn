@@ -33,4 +33,6 @@ margin_bottom = 507.0
 custom_fonts/font = SubResource( 1 )
 pop_on_first_change = true
 
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="countdown_text_changed" from="." to="MarginContainer/PopLabel" method="_on_value_source_updated"]
