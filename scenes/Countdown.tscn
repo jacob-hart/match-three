@@ -14,11 +14,11 @@ font_data = ExtResource( 3 )
 pause_mode = 2
 script = ExtResource( 1 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Shade" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 676, 896 )
-color = Color( 0.172549, 0.160784, 0.176471, 0.588235 )
+color = Color( 0.172549, 0.160784, 0.176471, 0.627451 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 visible = false

@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/PauseMenu.gd" type="Script" id=1]
-[ext_resource path="res://scenes/AudioOptions.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/JuiceButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/JuiceButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/AudioOptions.tscn" type="PackedScene" id=3]
 
 [node name="PauseMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -12,7 +12,7 @@ script = ExtResource( 1 )
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.172549, 0.160784, 0.176471, 0.588235 )
+color = Color( 0.172549, 0.160784, 0.176471, 0.627451 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 visible = false
@@ -27,7 +27,7 @@ custom_constants/margin_bottom = 32
 margin_left = 64.0
 margin_top = 32.0
 margin_right = 612.0
-margin_bottom = 344.0
+margin_bottom = 350.0
 size_flags_vertical = 0
 custom_constants/separation = 32
 
@@ -39,22 +39,22 @@ align = 1
 valign = 1
 uppercase = true
 
-[node name="AudioOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_top = 115.0
-margin_right = -236.0
-margin_bottom = -169.0
-
-[node name="ButtonResume" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+[node name="ButtonResume" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 text = "Resume"
 
-[node name="ButtonRestart" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+[node name="ButtonRestart" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 text = "Restart"
 
-[node name="ButtonQuitToMenu" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+[node name="ButtonQuitToMenu" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 text = "Quit to Main Menu"
 
-[node name="ButtonQuitToDesktop" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+[node name="ButtonQuitToDesktop" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 text = "Quit to Desktop"
+
+[node name="AudioOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 115.0
+margin_right = -236.0
+margin_bottom = -139.0
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonResume" to="." method="_on_button_resume_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]
