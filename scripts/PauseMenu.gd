@@ -20,7 +20,7 @@ func show():
 	get_node("Shade").show()
 	get_node("MarginContainer").show()
 
-func _on_game_mode_game_over(final_score):
+func _on_game_mode_game_over_noargs():
 	can_pause = false
 
 func _on_button_resume_pressed():
