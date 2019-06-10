@@ -21,7 +21,7 @@ func show():
 	get_node("MarginContainer").show()
 	get_node("Shade").show()
 
-func _on_game_mode_game_over(final_score, is_new_high_score):
+func _on_game_mode_time_game_over(final_score, is_new_high_score):
 	Audio.stop_music()
 	pause_tree()
 	Audio.play("impact", "Sound", 10)

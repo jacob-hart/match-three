@@ -9,7 +9,6 @@ export (int) var offset = 78
 export (int) var new_block_start_offset = 1
 export (Array, Resource) var block_lists
 
-
 var filler_blocks = []
 var special_blocks = []
 var special_blocks_spawn_chance = []
@@ -99,8 +98,6 @@ func populate_grid():
 
 			add_child(new_block)
 			new_block.position = grid_to_pixel(i, j)
-			#new_block.position = grid_to_pixel(i - new_block_start_offset, j)
-			#new_block.move_smooth(grid_to_pixel(i, j))
 
 			blocks[i][j] = new_block
 
@@ -120,10 +117,6 @@ func would_match_be_formed_at(row, column, block_color):
 			if blocks[row][column - 1].block_color == block_color && blocks[row][column - 2].block_color == block_color:
 				return true
 	return false
-
-func play_sound(sound_name):
-	Audio.set_bus_pitch_by_note("Destroy", clamp(chain_count - 1, 0, Audio.major_scale.size() - 1))
-	Audio.play(sound_name, sound_name.capitalize())
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
@@ -207,8 +200,8 @@ func swap_blocks(first_block_grid, second_block_grid):
 			first_block.z_index = 1 
 			second_block.z_index = 0
 
-			first_block.move_smooth(grid_to_pixel(second_block_grid.x, second_block_grid.y))
-			second_block.move_smooth(grid_to_pixel(first_block_grid.x, first_block_grid.y))
+			first_block.move_to_position(grid_to_pixel(second_block_grid.x, second_block_grid.y))
+			second_block.move_to_position(grid_to_pixel(first_block_grid.x, first_block_grid.y))
 
 			get_node("after_swap_delay").start() 
 		else:
@@ -224,7 +217,7 @@ func unswap_blocks():
 	is_first_time_finding_matches = false # This prevents the unswapped blocks from entering an infinite loop of swapping back and forth 
 	if last_swap["first_block"] != null && last_swap["second_block"] != null:
 		if last_swap["first_block_grid"] != last_swap["second_block_grid"]:
-			play_sound("error")
+			Audio.play("error")
 		swap_blocks(last_swap["second_block_grid"], last_swap["first_block_grid"])
 
 
@@ -324,7 +317,8 @@ func do_special_destroy_behavior():
 								if blocks[i][j] != null:
 									if blocks[i][j].block_color == block.block_color:
 										set_matched(i, j)
-	play_sound("destroy")
+	Audio.set_bus_pitch_by_note("Destroy", clamp(chain_count - 1, 0, Audio.major_scale.size() - 1))
+	Audio.play("destroy", "Destroy")
 	get_node("destroy_animation_delay").start()
 
 func _on_destroy_animation_delay_timeout():
@@ -350,9 +344,9 @@ func collapse_null():
 			if blocks[i][j] == null:
 				for k in range(i, 0 - 1, -1): # Iterates from the bottom of the column up
 					if blocks[k][j] != null: 
-						blocks[k][j].move_smooth(grid_to_pixel(i, j))
+						blocks[k][j].move_to_position(grid_to_pixel(i, j), Tween.TRANS_SINE, Tween.EASE_IN)
 						blocks[i][j] = blocks[k][j]
-						blocks[k][j] = null 
+						blocks[k][j] = null
 						break
 	get_node("after_collapse_delay").start()
 
@@ -361,6 +355,7 @@ func _on_after_collapse_delay_timeout():
 
 # Adds new blocks to empty spaces after matches were destroyed
 func repopulate_grid():
+	Audio.play("click")
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			if blocks[i][j] == null:
@@ -371,11 +366,12 @@ func repopulate_grid():
 
 				add_child(new_block)
 				new_block.position = grid_to_pixel(i - new_block_start_offset, j)
-				new_block.move_smooth(grid_to_pixel(i, j))
+				new_block.move_to_position(grid_to_pixel(i, j), Tween.TRANS_SINE, Tween.EASE_IN)
 				blocks[i][j] = new_block
 				new_block.play_entry_animation()
 	chain_count += 1
 	get_node("after_repopulate_delay").start()
 
 func _on_after_repopulate_delay_timeout():
+	Audio.play("click")
 	find_matches()

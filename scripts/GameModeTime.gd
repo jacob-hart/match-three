@@ -12,8 +12,8 @@ export (int) var base_score_for_match = 100
 onready var score:int = starting_score
 var high_score:int
 
-signal game_over(final_score, is_new_high_score)
-signal game_over_noargs
+signal game_mode_time_game_over(final_score, is_new_high_score)
+signal game_over_generic
 signal score_updated(new_score)
 signal high_score_updated(new_high_score)
 signal time_updated(new_time)
@@ -65,8 +65,8 @@ func get_time_weighting():
 func on_game_over():
     if score > high_score:
         SavedData.set_value(self.name, "high_score", score)
-    emit_signal("game_over", score, score > high_score)
-    emit_signal("game_over_noargs")
+    emit_signal("game_mode_time_game_over", score, score > high_score)
+    emit_signal("game_over_generic")
 
 func _on_grid_entered_wait_state():
     pause_timer()
