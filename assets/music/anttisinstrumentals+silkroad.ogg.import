@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/anttisinstrumentals+silkroad.ogg-5cbf227edca516fa090731d758ccc11d.oggstr"
+
+[deps]
+
+source_file="res://assets/music/anttisinstrumentals+silkroad.ogg"
+dest_files=[ "res://.import/anttisinstrumentals+silkroad.ogg-5cbf227edca516fa090731d758ccc11d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

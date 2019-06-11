@@ -1,7 +1,7 @@
 extends Node2D
 
 const SOUND_VOLUME_DB = -25.0
-const MUSIC_VOLUME_DB = -20.0
+const MUSIC_VOLUME_DB = -25.0
 
 const SAMPLES = {
 	"destroy": preload("res://assets/sounds/chime.wav"),
@@ -13,8 +13,8 @@ const SAMPLES = {
 }
 
 const MUSIC_TRACKS = {
-	"the_hex": preload("res://assets/music/The Hex.ogg"),
-	"synthwave": preload("res://assets/music/Synthwave 3000.ogg")
+	"main_menu": preload("res://assets/music/anttisinstrumentals+groovy.ogg"),
+	"game_mode_time": preload("res://assets/music/anttisinstrumentals+silkroad.ogg")
 }
 
 const major_scale = [1.0, 1.122462, 1.259921, 1.334840, 1.498307, 1.681793, 1.887749, 2.0]

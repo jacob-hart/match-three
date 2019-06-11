@@ -28,7 +28,7 @@ func _ready():
     emit_signal("score_updated", score)
     emit_signal("time_updated", current_time)
     Audio.stop_music()
-    Audio.play_music("the_hex")
+    Audio.play_music("game_mode_time")
 
 func _process(delta):
     if current_time > 0.0 && !is_timer_paused:

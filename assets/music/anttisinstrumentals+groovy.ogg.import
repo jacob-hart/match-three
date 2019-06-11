@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/anttisinstrumentals+groovy.ogg-17bc5fe89fbbfe39aaed8eeb173da273.oggstr"
+
+[deps]
+
+source_file="res://assets/music/anttisinstrumentals+groovy.ogg"
+dest_files=[ "res://.import/anttisinstrumentals+groovy.ogg-17bc5fe89fbbfe39aaed8eeb173da273.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
