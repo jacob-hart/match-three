@@ -36,6 +36,7 @@ func _ready():
 	add_child(music_player)
 	set_bus_muted("Sound", SavedData.get_value("Settings", "mute_sound", false))
 	set_bus_muted("Music", SavedData.get_value("Settings", "mute_music", false))
+	set_bus_volume("Master", SavedData.get_value("Settings", "master_volume", 0.0))
 
 func add_stream_players():
 	for i in range(POOL_SIZE):
@@ -70,6 +71,9 @@ func stop_music():
 func set_bus_pitch_by_note(bus, note):
 	var pitch_scale = major_scale[clamp(note, 0, major_scale.size() - 1)]
 	AudioServer.get_bus_effect(AudioServer.get_bus_index(bus), 0).pitch_scale = pitch_scale
+
+func set_bus_volume(bus, volume):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), volume)
 
 func set_bus_muted(bus, is_muted):
 	AudioServer.set_bus_mute(AudioServer.get_bus_index(bus), is_muted)
