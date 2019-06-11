@@ -57,6 +57,7 @@ margin_right = 548.0
 margin_bottom = 148.0
 rect_min_size = Vector2( 256, 64 )
 custom_constants/separation = -8
+alignment = 1
 
 [node name="FinalScoreText" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 0.0
