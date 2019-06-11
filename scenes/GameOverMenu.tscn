@@ -11,7 +11,7 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 64
 use_mipmaps = true
 use_filter = true
@@ -28,7 +28,6 @@ anchor_bottom = 1.0
 color = Color( 0.172549, 0.160784, 0.176471, 0.627451 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 64
@@ -69,13 +68,14 @@ text = "Final Score"
 uppercase = true
 pop_on_first_change = true
 
-[node name="FinalScoreValue" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="FinalScoreValue" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_left = 0.0
 margin_top = 23.0
 margin_right = 548.0
 margin_bottom = 102.0
-custom_fonts/font = SubResource( 2 )
-align = 1
-valign = 1
+custom_fonts/font = SubResource( 3 )
+uppercase = true
+pop_on_value_change = false
 
 [node name="ButtonPlayAgain" parent="MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 180.0
@@ -97,6 +97,8 @@ text = "Quit to Desktop"
 
 [node name="Tween" type="Tween" parent="."]
 
+[connection signal="updated_score_text" from="." to="MarginContainer/VBoxContainer/VBoxContainer/FinalScoreText" method="_on_value_source_updated"]
+[connection signal="updated_score_value" from="." to="MarginContainer/VBoxContainer/VBoxContainer/FinalScoreValue" method="_on_value_source_updated"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonPlayAgain" to="." method="_on_button_play_again_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuitToMenu" to="." method="_on_button_quit_to_menu_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonQuitToDesktop" to="." method="_on_button_quit_to_desktop_pressed"]

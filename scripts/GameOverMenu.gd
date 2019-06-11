@@ -3,6 +3,9 @@ extends CanvasLayer
 export (int) var score_to_display = 0
 export (float) var score_tick_time = 1.90
 
+signal updated_score_value(new_score)
+signal updated_score_text(new_text)
+
 func pause_tree():
 	print("paused")
 	show()
@@ -36,7 +39,7 @@ func tick_up_score(final_score, is_new_high_score):
 	yield(get_node("Tween"), "tween_completed")
 	yield(get_tree().create_timer(.85), "timeout")
 	if is_new_high_score:
-		get_node("MarginContainer/VBoxContainer/VBoxContainer/FinalScoreText"). _on_value_source_updated("New high score!")
+		emit_signal("updated_score_text", "New high score!")
 		Audio.play("destroy")
 	
 func _on_button_play_again_pressed():
@@ -57,4 +60,4 @@ func _ready():
 	hide()
 
 func _process(delta):
-	get_node("MarginContainer/VBoxContainer/VBoxContainer/FinalScoreValue").set_text(String(int(score_to_display)))
+	emit_signal("updated_score_value", int(score_to_display))

@@ -20,6 +20,7 @@ font_data = ExtResource( 4 )
 
 [node name="GameModeTime" type="Node2D"]
 script = ExtResource( 1 )
+starting_time = 5.0
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
 block_lists = [ ExtResource( 3 ) ]
