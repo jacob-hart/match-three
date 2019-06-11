@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/anttisinstrumentals+allaboardthefunkytraininstrumental.ogg-103e4ebdf7ba77a4d225055f4d51983a.oggstr"
+
+[deps]
+
+source_file="res://assets/music/anttisinstrumentals+allaboardthefunkytraininstrumental.ogg"
+dest_files=[ "res://.import/anttisinstrumentals+allaboardthefunkytraininstrumental.ogg-103e4ebdf7ba77a4d225055f4d51983a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
