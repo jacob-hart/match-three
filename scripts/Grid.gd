@@ -120,14 +120,14 @@ func would_match_be_formed_at(row, column, block_color):
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
-	var new_x = x_start_position + offset * column
-	var new_y = y_start_position + offset * row
+	var new_x = x_start_position + self.position.x + offset * column
+	var new_y = y_start_position + self.position.y + offset * row
 	return Vector2(new_x, new_y)
 
 # Converts a screen pixel coordinate to a grid coordinate
 func pixel_to_grid(x, y):
-	var row = round((y - y_start_position) / offset)
-	var column = round((x - x_start_position) / offset)
+	var row = round((y - y_start_position - self.position.y) / offset)
+	var column = round((x - x_start_position - self.position.x) / offset)
 	return Vector2(row, column)
 	
 # Checks if a grid coordinate is in the grid and usable
