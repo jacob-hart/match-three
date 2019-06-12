@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="godot-game"
+config/name="match-three"
 run/main_scene="res://scenes/MainMenu.tscn"
 boot_splash/image="res://assets/textures/empty.png"
 boot_splash/bg_color=Color( 0.172549, 0.160784, 0.176471, 1 )
