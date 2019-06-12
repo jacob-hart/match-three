@@ -29,14 +29,17 @@ var music_player
 
 func _ready():
 	add_stream_players()
+
 	music_player = AudioStreamPlayer.new()
 	music_player.volume_db = MUSIC_VOLUME_DB
 	music_player.bus = "Music"
 	music_player.pause_mode = PAUSE_MODE_STOP
 	add_child(music_player)
+
 	set_bus_muted("Sound", SavedData.get_value("Settings", "mute_sound", false))
+	set_bus_volume("Sound", SavedData.get_value("Settings", "sound_volume", 0.0))
 	set_bus_muted("Music", SavedData.get_value("Settings", "mute_music", false))
-	set_bus_volume("Master", SavedData.get_value("Settings", "master_volume", 0.0))
+	set_bus_volume("Music", SavedData.get_value("Settings", "music_volume", 0.0))
 
 func add_stream_players():
 	for i in range(POOL_SIZE):

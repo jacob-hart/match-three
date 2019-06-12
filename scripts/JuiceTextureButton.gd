@@ -1,6 +1,6 @@
-extends CheckBox
+extends TextureButton
 
-export (Vector2) var hover_scale = Vector2(1.05, 1.05)
+export (Vector2) var hover_scale = Vector2(1.1, 1.1)
 export (float) var hover_time = 0.1
 
 onready var tween = get_node("Tween")
