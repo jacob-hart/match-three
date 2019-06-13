@@ -23,9 +23,9 @@ var is_timer_timed_out = false
 var is_timer_paused = false
 
 func _ready():
-    high_score = SavedData.get_value(self.name, "high_score", default_high_score)
-    emit_signal("high_score_updated", high_score)
-    emit_signal("score_updated", score)
+    high_score = SavedData.get_value(self.name, "high_score", int(default_high_score))
+    emit_signal("high_score_updated", int(high_score))
+    emit_signal("score_updated", int(score))
     emit_signal("time_updated", current_time)
     Audio.stop_music()
     Audio.play_music("game_mode_time")
@@ -64,8 +64,8 @@ func get_time_weighting():
 
 func on_game_over():
     if score > high_score:
-        SavedData.set_value(self.name, "high_score", score)
-    emit_signal("game_mode_time_game_over", score, score > high_score)
+        SavedData.set_value(self.name, "high_score", int(score))
+    emit_signal("game_mode_time_game_over", int(score), score > high_score)
     emit_signal("game_over_generic")
 
 func _on_grid_entered_wait_state():
@@ -76,6 +76,6 @@ func _on_grid_entered_ready_state():
 
 func _on_grid_match_found(match_size, chain_count, custom_weighting):
     score += match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * get_time_weighting() * base_score_for_match
-    emit_signal("score_updated", score)
+    emit_signal("score_updated", int(score))
     if score > high_score:
-        emit_signal("high_score_updated", score)
+        emit_signal("high_score_updated", int(score))
