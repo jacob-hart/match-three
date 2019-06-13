@@ -4,10 +4,10 @@ A simple Bejeweled/Candy Crush clone using the Godot engine.
 
 ## Credits
 
-### Music
+#### Music
 
-Antti Loude: http://anttismusic.blogspot.fi
+[Antti Loude](http://anttismusic.blogspot.fi)
 
-### Sounds
+#### Sounds
 
-https://sinewavelab.com/
+[Sinewave Lab](https://sinewavelab.com/)
