@@ -70,10 +70,51 @@ func clear_2D_array(array):
 			array[i][j] = false
 
 func reset_game_state():
+	if is_grid_deadlocked():
+		print("deadlocked!")
+		# reset grid
 	chain_count = 1
 	is_first_time_finding_matches = true
 	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 	emit_signal("entered_ready_state")
+
+# Checks for the presence of at least one of the twelve basic 2x3 or 3x2 patterns that could form a match with one swap.  If none are found (the grid is deadlocked), the grid is remade.  Assumes the grid has even rows and columns.
+func is_grid_deadlocked():
+	# Check horizontally for 2x3 patterns
+	for i in range(0, height_in_blocks - 1):
+		for j in range(0, width_in_blocks - 2):
+			if blocks[i+1][j].block_color == blocks[i][j+1].block_color == blocks[i+1][j+2].block_color:
+				return false
+			elif blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i][j+2].block_color:
+				return false
+			elif blocks[i][j].block_color == blocks[i][j+1].block_color == blocks[i+1][j+2].block_color:
+				return false
+			elif blocks[i+1][j].block_color == blocks[i+1][j+1].block_color == blocks[i][j+2].block_color:
+				return false
+			elif blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i+1][j+2].block_color:
+				return false
+			elif blocks[i+1][j].block_color == blocks[i][j+1].block_color == blocks[i][j+2].block_color:
+				return false
+	# Check vertically for 3x2 patterns
+	for i in range(0, height_in_blocks - 2):
+		for j in range(0, width_in_blocks - 1):
+			if blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i+2][j].block_color:
+				return false
+			elif blocks[i][j+1].block_color == blocks[i+1][j].block_color == blocks[i+2][j+1].block_color:
+				return false
+			elif blocks[i][j+1].block_color == blocks[i+1][j+1].block_color == blocks[i+2][j].block_color:
+				return false
+			elif blocks[i][j].block_color == blocks[i+1][j].block_color == blocks[i+2][j+1].block_color:
+				return false
+			elif blocks[i][j+1].block_color == blocks[i+1][j].block_color == blocks[i+2][j].block_color:
+				return false
+			elif blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i+2][j+1].block_color:
+				return false
+
+	return true
+
+func reset_grid():
+	pass
 
 func get_new_block():
 	var total_chance_for_special = 0.0
@@ -101,9 +142,6 @@ func populate_grid():
 
 			blocks[i][j] = new_block
 
-	get_node("after_populate_delay").start()
-
-func _on_after_populate_delay_timeout():
 	reset_game_state()
 
 # Determines if a match of block_color would be formed by placing a block_color block at row, column
@@ -375,3 +413,5 @@ func repopulate_grid():
 func _on_after_repopulate_delay_timeout():
 	Audio.play("click")
 	find_matches()
+
+

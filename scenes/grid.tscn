@@ -6,10 +6,6 @@
 script = ExtResource( 1 )
 new_block_start_offset = 2
 
-[node name="after_populate_delay" type="Timer" parent="."]
-wait_time = 0.3
-one_shot = true
-
 [node name="after_swap_delay" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
@@ -26,7 +22,6 @@ one_shot = true
 wait_time = 0.3
 one_shot = true
 
-[connection signal="timeout" from="after_populate_delay" to="." method="_on_after_populate_delay_timeout"]
 [connection signal="timeout" from="after_swap_delay" to="." method="_on_after_swap_delay_timeout"]
 [connection signal="timeout" from="destroy_animation_delay" to="." method="_on_destroy_animation_delay_timeout"]
 [connection signal="timeout" from="after_collapse_delay" to="." method="_on_after_collapse_delay_timeout"]
