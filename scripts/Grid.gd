@@ -71,50 +71,71 @@ func clear_2D_array(array):
 
 func reset_game_state():
 	if is_grid_deadlocked():
-		print("deadlocked!")
-		# reset grid
+		print("deadlock detected, so we populated another board")
+		yield(get_tree().create_timer(2.0), "timeout")
+		reset_grid()
 	chain_count = 1
 	is_first_time_finding_matches = true
 	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
 	emit_signal("entered_ready_state")
 
-# Checks for the presence of at least one of the twelve basic 2x3 or 3x2 patterns that could form a match with one swap.  If none are found (the grid is deadlocked), the grid is remade.  Assumes the grid has even rows and columns.
+func are_three_equal(one, two, three):
+	return (one == two) && (two == three)
+
+# Checks for the presence of at least one of the 16 basic patterns that could form a match with a single swap.  If none are found (the grid is deadlocked), the grid is remade.
 func is_grid_deadlocked():
-	# Check horizontally for 2x3 patterns
+	# Check for 2x3 patterns
 	for i in range(0, height_in_blocks - 1):
 		for j in range(0, width_in_blocks - 2):
-			if blocks[i+1][j].block_color == blocks[i][j+1].block_color == blocks[i+1][j+2].block_color:
+			if are_three_equal(blocks[i+1][j].block_color, blocks[i][j+1].block_color, blocks[i+1][j+2].block_color):
 				return false
-			elif blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i][j+2].block_color:
+			elif are_three_equal(blocks[i][j].block_color, blocks[i+1][j+1].block_color, blocks[i][j+2].block_color):
 				return false
-			elif blocks[i][j].block_color == blocks[i][j+1].block_color == blocks[i+1][j+2].block_color:
+			elif are_three_equal(blocks[i][j].block_color, blocks[i][j+1].block_color, blocks[i+1][j+2].block_color):
 				return false
-			elif blocks[i+1][j].block_color == blocks[i+1][j+1].block_color == blocks[i][j+2].block_color:
+			elif are_three_equal(blocks[i+1][j].block_color, blocks[i+1][j+1].block_color, blocks[i][j+2].block_color):
 				return false
-			elif blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i+1][j+2].block_color:
+			elif are_three_equal(blocks[i][j].block_color, blocks[i+1][j+1].block_color, blocks[i+1][j+2].block_color):
 				return false
-			elif blocks[i+1][j].block_color == blocks[i][j+1].block_color == blocks[i][j+2].block_color:
+			elif are_three_equal(blocks[i+1][j].block_color, blocks[i][j+1].block_color, blocks[i][j+2].block_color):
 				return false
-	# Check vertically for 3x2 patterns
+	# Check for 1x4 patterns
+	for i in range(0, height_in_blocks):
+		for j in range(0, width_in_blocks - 3):
+			if are_three_equal(blocks[i][j].block_color, blocks[i][j+2].block_color, blocks[i][j+3].block_color):
+				return false
+			elif are_three_equal(blocks[i][j].block_color, blocks[i][j+1].block_color, blocks[i][j+3].block_color):
+				return false
+	# Check for 3x2 patterns
 	for i in range(0, height_in_blocks - 2):
 		for j in range(0, width_in_blocks - 1):
-			if blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i+2][j].block_color:
+			if are_three_equal(blocks[i][j].block_color, blocks[i+1][j+1].block_color, blocks[i+2][j].block_color):
 				return false
-			elif blocks[i][j+1].block_color == blocks[i+1][j].block_color == blocks[i+2][j+1].block_color:
+			elif are_three_equal(blocks[i][j+1].block_color, blocks[i+1][j].block_color,  blocks[i+2][j+1].block_color):
 				return false
-			elif blocks[i][j+1].block_color == blocks[i+1][j+1].block_color == blocks[i+2][j].block_color:
+			elif are_three_equal(blocks[i][j+1].block_color, blocks[i+1][j+1].block_color, blocks[i+2][j].block_color):
 				return false
-			elif blocks[i][j].block_color == blocks[i+1][j].block_color == blocks[i+2][j+1].block_color:
+			elif are_three_equal(blocks[i][j].block_color, blocks[i+1][j].block_color, blocks[i+2][j+1].block_color):
 				return false
-			elif blocks[i][j+1].block_color == blocks[i+1][j].block_color == blocks[i+2][j].block_color:
+			elif are_three_equal(blocks[i][j+1].block_color, blocks[i+1][j].block_color, blocks[i+2][j].block_color):
 				return false
-			elif blocks[i][j].block_color == blocks[i+1][j+1].block_color == blocks[i+2][j+1].block_color:
+			elif are_three_equal(blocks[i][j].block_color, blocks[i+1][j+1].block_color, blocks[i+2][j+1].block_color):
+				return false
+	# Check for 4x1 patterns
+	for i in range(0, height_in_blocks - 3):
+		for j in range(0, width_in_blocks):
+			if are_three_equal(blocks[i][j].block_color, blocks[i+2][j].block_color, blocks[i+3][j].block_color):
+				return false
+			elif are_three_equal(blocks[i][j].block_color, blocks[i+1][j].block_color, blocks[i+3][j].block_color):
 				return false
 
 	return true
 
 func reset_grid():
-	pass
+	for i in height_in_blocks:
+		for j in width_in_blocks:
+			blocks[i][j].queue_free()
+	populate_grid()
 
 func get_new_block():
 	var total_chance_for_special = 0.0
@@ -129,7 +150,6 @@ func get_new_block():
 		return filler_blocks[random_filler_block_index].instance()
 
 func populate_grid():
-	interaction_state = InteractionState.WAITING_ON_ANIMATION
 	for i in height_in_blocks:
 		for j in width_in_blocks:
 			var new_block = get_new_block()
