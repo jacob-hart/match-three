@@ -24,6 +24,7 @@ var chain_count = 1
 
 signal entered_ready_state()
 signal entered_wait_state()
+signal deadlock_detected()
 signal match_found(match_size, chain_count, custom_weighting)
 
 const MAX_MOVEMENT_DISTANCE = 1
@@ -36,8 +37,17 @@ func _ready():
 	load_blocks()
 	blocks = make_2D_array()
 	populate_grid()
+	while is_grid_deadlocked():
+		queue_free_2D_array(blocks)
+		populate_grid()
+
 	matched_locations = make_2D_array()
 	clear_2D_array(matched_locations)
+	chain_count = 1
+	is_first_time_finding_matches = true
+
+	interaction_state = InteractionState.WAITING_FOR_FIRST_SELECTION
+	emit_signal("entered_ready_state")
 
 func _process(delta):
 	get_user_mouse_input()
@@ -69,10 +79,16 @@ func clear_2D_array(array):
 		for j in width_in_blocks:
 			array[i][j] = false
 
+func queue_free_2D_array(array):
+	for i in height_in_blocks:
+		for j in width_in_blocks:
+			array[i][j].queue_free()
+
 func reset_game_state():
 	if is_grid_deadlocked():
-		print("deadlock detected, so we populated another board")
-		yield(get_tree().create_timer(2.0), "timeout")
+		interaction_state = InteractionState.WAITING_ON_ANIMATION
+		emit_signal("entered_wait_state")
+		emit_signal("deadlock_detected")
 		reset_grid()
 	chain_count = 1
 	is_first_time_finding_matches = true
@@ -134,8 +150,25 @@ func is_grid_deadlocked():
 func reset_grid():
 	for i in height_in_blocks:
 		for j in width_in_blocks:
+			blocks[i][j].play_fade_out()
+	yield(get_tree().create_timer(0.5), "timeout")
+			
+	for i in height_in_blocks:
+		for j in width_in_blocks:
 			blocks[i][j].queue_free()
-	populate_grid()
+			var new_block = get_new_block()
+
+			while would_match_be_formed_at(i, j, new_block.block_color): # Make sure that index will not form a match
+				new_block = get_new_block()
+
+			add_child(new_block)
+			new_block.position = grid_to_pixel(i, j)
+
+			blocks[i][j] = new_block
+			new_block.play_fade_in()
+	yield(get_tree().create_timer(0.5), "timeout")
+
+	reset_game_state()
 
 func get_new_block():
 	var total_chance_for_special = 0.0
@@ -161,8 +194,6 @@ func populate_grid():
 			new_block.position = grid_to_pixel(i, j)
 
 			blocks[i][j] = new_block
-
-	reset_game_state()
 
 # Determines if a match of block_color would be formed by placing a block_color block at row, column
 func would_match_be_formed_at(row, column, block_color):

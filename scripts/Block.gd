@@ -12,6 +12,7 @@ export (float) var select_speed = 0.1
 export (float) var deselect_fade_speed = 0.3
 export (float) var destroy_speed = 0.3
 export (float) var destroy_fade_delay = 0.1
+export (float) var fade_speed = 0.5
 
 onready var tween = get_node("Tween")
 
@@ -28,10 +29,19 @@ func play_entry_animation():
 	#tween.interpolate_property(self, "rotation_degrees", null, 0.0, destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
 	tween.start()
 
+func play_fade_in():
+	modulate = Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0)
+	tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 1.0), fade_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()
+
 func play_destroy_animation():
 	tween.interpolate_property(self, "scale", null, Vector2(0.0, 0.0), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
 	tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0), destroy_speed - destroy_fade_delay, Tween.TRANS_QUINT, Tween.EASE_OUT, destroy_fade_delay)
 	#tween.interpolate_property(self, "rotation_degrees", null, rand_range(30, 60), destroy_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tween.start()
+
+func play_fade_out():
+	tween.interpolate_property(self, "modulate", null, Color(self.modulate.r, self.modulate.g, self.modulate.b, 0.0), fade_speed, Tween.TRANS_QUINT, Tween.EASE_OUT)
 	tween.start()
 
 func select():
