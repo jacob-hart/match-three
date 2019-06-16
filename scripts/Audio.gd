@@ -14,7 +14,8 @@ const SAMPLES = {
 
 const MUSIC_TRACKS = {
 	"main_menu": preload("res://assets/music/anttisinstrumentals+groovy.ogg"),
-	"game_mode_time": preload("res://assets/music/anttisinstrumentals+allaboardthefunkytraininstrumental.ogg")
+	"game_mode_time": preload("res://assets/music/anttisinstrumentals+allaboardthefunkytraininstrumental.ogg"),
+	"game_mode_endless": preload("res://assets/music/anttisinstrumentals+slowlysoslowly.ogg")
 }
 
 const major_scale = [1.0, 1.122462, 1.259921, 1.334840, 1.498307, 1.681793, 1.887749, 2.0]

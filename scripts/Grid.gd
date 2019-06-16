@@ -1,6 +1,5 @@
 extends Node2D
 
-# Grid setup variables
 export (int) var width_in_blocks = 8
 export (int) var height_in_blocks = 10
 export (int) var x_start_position = 64
@@ -13,13 +12,8 @@ var filler_blocks = []
 var special_blocks = []
 var special_blocks_spawn_chance = []
 
-# The blocks currently in the grid, a 2D array filled at runtime
 var blocks
-
-# Locations currently marked for destruction because they are matched
 var matched_locations
-
-# How many times repeated matches have been formed without a swap
 var chain_count = 1
 
 signal entered_ready_state()
@@ -65,7 +59,6 @@ func load_blocks():
 			print(spawn_chance)
 			special_blocks_spawn_chance.push_back(spawn_chance)
 
-# Creates and returns a two-dimensional array
 func make_2D_array():
 	var array = []
 	for i in height_in_blocks:
@@ -195,7 +188,6 @@ func populate_grid():
 
 			blocks[i][j] = new_block
 
-# Determines if a match of block_color would be formed by placing a block_color block at row, column
 func would_match_be_formed_at(row, column, block_color):
 	if row >= 2:
 		if blocks[row - 1][column] != null && blocks[row - 2][column] != null: 
