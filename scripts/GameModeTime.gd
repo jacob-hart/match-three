@@ -75,7 +75,13 @@ func _on_grid_entered_ready_state():
     unpause_timer()
 
 func _on_grid_match_found(match_size, chain_count, custom_weighting):
-    score += match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * get_time_weighting() * base_score_for_match
+    var match_score = int(match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * get_time_weighting() * base_score_for_match)
+    score += match_score
+    var popup_text = load("res://scenes/ScorePopupText.tscn").instance()
+    add_child(popup_text)
+    popup_text.rect_position = Vector2(256, 256)
+    popup_text._on_value_source_updated(match_score)
+
     emit_signal("score_updated", int(score))
     if score > high_score:
         emit_signal("high_score_updated", int(score))

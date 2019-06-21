@@ -12,5 +12,7 @@ align = 1
 valign = 1
 script = ExtResource( 1 )
 
-[node name="pop_tween" type="Tween" parent="."]
+[node name="PopTween" type="Tween" parent="."]
+
+[node name="FadeUpAndOutTween" type="Tween" parent="."]
 
