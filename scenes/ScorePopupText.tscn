@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scenes/PopLabel.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/ScorePopupText.gd" type="Script" id=2]
 
-[node name="PopLabel" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="PopLabel" index="0" instance=ExtResource( 1 )]
+pop_on_first_change = true
+fade_up_and_out_on_value_change = true
 
