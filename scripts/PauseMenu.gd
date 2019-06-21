@@ -52,8 +52,11 @@ func _notification(what):
 			pause_tree()
 		
 func _process(delta):
-	if can_pause && Input.is_action_just_pressed("pause"):
-		if get_tree().paused:
-			unpause_tree()
+	if Input.is_action_just_pressed("pause"):
+		if can_pause:
+			if get_tree().paused:
+				unpause_tree()
+			else:
+				pause_tree()
 		else:
-			pause_tree()
+			_on_button_quit_to_menu_pressed()
