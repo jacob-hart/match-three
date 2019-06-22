@@ -19,40 +19,40 @@ custom_constants/margin_bottom = 32
 margin_left = 64.0
 margin_top = 32.0
 margin_right = 612.0
-margin_bottom = 336.0
+margin_bottom = 474.0
 size_flags_vertical = 0
 custom_constants/separation = 32
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 548.0
-margin_bottom = 14.0
+margin_bottom = 44.0
 text = "Match Three"
 align = 1
 valign = 1
 uppercase = true
 
 [node name="ButtonPlayTime" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_top = 46.0
+margin_top = 76.0
 margin_right = 548.0
-margin_bottom = 66.0
+margin_bottom = 132.0
 text = "Time Attack"
 
 [node name="ButtonPlayEndless" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_top = 98.0
+margin_top = 164.0
 margin_right = 548.0
-margin_bottom = 118.0
+margin_bottom = 220.0
 text = "Endless"
 
 [node name="ButtonQuit" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_top = 150.0
+margin_top = 252.0
 margin_right = 548.0
-margin_bottom = 170.0
+margin_bottom = 308.0
 text = "Quit"
 
 [node name="AudioOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 202.0
+margin_top = 340.0
 margin_right = 548.0
-margin_bottom = 304.0
+margin_bottom = 442.0
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonPlayTime" to="." method="_on_button_play_time_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonPlayEndless" to="." method="_on_button_play_endless_pressed"]

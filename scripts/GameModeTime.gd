@@ -3,7 +3,7 @@ extends Node2D
 export (float) var starting_time = 60
 export (int) var places_to_round_to = 0
 export (int) var starting_score = 0
-export (int) var default_high_score = 1000
+export (int) var default_high_score = 10000
 export (float) var max_weighting_from_time = 3.0
 export (float) var match_size_weighting = 1.0
 export (float) var chain_count_weighting = 1.0
@@ -74,14 +74,14 @@ func _on_grid_entered_wait_state():
 func _on_grid_entered_ready_state():
     unpause_timer()
 
-func _on_grid_match_found(match_size, chain_count, custom_weighting):
+func _on_grid_match_found(match_size, chain_count, custom_weighting, center_position):
     var match_score = int(match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * get_time_weighting() * base_score_for_match)
     score += match_score
-    var popup_text = load("res://scenes/ScorePopupText.tscn").instance()
-    add_child(popup_text)
-    popup_text.rect_position = Vector2(256, 256)
-    popup_text._on_value_source_updated(match_score)
-
     emit_signal("score_updated", int(score))
     if score > high_score:
         emit_signal("high_score_updated", int(score))
+
+    var popup_text = load("res://scenes/ScorePopupText.tscn").instance()
+    add_child(popup_text)
+    popup_text.rect_position = center_position + Vector2(-32, -24)
+    popup_text._on_value_source_updated(match_score)

@@ -19,7 +19,7 @@ var chain_count = 1
 signal entered_ready_state()
 signal entered_wait_state()
 signal deadlock_detected()
-signal match_found(match_size, chain_count, custom_weighting)
+signal match_found(match_size, chain_count, custom_weighting, center_position)
 
 const MAX_MOVEMENT_DISTANCE = 1
 
@@ -201,14 +201,14 @@ func would_match_be_formed_at(row, column, block_color):
 
 # Converts a grid coordinate to a screen pixel coordinate
 func grid_to_pixel(row, column):
-	var new_x = x_start_position + self.position.x + offset * column
-	var new_y = y_start_position + self.position.y + offset * row
+	var new_x = x_start_position + offset * column
+	var new_y = y_start_position + offset * row
 	return Vector2(new_x, new_y)
 
 # Converts a screen pixel coordinate to a grid coordinate
 func pixel_to_grid(x, y):
-	var row = round((y - y_start_position - self.position.y) / offset)
-	var column = round((x - x_start_position - self.position.x) / offset)
+	var row = round((y - y_start_position) / offset)
+	var column = round((x - x_start_position) / offset)
 	return Vector2(row, column)
 	
 # Checks if a grid coordinate is in the grid and usable
@@ -321,10 +321,17 @@ func find_matches():
 				match_size = probe - j
 				probe -= 1
 				if match_size >= 3:
+					var center_location
+					if match_size == 3:
+						center_location = grid_to_pixel(i, j + 1)
+					elif match_size == 4:
+						center_location = grid_to_pixel(i, j + 1.5)
+					elif match_size == 5:
+						center_location = grid_to_pixel(i, j + 2)
 					#print("Found a match of size ", match_size, " starting at ", i, ", ", j, " and ending at ", i, ", ", probe)
 					for y_index in range(j, probe + 1):
 						set_matched(i, y_index)
-					found_match(match_size, chain_count)
+					found_match(match_size, chain_count, center_location)
 					any_matches_found = true
 					match_size = 0
 
@@ -343,10 +350,17 @@ func find_matches():
 				match_size = probe - i
 				probe -= 1
 				if match_size >= 3:
+					var center_location
+					if match_size == 3:
+						center_location = grid_to_pixel(i + 1, j)
+					elif match_size == 4:
+						center_location = grid_to_pixel(i + 1.5, j)
+					elif match_size == 5:
+						center_location = grid_to_pixel(i + 2, j)
 					#print("Found a match of size ", match_size, " starting at ", i, ", ", j, " and ending at ", probe, ", ", j)
 					for x_index in range(i, probe + 1):
 						set_matched(x_index, j)
-					found_match(match_size, chain_count)
+					found_match(match_size, chain_count, center_location)
 					any_matches_found = true
 					match_size = 0
 
@@ -367,8 +381,8 @@ func set_matched(row, column):
 			blocks[row][column].play_destroy_animation()
 
 # Adds a match to the game mode for processing
-func found_match(match_size, chain_count, custom_weighting = 1.0):
-	emit_signal("match_found", match_size, chain_count, custom_weighting)
+func found_match(match_size, chain_count, center_location):
+	emit_signal("match_found", match_size, chain_count, 1.0, center_location)
 
 func do_special_destroy_behavior():
 	for row in height_in_blocks:

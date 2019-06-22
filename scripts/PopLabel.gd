@@ -4,9 +4,9 @@ export (float) var pop_time = 0.075
 export (float) var pop_fade_out_time = 0.1
 export (bool) var pop_on_value_change = true
 export (bool) var pop_on_first_change = false
-export (float) var fade_up_and_out_time = 0.3
-export (float) var fade_up_and_out_delay = 0.15
-export (float) var fade_up_and_out_distance = -35.0
+export (float) var fade_up_and_out_time = 0.35
+export (float) var fade_up_and_out_delay = 0.175
+export (float) var fade_up_and_out_distance = -25.0
 export (bool) var fade_up_and_out_on_value_change = false
 
 onready var pop_tween = get_node("PopTween")

@@ -3,6 +3,11 @@
 [ext_resource path="res://scenes/PopLabel.tscn" type="PackedScene" id=1]
 
 [node name="PopLabel" index="0" instance=ExtResource( 1 )]
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 4.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 0, 0 )
 pop_on_first_change = true
 fade_up_and_out_on_value_change = true
 
