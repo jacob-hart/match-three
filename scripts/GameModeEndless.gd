@@ -2,8 +2,6 @@ extends Node2D
 
 export (int) var starting_score = 0
 export (int) var default_high_score = 1000
-export (float) var match_size_weighting = 1.0
-export (float) var chain_count_weighting = 1.0
 export (int) var base_score_for_match = 100
 
 onready var score:int = starting_score
@@ -19,8 +17,20 @@ func _ready():
 	Audio.stop_music()
 	Audio.play_music("game_mode_endless")
 	
+func get_match_size_weighting(match_size):
+	match match_size:
+		3:
+			return 1.0
+		4:
+			return 2.0
+		5: 
+			return 4.0
+
+func get_chain_count_weighting(chain_count):
+	return 1 + ((chain_count - 1) * 0.25)
+
 func _on_grid_match_found(match_size, chain_count, custom_weighting, center_position):
-	var match_score = int(match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * base_score_for_match)
+	var match_score = int(get_match_size_weighting(match_size) * get_chain_count_weighting(chain_count) * custom_weighting * base_score_for_match)
 	score += match_score
 	emit_signal("score_updated", int(score))
 	if score > high_score:

@@ -4,9 +4,6 @@ export (float) var starting_time = 60
 export (int) var places_to_round_to = 0
 export (int) var starting_score = 0
 export (int) var default_high_score = 10000
-export (float) var max_weighting_from_time = 3.0
-export (float) var match_size_weighting = 1.0
-export (float) var chain_count_weighting = 1.0
 export (int) var base_score_for_match = 100
 
 onready var score:int = starting_score
@@ -59,9 +56,6 @@ func pause_timer():
 func unpause_timer():
     is_timer_paused = false
 
-func get_time_weighting():
-    return (-1.0 * ((max_weighting_from_time - 1.0) / starting_time)) * current_time + max_weighting_from_time
-
 func on_game_over():
     if score > high_score:
         SavedData.set_value(self.name, "high_score", int(score))
@@ -74,8 +68,23 @@ func _on_grid_entered_wait_state():
 func _on_grid_entered_ready_state():
     unpause_timer()
 
+func get_time_weighting(at_time):
+    return ((-1.0 / starting_time) * at_time) + 2.0
+
+func get_match_size_weighting(match_size):
+	match match_size:
+		3:
+			return 1.0
+		4:
+			return 2.0
+		5: 
+			return 4.0
+
+func get_chain_count_weighting(chain_count):
+	return 1 + ((chain_count - 1) * 0.25)
+
 func _on_grid_match_found(match_size, chain_count, custom_weighting, center_position):
-    var match_score = int(match_size * match_size_weighting * chain_count * chain_count_weighting * custom_weighting * get_time_weighting() * base_score_for_match)
+    var match_score = int(get_match_size_weighting(match_size) * get_chain_count_weighting(chain_count) * custom_weighting * get_time_weighting(current_time) * base_score_for_match)
     score += match_score
     emit_signal("score_updated", int(score))
     if score > high_score:
