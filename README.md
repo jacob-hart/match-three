@@ -1,6 +1,6 @@
 # match-three
 
-A simple Bejeweled/Candy Crush clone using the Godot engine.  Used Python-like scripting language and Git version control to create intuitive and graceful gameplay experience.
+A simple Bejeweled/Candy Crush clone, built with the Godot engine and GDScript, its Python-like scripting language.  Playable online.
 
 ## Credits
 
